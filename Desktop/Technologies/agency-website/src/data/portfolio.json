@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "FreshBite — Restaurant Ordering Platform",
+    "description": "A full-stack food ordering system with real-time order tracking, Stripe payments, and an admin dashboard for a chain of 12 restaurant locations.",
+    "category": "E-Commerce",
+    "tags": ["Next.js", "Stripe", "Supabase", "Tailwind CSS"],
+    "image": "/portfolio/freshbite.jpg",
+    "link": "#",
+    "results": "300% increase in online orders within 60 days"
+  },
+  {
+    "id": 2,
+    "title": "VaultHR — SaaS HR Management Suite",
+    "description": "Employee onboarding, payroll integration, leave management, and performance reviews in a single cloud platform serving 2,000+ employees.",
+    "category": "SaaS",
+    "tags": ["React", "Node.js", "PostgreSQL", "AWS"],
+    "image": "/portfolio/vaulthr.jpg",
+    "link": "#",
+    "results": "Reduced onboarding time by 70%"
+  },
+  {
+    "id": 3,
+    "title": "Luxe Interiors — Design Studio Portfolio",
+    "description": "A visually stunning portfolio website with 3D room tours, project galleries, and a client inquiry system for a luxury interior design firm.",
+    "category": "Corporate",
+    "tags": ["Next.js", "Three.js", "Framer Motion", "Vercel"],
+    "image": "/portfolio/luxe.jpg",
+    "link": "#",
+    "results": "45 qualified leads generated in first month"
+  },
+  {
+    "id": 4,
+    "title": "MediConnect — Clinic Booking System",
+    "description": "Online appointment scheduling, patient records, and automated reminders for a multi-specialty medical clinic network.",
+    "category": "Web App",
+    "tags": ["Next.js", "Supabase", "Twilio", "Tailwind CSS"],
+    "image": "/portfolio/mediconnect.jpg",
+    "link": "#",
+    "results": "85% reduction in missed appointments"
+  },
+  {
+    "id": 5,
+    "title": "GreenLeaf — Organic E-Commerce Store",
+    "description": "A premium e-commerce storefront with subscription boxes, inventory management, and delivery tracking for organic produce.",
+    "category": "E-Commerce",
+    "tags": ["Next.js", "Stripe", "Sanity CMS", "Vercel"],
+    "image": "/portfolio/greenleaf.jpg",
+    "link": "#",
+    "results": "₹18L monthly revenue within 3 months"
+  },
+  {
+    "id": 6,
+    "title": "UrbanFit — Gym Management Platform",
+    "description": "Membership management, class scheduling, trainer profiles, and payment processing for a fitness studio chain.",
+    "category": "SaaS",
+    "tags": ["React", "FastAPI", "PostgreSQL", "Razorpay"],
+    "image": "/portfolio/urbanfit.jpg",
+    "link": "#",
+    "results": "500+ active memberships managed"
+  }
+]
