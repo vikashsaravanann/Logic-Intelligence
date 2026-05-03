@@ -42,8 +42,8 @@ export async function POST(req: Request) {
     // Note: We'll skip actual sending if the API key is a placeholder
     if (process.env.RESEND_API_KEY) {
       await resend.emails.send({
-        from: "Agency <onboarding@resend.dev>",
-        to: ["owner@nexusdev.com"], // Replace with actual agency owner email
+        from: "Logic Intelligence Technologies <onboarding@resend.dev>",
+        to: ["hello@logicintel.com"], // Replace with actual agency owner email
         subject: `New Lead: ${projectType} from ${fullName}`,
         text: `
           New Lead Received:

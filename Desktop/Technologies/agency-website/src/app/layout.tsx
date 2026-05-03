@@ -7,8 +7,8 @@ import { Footer } from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "NexusDev | We Build Websites That Win Clients",
-  description: "AI-powered development agency specializing in websites, e-commerce, and web applications. Fast delivery, results-driven.",
+  title: "Logic Intelligence Technologies | Smart Digital Solutions",
+  description: "AI-powered development studio specializing in websites, e-commerce, and custom web applications. Data-driven engineering with fast delivery.",
 };
 
 export default function RootLayout({

@@ -56,12 +56,12 @@ export default function ServicesPage() {
                 </div>
                 <p className="mt-4 text-sm text-muted-foreground">Perfect for local businesses wanting a professional online presence.</p>
                 <p className="mt-6 flex items-baseline gap-x-2">
-                  <span className="text-5xl font-extrabold tracking-tight text-foreground">$1,500</span>
+                  <span className="text-5xl font-extrabold tracking-tight text-foreground">₹8K–₹20K</span>
                   <span className="text-sm text-muted-foreground">one-time</span>
                 </p>
                 <ul role="list" className="mt-8 space-y-4 text-sm text-muted-foreground">
                   {[
-                    "5-Page Informational Site",
+                    "5-Page Professional Website",
                     "Mobile-First Responsive Design",
                     "Basic On-Page SEO",
                     "Contact Form Integration",
@@ -99,18 +99,17 @@ export default function ServicesPage() {
                 </div>
                 <p className="mt-4 text-sm text-muted-foreground">Sell products online with a fully customized storefront and secure checkout.</p>
                 <p className="mt-6 flex items-baseline gap-x-2">
-                  <span className="text-5xl font-extrabold tracking-tight text-foreground">$3,500</span>
+                  <span className="text-5xl font-extrabold tracking-tight text-foreground">₹20K–₹50K</span>
                   <span className="text-sm text-muted-foreground">one-time</span>
                 </p>
                 <ul role="list" className="mt-8 space-y-4 text-sm text-foreground">
                   {[
-                    "Custom Storefront (Up to 100 products)",
+                    "10-Page Website with CMS + Blog",
                     "Stripe/Razorpay Payment Gateway",
-                    "Shopping Cart & Checkout Flow",
-                    "Inventory Management Panel",
-                    "Advanced SEO & Analytics",
+                    "Advanced SEO & Google Analytics",
+                    "Data-Driven Performance Dashboard",
                     "3 Rounds of Revisions",
-                    "Priority Support (30 days)"
+                    "1 Month Priority Support"
                   ].map((feature) => (
                     <li key={feature} className="flex gap-3 items-center">
                       <Check className="h-5 w-5 text-primary shrink-0" /> {feature}
@@ -140,18 +139,18 @@ export default function ServicesPage() {
                 </div>
                 <p className="mt-4 text-sm text-muted-foreground">Complex custom logic, user dashboards, and database architecture.</p>
                 <p className="mt-6 flex items-baseline gap-x-2">
-                  <span className="text-5xl font-extrabold tracking-tight text-foreground">$8,000</span>
+                  <span className="text-5xl font-extrabold tracking-tight text-foreground">₹50K–₹1.5L</span>
                   <span className="text-sm text-muted-foreground">starting</span>
                 </p>
                 <ul role="list" className="mt-8 space-y-4 text-sm text-muted-foreground">
                   {[
-                    "Full-Stack Architecture (Next.js)",
+                    "Full-Stack Custom Web App",
                     "Custom Database (Supabase/PostgreSQL)",
                     "Secure User Authentication",
-                    "API Integrations & Webhooks",
+                    "Payment Integration & Webhooks",
                     "Admin Management Dashboard",
-                    "Unlimited Revisions",
-                    "60-Day Priority Support"
+                    "Client Training Session",
+                    "3 Months Priority Support"
                   ].map((feature) => (
                     <li key={feature} className="flex gap-3 items-center">
                       <Check className="h-5 w-5 text-primary shrink-0" /> {feature}

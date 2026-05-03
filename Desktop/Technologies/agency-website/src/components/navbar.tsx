@@ -31,9 +31,9 @@ export function Navbar() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2 group">
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold group-hover:rotate-12 transition-transform">
-                N
+                L
               </div>
-              <span className="text-xl font-bold tracking-tight text-foreground">Nexus<span className="text-primary">Dev</span></span>
+              <span className="text-xl font-bold tracking-tight text-foreground">Logic<span className="text-primary">Intel</span></span>
             </Link>
           </div>
           

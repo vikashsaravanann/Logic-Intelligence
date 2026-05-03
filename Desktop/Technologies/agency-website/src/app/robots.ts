@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/api/",
     },
-    sitemap: "https://nexusdev.com/sitemap.xml", // Replace with your actual domain
+    sitemap: "https://logicintel.com/sitemap.xml", // Replace with your actual domain
   };
 }

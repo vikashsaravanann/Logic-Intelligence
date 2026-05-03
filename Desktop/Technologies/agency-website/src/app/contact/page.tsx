@@ -82,7 +82,7 @@ export default function ContactPage() {
 
               <div className="space-y-6">
                 {[
-                  { icon: Mail, label: "Email", value: "hello@nexusdev.com", href: "mailto:hello@nexusdev.com" },
+                  { icon: Mail, label: "Email", value: "hello@logicintel.com", href: "mailto:hello@logicintel.com" },
                   { icon: Phone, label: "Phone", value: "+1 (555) 123-4567", href: "tel:+15551234567" },
                   { icon: MapPin, label: "Location", value: "San Francisco, CA", href: undefined },
                   { icon: Clock, label: "Response Time", value: "Within 24 hours", href: undefined }

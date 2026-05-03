@@ -61,19 +61,19 @@ export default function Home() {
         >
           <motion.div variants={itemVariants} className="mb-6 flex justify-center">
             <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-primary backdrop-blur-sm">
-              <Sparkles className="mr-2 h-4 w-4" /> Next-Gen Web Development
+              <Sparkles className="mr-2 h-4 w-4" /> Logic Intelligence Technologies
             </span>
           </motion.div>
           
           <motion.h1 variants={itemVariants} className="text-5xl font-extrabold tracking-tight text-foreground sm:text-7xl mb-6">
-            We Build Digital <br className="hidden sm:block" />
+            Smart Digital Solutions{" "}<br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-cyan-300">
-              Experiences That Scale
+              Powered by Intelligence
             </span>
           </motion.h1>
           
           <motion.p variants={itemVariants} className="mt-6 text-xl leading-8 text-muted-foreground max-w-2xl mx-auto">
-            Stop losing customers to slow, outdated websites. We engineer premium, high-converting platforms using modern AI-driven workflows.
+            Data-driven web engineering that transforms your digital presence. We build intelligent, high-converting platforms using AI-augmented workflows.
           </motion.p>
           
           <motion.div variants={itemVariants} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -92,7 +92,7 @@ export default function Home() {
           {/* Trust Indicators */}
           <motion.div variants={itemVariants} className="mt-16 pt-8 border-t border-border/30 flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-primary" /> 100% Custom Code
+              <CheckCircle className="h-5 w-5 text-primary" /> AI-Powered Development
             </div>
             <div className="flex items-center gap-2">
               <Zap className="h-5 w-5 text-primary" /> Lightning Fast
@@ -119,7 +119,7 @@ export default function Home() {
           <div className="mx-auto max-w-2xl text-center mb-20">
             <h2 className="text-primary font-semibold tracking-wide uppercase text-sm mb-3">Our Expertise</h2>
             <h3 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">Engineered for Growth</h3>
-            <p className="mt-4 text-xl text-muted-foreground">We don't just build websites. We build scalable business assets.</p>
+            <p className="mt-4 text-xl text-muted-foreground">We don&apos;t just build websites. We engineer intelligent, data-driven digital assets.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -264,7 +264,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing Section (New) */}
+      {/* Pricing Section */}
       <section className="py-32 bg-secondary/10">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-20">
@@ -273,7 +273,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {/* Tier 1 */}
+            {/* Starter */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -281,23 +281,24 @@ export default function Home() {
               transition={{ duration: 0.5 }}
               className="rounded-3xl bg-card border border-border p-8 flex flex-col"
             >
-              <h4 className="text-xl font-bold text-foreground">Landing Page</h4>
-              <p className="mt-2 text-sm text-muted-foreground">Perfect for new products, events, or simple portfolios.</p>
+              <h4 className="text-xl font-bold text-foreground">Starter</h4>
+              <p className="mt-2 text-sm text-muted-foreground">Professional online presence for new businesses and freelancers.</p>
               <div className="mt-6 flex items-baseline gap-x-2">
-                <span className="text-4xl font-bold text-foreground">Custom</span>
+                <span className="text-4xl font-bold text-foreground">₹8K–₹20K</span>
               </div>
               <ul className="mt-8 space-y-4 flex-1 text-sm text-muted-foreground">
-                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Premium Design</li>
+                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> 5-Page Website</li>
                 <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Mobile Responsive</li>
                 <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Basic SEO Setup</li>
-                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Contact Form Integration</li>
+                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Contact Form</li>
+                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> 1 Revision Round</li>
               </ul>
               <Button variant="outline" className="mt-8 w-full rounded-full" asChild>
-                <Link href="/contact?type=landing">Request Quote</Link>
+                <Link href="/contact?type=starter">Get Started</Link>
               </Button>
             </motion.div>
 
-            {/* Tier 2 */}
+            {/* Growth */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -306,24 +307,24 @@ export default function Home() {
               className="rounded-3xl bg-card border-2 border-primary relative p-8 flex flex-col shadow-2xl shadow-primary/10 scale-105 z-10"
             >
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider rounded-full">Most Popular</div>
-              <h4 className="text-xl font-bold text-foreground">Business Pro</h4>
-              <p className="mt-2 text-sm text-muted-foreground">Full multi-page site for established businesses.</p>
+              <h4 className="text-xl font-bold text-foreground">Growth</h4>
+              <p className="mt-2 text-sm text-muted-foreground">Scaling engine for established businesses with CMS and analytics.</p>
               <div className="mt-6 flex items-baseline gap-x-2">
-                <span className="text-4xl font-bold text-foreground">Custom</span>
+                <span className="text-4xl font-bold text-foreground">₹20K–₹50K</span>
               </div>
               <ul className="mt-8 space-y-4 flex-1 text-sm text-foreground">
-                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Everything in Landing Page</li>
-                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Up to 8 Pages</li>
-                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> CMS Integration</li>
-                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Advanced Animations</li>
-                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Performance Optimization</li>
+                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Up to 10 Pages</li>
+                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> CMS + Blog Integration</li>
+                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Advanced SEO &amp; Analytics</li>
+                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> 3 Revision Rounds</li>
+                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> 1 Month Support</li>
               </ul>
               <Button className="mt-8 w-full rounded-full" asChild>
-                <Link href="/contact?type=business">Request Quote</Link>
+                <Link href="/contact?type=growth">Get Started</Link>
               </Button>
             </motion.div>
 
-            {/* Tier 3 */}
+            {/* Pro */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -331,19 +332,20 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="rounded-3xl bg-card border border-border p-8 flex flex-col"
             >
-              <h4 className="text-xl font-bold text-foreground">Web App / SaaS</h4>
-              <p className="mt-2 text-sm text-muted-foreground">Complex logic, user authentication, and databases.</p>
+              <h4 className="text-xl font-bold text-foreground">Pro</h4>
+              <p className="mt-2 text-sm text-muted-foreground">Custom web apps, e-commerce, and complex portals.</p>
               <div className="mt-6 flex items-baseline gap-x-2">
-                <span className="text-4xl font-bold text-foreground">Custom</span>
+                <span className="text-4xl font-bold text-foreground">₹50K–₹1.5L</span>
               </div>
               <ul className="mt-8 space-y-4 flex-1 text-sm text-muted-foreground">
-                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Custom Architecture</li>
-                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Auth & Database Setup</li>
+                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Full Custom Web App</li>
+                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Auth &amp; Database Setup</li>
                 <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Payment Integration</li>
                 <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> Admin Dashboard</li>
+                <li className="flex gap-3"><CheckCircle className="h-5 w-5 text-primary shrink-0" /> 3 Months Support</li>
               </ul>
               <Button variant="outline" className="mt-8 w-full rounded-full" asChild>
-                <Link href="/contact?type=webapp">Request Quote</Link>
+                <Link href="/contact?type=pro">Contact Us</Link>
               </Button>
             </motion.div>
           </div>
@@ -359,7 +361,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {[
-              { name: "Sarah Jenkins", role: "CEO, TechFlow", initial: "S", text: "NexusDev delivered our SaaS dashboard 3 weeks ahead of schedule. The code quality and design are world-class." },
+              { name: "Sarah Jenkins", role: "CEO, TechFlow", initial: "S", text: "Logic Intelligence delivered our SaaS dashboard 3 weeks ahead of schedule. The code quality and design are world-class." },
               { name: "Mark Thompson", role: "Founder, FreshBite", initial: "M", text: "Our online orders doubled after launching the new e-commerce platform. Incredible attention to detail and speed." },
               { name: "Priya Patel", role: "Director, Luxe Design", initial: "P", text: "They completely understood our brand vision. The website is not just fast, it's a lead generation machine." }
             ].map((t, i) => (

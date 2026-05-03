@@ -23,7 +23,7 @@ export default function AboutPage() {
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-cyan-300">Infinite Capability.</span>
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                NexusDev is an AI-orchestrated development studio. We deliver what a team of 5 developers produces — at incredible speed and a fraction of the cost.
+                Logic Intelligence Technologies is an AI-orchestrated development studio. We deliver what a team of 5 developers produces — at incredible speed and a fraction of the cost.
               </p>
             </motion.div>
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.2 }} className="grid grid-cols-2 gap-4">
@@ -47,7 +47,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-primary font-semibold tracking-wide uppercase text-sm mb-3">What Drives Us</h2>
-            <h3 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Our Core Values</h3>
+              <h3 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-6">Why Choose Logic Intelligence?</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[

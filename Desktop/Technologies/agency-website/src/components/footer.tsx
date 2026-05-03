@@ -12,12 +12,12 @@ export function Footer() {
           <div className="space-y-8 xl:col-span-1">
             <Link href="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">
-                N
+                L
               </div>
-              <span className="text-2xl font-bold tracking-tight text-foreground">Nexus<span className="text-primary">Dev</span></span>
+              <span className="text-2xl font-bold tracking-tight text-foreground">Logic<span className="text-primary">Intel</span></span>
             </Link>
             <p className="text-sm leading-relaxed text-muted-foreground max-w-xs">
-              Engineering high-performance digital experiences that scale businesses and drive revenue.
+              Smart, data-driven web solutions engineered with AI precision. From landing pages to custom web apps.
             </p>
             <div className="flex space-x-4">
               <Link href="#" className="h-10 w-10 rounded-full bg-background flex items-center justify-center text-muted-foreground hover:text-primary hover:shadow-md transition-all border border-border/50">
@@ -81,7 +81,7 @@ export function Footer() {
                 <ul role="list" className="space-y-4">
                   <li className="flex items-start gap-3">
                     <Mail className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                    <a href="mailto:hello@nexusdev.com" className="text-sm text-muted-foreground hover:text-primary transition-colors">hello@nexusdev.com</a>
+                    <a href="mailto:hello@logicintel.com" className="text-sm text-muted-foreground hover:text-primary transition-colors">hello@logicintel.com</a>
                   </li>
                   <li className="flex items-start gap-3">
                     <Phone className="h-5 w-5 text-primary shrink-0 mt-0.5" />
@@ -98,7 +98,7 @@ export function Footer() {
         </div>
         
         <div className="mt-16 border-t border-border/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} NexusDev. All rights reserved.</p>
+          <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Logic Intelligence Technologies. All rights reserved.</p>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>Built with</span>
             <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
