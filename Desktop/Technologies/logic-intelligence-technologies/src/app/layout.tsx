@@ -9,12 +9,13 @@ import PageTransition from "@/components/PageTransition";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://vikashsaravanann.github.io/Logic-Intelligence'),
   title: "Logic Intelligence Technologies — Web & Software Development Company in Coimbatore",
   description: "Full stack web development, hotel websites, travel portals, software & game development. Based in Coimbatore, Tamil Nadu. Contact us today.",
   openGraph: {
     title: "Logic Intelligence Technologies",
     description: "Full stack web development, hotel websites, travel portals, software & game development.",
-    url: "https://logicintelligence.tech",
+    url: "https://vikashsaravanann.github.io/Logic-Intelligence",
     siteName: "Logic Intelligence Technologies",
     images: [{ url: "/logo.jpg" }],
     locale: "en_IN",

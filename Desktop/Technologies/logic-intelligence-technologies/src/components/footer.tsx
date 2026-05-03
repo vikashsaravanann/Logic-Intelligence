@@ -26,7 +26,7 @@ export default function Footer() {
           <div className="md:col-span-12 lg:col-span-4">
             <Link href="/" className="flex items-center gap-3 group mb-6 inline-flex">
               <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0 bg-gradient-to-tr from-primary to-accent shadow-[0_0_15px_rgba(0,191,255,0.3)] animate-neon-pulse">
-                <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
+                <img src="/Logic-Intelligence/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </div>
               <div>
                 <span className="text-xl font-bold gradient-text-anim tracking-tight leading-none block">
