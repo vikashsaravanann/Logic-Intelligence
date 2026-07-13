@@ -19,7 +19,7 @@ export default function Footer() {
                 <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </div>
               <div>
-                <span className="text-2xl font-bold gradient-text-anim tracking-tight leading-none block">
+                <span className="text-2xl font-bold text-white tracking-tight leading-none block">
                   Logic Intelligence
                 </span>
                 <span className="text-xs text-zinc-400 tracking-[0.2em] leading-none block uppercase mt-1 font-medium">Technologies Pvt. Ltd.</span>

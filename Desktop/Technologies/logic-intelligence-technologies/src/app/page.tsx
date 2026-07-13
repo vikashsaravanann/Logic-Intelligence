@@ -2,13 +2,11 @@ import Navbar from "@/components/navbar";
 import HeroSection from "@/components/HeroSection";
 import TechStackMarqueeSection from "@/components/TechStackMarqueeSection";
 import CredentialsStripSection from "@/components/CredentialsStripSection";
-import ServicesSection from "@/components/ServicesSection";
 import PackagesSection from "@/components/PackagesSection";
 import WhyUsSection from "@/components/WhyUsSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import AboutSection from "@/components/AboutSection";
 import FreeDemoCTA from "@/components/FreeDemoCTA";
-import ContactSection from "@/components/ContactSection";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
 import Footer from "@/components/footer";
 import FloatingElements from "@/components/FloatingElements";
@@ -31,28 +29,22 @@ export default function Home() {
       {/* 4. Architecture / Why Us */}
       <WhyUsSection />
 
-      {/* 5. Services Section */}
-      <ServicesSection />
-
-      {/* 6. Packages Section */}
+      {/* 5. Packages Section */}
       <PackagesSection />
 
-      {/* 7. How It Works Roadmap */}
+      {/* 6. How It Works Roadmap */}
       <HowItWorksSection />
 
-      {/* 8. About Section */}
+      {/* 7. About Section */}
       <AboutSection />
 
-      {/* 9. Free Demo CTA */}
+      {/* 8. Free Demo CTA */}
       <FreeDemoCTA />
 
-      {/* 10. Contact Section */}
-      <ContactSection />
-
-      {/* 11. Trust Badges */}
+      {/* 9. Trust Badges */}
       <TrustBadgesSection />
 
-      {/* 12. Footer */}
+      {/* 10. Footer */}
       <Footer />
 
       {/* Floating Elements */}

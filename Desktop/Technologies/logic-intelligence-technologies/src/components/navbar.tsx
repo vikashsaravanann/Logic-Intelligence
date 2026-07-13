@@ -82,7 +82,7 @@ export default function Navbar() {
               </motion.div>
               <div className="flex flex-col">
                 <motion.span 
-                  className="text-lg font-bold gradient-text-anim tracking-tight leading-none flex"
+                  className="text-lg font-bold text-white tracking-tight leading-none flex"
                   initial="hidden"
                   animate="visible"
                   variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
@@ -101,46 +101,6 @@ export default function Navbar() {
             <div className="hidden lg:flex items-center gap-8">
               <NavLink href="/">HOME</NavLink>
               
-              {/* Services Mega Menu */}
-              <div className="relative group" onMouseEnter={() => handleMouseEnter('services')} onMouseLeave={handleMouseLeave}>
-                <NavLink href="/#services" onHover={() => handleMouseEnter('services')}>
-                  SERVICES <ChevronDown className="w-4 h-4" />
-                </NavLink>
-                <AnimatePresence>
-                  {activeDropdown === 'services' && (
-                    <motion.div 
-                      initial={{ opacity: 0, scaleY: 0 }} 
-                      animate={{ opacity: 1, scaleY: 1 }} 
-                      exit={{ opacity: 0, scaleY: 0 }} 
-                      style={{ transformOrigin: "top center" }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute top-[100%] left-1/2 -translate-x-1/2 w-[800px] bg-[rgba(10,15,30,0.98)] backdrop-blur-[30px] border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(0,191,255,0.1)] p-6 grid grid-cols-3 gap-6"
-                    >
-                      {servicesCols.map((col, colIdx) => (
-                        <div key={colIdx} className="flex flex-col space-y-2">
-                          {col.map((service, itemIdx) => (
-                            <motion.div 
-                              key={service.name}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: (colIdx * 0.1) + (itemIdx * 0.05) }}
-                            >
-                              <Link href={service.href} className="flex items-center justify-between p-2 rounded-lg hover:bg-[rgba(0,191,255,0.08)] transition-all group/link relative">
-                                <div className="flex items-center gap-3">
-                                  <service.icon className="w-4 h-4 text-zinc-400 group-hover/link:text-primary group-hover/link:shadow-[0_0_10px_rgba(0,191,255,0.5)] rounded-full transition-all" />
-                                  <span className="text-sm text-zinc-300 group-hover/link:text-white font-medium">{service.name}</span>
-                                </div>
-                                <ArrowRight className="w-4 h-4 text-primary opacity-0 -translate-x-2 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all" />
-                              </Link>
-                            </motion.div>
-                          ))}
-                        </div>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
               {/* Packages Dropdown */}
               <div className="relative group" onMouseEnter={() => handleMouseEnter('packages')} onMouseLeave={handleMouseLeave}>
                 <NavLink href="/packages" onHover={() => handleMouseEnter('packages')}>
@@ -161,7 +121,6 @@ export default function Navbar() {
               </div>
 
               <NavLink href="/about">ABOUT</NavLink>
-              <NavLink href="/contact">CONTACT</NavLink>
             </div>
 
             {/* CTA & Mobile Toggle */}
@@ -172,9 +131,9 @@ export default function Navbar() {
                 </span>
               </div>
               
-              <Link href="/contact" className="hidden lg:flex px-6 py-2.5 rounded-full text-sm font-bold text-white neon-btn">
+              <a href="mailto:startupwithvikashsaravanan@gmail.com" className="hidden lg:flex px-6 py-2.5 rounded-full text-sm font-bold text-white neon-btn">
                 Start Project
-              </Link>
+              </a>
               
               <button className="lg:hidden text-white relative z-50 p-2" onClick={() => setIsOpen(!isOpen)}>
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -190,15 +149,13 @@ export default function Navbar() {
             <motion.div initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }} transition={{ type: "tween", duration: 0.3 }} className="fixed top-0 right-0 w-[85vw] h-[100vh] bg-[rgba(10,15,30,0.98)] backdrop-blur-2xl border-l border-white/10 lg:hidden shadow-2xl z-40 overflow-y-auto">
               <div className="flex flex-col px-6 py-24 space-y-6">
                 <Link href="/" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">HOME</Link>
-                <Link href="/#services" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">SERVICES</Link>
                 <Link href="/packages" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">PACKAGES</Link>
                 <Link href="/about" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">ABOUT</Link>
-                <Link href="/contact" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">CONTACT</Link>
                 
                 <div className="mt-auto pt-8 flex flex-col space-y-4">
-                  <Link href="/contact" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white neon-btn w-full">
+                  <a href="mailto:startupwithvikashsaravanan@gmail.com" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white neon-btn w-full">
                     Start Project
-                  </Link>
+                  </a>
                   <a href="https://wa.me/919342877474" className="px-6 py-4 text-center rounded-xl text-base font-bold text-white bg-gradient-to-r from-[#25D366] to-[#128C7E] w-full flex items-center justify-center gap-2">
                     WhatsApp Us
                   </a>
