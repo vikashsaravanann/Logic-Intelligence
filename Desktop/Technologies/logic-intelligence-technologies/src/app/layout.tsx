@@ -12,14 +12,24 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://vikashsaravanann.github.io/Logic-Intelligence'),
   title: "Logic Intelligence Technologies — Web & Software Development Company in Coimbatore",
   description: "Full stack web development, hotel websites, travel portals, software & game development. Based in Coimbatore, Tamil Nadu. Contact us today.",
+  icons: {
+    icon: "/logo.jpg",
+    apple: "/logo.jpg",
+  },
   openGraph: {
     title: "Logic Intelligence Technologies",
     description: "Full stack web development, hotel websites, travel portals, software & game development.",
     url: "https://vikashsaravanann.github.io/Logic-Intelligence",
     siteName: "Logic Intelligence Technologies",
-    images: [{ url: "/logo.jpg" }],
+    images: [{ url: "/logo.jpg", width: 800, height: 600, alt: "Logic Intelligence Technologies Logo" }],
     locale: "en_IN",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Logic Intelligence Technologies",
+    description: "Full stack web development, hotel websites, travel portals, software & game development. Based in Coimbatore.",
+    images: ["/logo.jpg"],
   },
 };
 

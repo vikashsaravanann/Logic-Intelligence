@@ -42,25 +42,6 @@ export default function Navbar() {
     if (window.innerWidth > 1024) setActiveDropdown(null);
   };
 
-  const servicesCols = [
-    [
-      { name: "Full Stack Dev", href: "/#services", icon: Monitor },
-      { name: "Web Designing", href: "/#services", icon: LayoutTemplate },
-      { name: "UI/UX Design", href: "/#services", icon: Palette },
-      { name: "Website Hosting", href: "/#services", icon: CloudUpload },
-    ],
-    [
-      { name: "Hotel Website", href: "/#services", icon: Hotel },
-      { name: "Travel Agency Website", href: "/#services", icon: Plane },
-      { name: "E-Commerce Website", href: "/#services", icon: ShoppingCart },
-      { name: "Custom Business Website", href: "/#services", icon: Building },
-    ],
-    [
-      { name: "Custom Software", href: "/#services", icon: Terminal },
-      { name: "Mobile App Dev", href: "/#services", icon: Smartphone },
-    ]
-  ];
-
   return (
     <>
       <motion.div 
@@ -116,9 +97,9 @@ export default function Navbar() {
                       initial={{ opacity: 0, scaleY: 0 }} animate={{ opacity: 1, scaleY: 1 }} exit={{ opacity: 0, scaleY: 0 }} style={{ transformOrigin: "top center" }}
                       className="absolute top-[100%] left-1/2 -translate-x-1/2 w-[250px] bg-[rgba(10,15,30,0.98)] backdrop-blur-[30px] border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(0,191,255,0.1)] p-4 flex flex-col space-y-2"
                     >
-                      <Link href="/packages/digital-launch-pack" className="flex justify-between items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Digital Launch Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
-                      <Link href="/packages/business-pro-pack" className="flex justify-between items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Business Pro Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
-                      <Link href="/packages/enterprise-pack" className="flex justify-between items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Enterprise Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
+                      <Link href="/contact?package=digital-launch-pack" className="flex justify-between items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Digital Launch Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
+                      <Link href="/contact?package=business-pro-pack" className="flex justify-between items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Business Pro Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
+                      <Link href="/contact?package=enterprise-pack" className="flex justify-between items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Enterprise Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -135,9 +116,9 @@ export default function Navbar() {
                 </span>
               </div>
               
-              <a href="mailto:startupwithvikashsaravanan@gmail.com" className="hidden lg:flex px-6 py-2.5 rounded-full text-sm font-bold text-white neon-btn">
+              <Link href="/contact" className="hidden lg:flex px-6 py-2.5 rounded-full text-sm font-bold text-white neon-btn">
                 Start Project
-              </a>
+              </Link>
               
               <button className="lg:hidden text-white relative z-50 p-2" onClick={() => setIsOpen(!isOpen)}>
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -158,10 +139,10 @@ export default function Navbar() {
                 <Link href="/about" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">ABOUT</Link>
                 
                 <div className="mt-auto pt-8 flex flex-col space-y-4">
-                  <a href="mailto:startupwithvikashsaravanan@gmail.com" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white neon-btn w-full">
+                  <Link href="/contact" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white neon-btn w-full">
                     Start Project
-                  </a>
-                  <a href="https://wa.me/919342877474" className="px-6 py-4 text-center rounded-xl text-base font-bold text-white bg-gradient-to-r from-[#25D366] to-[#128C7E] w-full flex items-center justify-center gap-2">
+                  </Link>
+                  <a href="https://wa.me/918072120016" className="px-6 py-4 text-center rounded-xl text-base font-bold text-white bg-gradient-to-r from-[#25D366] to-[#128C7E] w-full flex items-center justify-center gap-2">
                     WhatsApp Us
                   </a>
                 </div>
