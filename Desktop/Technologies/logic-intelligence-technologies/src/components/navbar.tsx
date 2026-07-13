@@ -24,7 +24,7 @@ export default function Navbar() {
     if (window.innerWidth > 1024) setActiveDropdown(null);
   };
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) => pathname === path || (path !== "/" && pathname.startsWith(path));
 
   const NavLink = ({ href, children, onHover }: { href: string; children: React.ReactNode; onHover?: () => void }) => (
     <Link 
@@ -41,34 +41,25 @@ export default function Navbar() {
 
   const servicesCols = [
     [
-      { name: "Full Stack Dev", href: "/services/full-stack-development", icon: Monitor },
-      { name: "Web Designing", href: "/services/web-designing", icon: LayoutTemplate },
-      { name: "UI/UX Design", href: "/services/ui-ux-design", icon: Palette },
-      { name: "Web Deployment", href: "/services/web-deployment", icon: CloudUpload },
-      { name: "API Development", href: "/services/api-development", icon: Code },
-      { name: "Cloud Deployment", href: "/services/cloud-deployment", icon: Cloud }
+      { name: "Full Stack Dev", href: "/#services", icon: Monitor },
+      { name: "Web Designing", href: "/#services", icon: LayoutTemplate },
+      { name: "UI/UX Design", href: "/#services", icon: Palette },
+      { name: "Website Hosting", href: "/#services", icon: CloudUpload },
     ],
     [
-      { name: "Business Website", href: "/services/business-website", icon: Building },
-      { name: "Hotel Website", href: "/services/hotel-website", icon: Hotel },
-      { name: "Travel Agency Website", href: "/services/travel-agency-website", icon: Plane },
-      { name: "E-Commerce Website", href: "/services/ecommerce-website", icon: ShoppingCart },
-      { name: "Mobile App", href: "/services/mobile-app-development", icon: Smartphone },
-      { name: "Logo & Branding", href: "/services/logo-branding", icon: Brush }
+      { name: "Hotel Website", href: "/#services", icon: Hotel },
+      { name: "Travel Agency Website", href: "/#services", icon: Plane },
+      { name: "E-Commerce Website", href: "/#services", icon: ShoppingCart },
+      { name: "Custom Business Website", href: "/#services", icon: Building },
     ],
     [
-      { name: "Software Development", href: "/services/software-development", icon: Terminal },
-      { name: "Game Development", href: "/services/game-development", icon: Gamepad },
-      { name: "CRM Software", href: "/services/crm-software", icon: Users },
-      { name: "School Management", href: "/services/school-management-software", icon: GraduationCap },
-      { name: "Billing Software", href: "/services/billing-software", icon: Receipt },
-      { name: "SEO Optimization", href: "/services/seo-optimization", icon: Search }
+      { name: "Custom Software", href: "/#services", icon: Terminal },
+      { name: "Mobile App Dev", href: "/#services", icon: Smartphone },
     ]
   ];
 
   return (
     <>
-      {/* Scroll Progress Bar */}
       <motion.div 
         className="fixed top-0 left-0 h-[2px] bg-primary z-[60] shadow-[0_0_10px_rgba(0,191,255,0.8)]"
         style={{ scaleX: 0, transformOrigin: "left" }}
@@ -85,9 +76,9 @@ export default function Navbar() {
                 initial={{ x: -50, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 100, damping: 10 }}
-                className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_15px_rgba(0,191,255,0.4)] animate-neon-pulse"
+                className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_15px_rgba(0,191,255,0.4)] animate-neon-pulse bg-gradient-to-tr from-primary to-accent"
               >
-                <img src="/Logic-Intelligence/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
+                <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </motion.div>
               <div className="flex flex-col">
                 <motion.span 
@@ -107,12 +98,12 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Links */}
-            <div className="hidden lg:flex items-center gap-6">
+            <div className="hidden lg:flex items-center gap-8">
               <NavLink href="/">HOME</NavLink>
               
               {/* Services Mega Menu */}
               <div className="relative group" onMouseEnter={() => handleMouseEnter('services')} onMouseLeave={handleMouseLeave}>
-                <NavLink href="/services" onHover={() => handleMouseEnter('services')}>
+                <NavLink href="/#services" onHover={() => handleMouseEnter('services')}>
                   SERVICES <ChevronDown className="w-4 h-4" />
                 </NavLink>
                 <AnimatePresence>
@@ -169,49 +160,7 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
 
-              {/* Portfolio Dropdown */}
-              <div className="relative group" onMouseEnter={() => handleMouseEnter('portfolio')} onMouseLeave={handleMouseLeave}>
-                <NavLink href="/portfolio" onHover={() => handleMouseEnter('portfolio')}>
-                  PORTFOLIO <ChevronDown className="w-4 h-4" />
-                </NavLink>
-                <AnimatePresence>
-                  {activeDropdown === 'portfolio' && (
-                    <motion.div 
-                      initial={{ opacity: 0, scaleY: 0 }} animate={{ opacity: 1, scaleY: 1 }} exit={{ opacity: 0, scaleY: 0 }} style={{ transformOrigin: "top center" }}
-                      className="absolute top-[100%] left-1/2 -translate-x-1/2 w-[200px] bg-[rgba(10,15,30,0.98)] backdrop-blur-[30px] border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(0,191,255,0.1)] p-4 flex flex-col space-y-2"
-                    >
-                      <Link href="/portfolio" className="text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">All Projects</Link>
-                      <Link href="/portfolio?filter=Hotel" className="text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">Hotel Websites</Link>
-                      <Link href="/portfolio?filter=Travel" className="text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">Travel Portals</Link>
-                      <Link href="/portfolio?filter=Software" className="text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">Software</Link>
-                      <Link href="/portfolio?filter=E-Commerce" className="text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">E-Commerce</Link>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              <NavLink href="/blog">BLOG</NavLink>
-
-              {/* About Dropdown */}
-              <div className="relative group" onMouseEnter={() => handleMouseEnter('about')} onMouseLeave={handleMouseLeave}>
-                <NavLink href="/about" onHover={() => handleMouseEnter('about')}>
-                  ABOUT <ChevronDown className="w-4 h-4" />
-                </NavLink>
-                <AnimatePresence>
-                  {activeDropdown === 'about' && (
-                    <motion.div 
-                      initial={{ opacity: 0, scaleY: 0 }} animate={{ opacity: 1, scaleY: 1 }} exit={{ opacity: 0, scaleY: 0 }} style={{ transformOrigin: "top center" }}
-                      className="absolute top-[100%] left-1/2 -translate-x-1/2 w-[180px] bg-[rgba(10,15,30,0.98)] backdrop-blur-[30px] border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(0,191,255,0.1)] p-4 flex flex-col space-y-2"
-                    >
-                      <Link href="/about" className="text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">About Us</Link>
-                      <Link href="/about#team" className="text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">Our Team</Link>
-                      <Link href="/careers" className="text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">Careers</Link>
-                      <Link href="/faq" className="text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">FAQ</Link>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
+              <NavLink href="/about">ABOUT</NavLink>
               <NavLink href="/contact">CONTACT</NavLink>
             </div>
 
@@ -224,7 +173,7 @@ export default function Navbar() {
               </div>
               
               <Link href="/contact" className="hidden lg:flex px-6 py-2.5 rounded-full text-sm font-bold text-white neon-btn">
-                Get Free Quote
+                Start Project
               </Link>
               
               <button className="lg:hidden text-white relative z-50 p-2" onClick={() => setIsOpen(!isOpen)}>
@@ -241,16 +190,14 @@ export default function Navbar() {
             <motion.div initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }} transition={{ type: "tween", duration: 0.3 }} className="fixed top-0 right-0 w-[85vw] h-[100vh] bg-[rgba(10,15,30,0.98)] backdrop-blur-2xl border-l border-white/10 lg:hidden shadow-2xl z-40 overflow-y-auto">
               <div className="flex flex-col px-6 py-24 space-y-6">
                 <Link href="/" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">HOME</Link>
-                <Link href="/services" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">SERVICES</Link>
+                <Link href="/#services" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">SERVICES</Link>
                 <Link href="/packages" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">PACKAGES</Link>
-                <Link href="/portfolio" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">PORTFOLIO</Link>
-                <Link href="/blog" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">BLOG</Link>
-                <Link href="/about" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">ABOUT US</Link>
+                <Link href="/about" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">ABOUT</Link>
                 <Link href="/contact" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">CONTACT</Link>
                 
                 <div className="mt-auto pt-8 flex flex-col space-y-4">
                   <Link href="/contact" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white neon-btn w-full">
-                    Get Free Quote
+                    Start Project
                   </Link>
                   <a href="https://wa.me/919342877474" className="px-6 py-4 text-center rounded-xl text-base font-bold text-white bg-gradient-to-r from-[#25D366] to-[#128C7E] w-full flex items-center justify-center gap-2">
                     WhatsApp Us

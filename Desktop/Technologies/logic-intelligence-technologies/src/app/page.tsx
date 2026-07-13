@@ -1,21 +1,18 @@
 import Navbar from "@/components/navbar";
 import HeroSection from "@/components/HeroSection";
-import ClientsMarqueeSection from "@/components/ClientsMarqueeSection";
-import LiveStatsSection from "@/components/LiveStatsSection";
+import TechStackMarqueeSection from "@/components/TechStackMarqueeSection";
+import CredentialsStripSection from "@/components/CredentialsStripSection";
 import ServicesSection from "@/components/ServicesSection";
-import CalculatorSection from "@/components/CalculatorSection";
 import PackagesSection from "@/components/PackagesSection";
-import PortfolioSection from "@/components/PortfolioSection";
 import WhyUsSection from "@/components/WhyUsSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import BlogSection from "@/components/BlogSection";
 import AboutSection from "@/components/AboutSection";
 import FreeDemoCTA from "@/components/FreeDemoCTA";
 import ContactSection from "@/components/ContactSection";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
 import Footer from "@/components/footer";
 import FloatingElements from "@/components/FloatingElements";
+import LiveChatWidget from "@/components/LiveChatWidget";
 
 export default function Home() {
   return (
@@ -25,53 +22,44 @@ export default function Home() {
       {/* 1. Hero Section */}
       <HeroSection />
 
-      {/* 2. Marquee */}
-      <ClientsMarqueeSection />
+      {/* 2. Tech Stack Marquee */}
+      <TechStackMarqueeSection />
 
-      {/* 3. Live Stats */}
-      <LiveStatsSection />
+      {/* 3. Credentials Strip */}
+      <CredentialsStripSection />
 
-      {/* 4. Services Section */}
+      {/* 4. Architecture / Why Us */}
+      <WhyUsSection />
+
+      {/* 5. Services Section */}
       <ServicesSection />
-
-      {/* 5. Calculator Section */}
-      <CalculatorSection />
 
       {/* 6. Packages Section */}
       <PackagesSection />
 
-      {/* 7. Portfolio Section */}
-      <PortfolioSection />
-
-      {/* 8. Why Us */}
-      <WhyUsSection />
-
-      {/* 9. How It Works */}
+      {/* 7. How It Works Roadmap */}
       <HowItWorksSection />
 
-      {/* 10. Testimonials */}
-      <TestimonialsSection />
-
-      {/* 11. Blog */}
-      <BlogSection />
-
-      {/* 12. About Section */}
+      {/* 8. About Section */}
       <AboutSection />
 
-      {/* 13. Free Demo CTA */}
+      {/* 9. Free Demo CTA */}
       <FreeDemoCTA />
 
-      {/* 14. Contact Section */}
+      {/* 10. Contact Section */}
       <ContactSection />
 
-      {/* 15. Trust Badges */}
+      {/* 11. Trust Badges */}
       <TrustBadgesSection />
 
-      {/* 16. Footer */}
+      {/* 12. Footer */}
       <Footer />
 
       {/* Floating Elements */}
       <FloatingElements />
+      
+      {/* Live Chat */}
+      <LiveChatWidget />
     </main>
   );
 }

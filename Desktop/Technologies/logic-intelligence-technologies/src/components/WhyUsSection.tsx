@@ -1,78 +1,117 @@
 "use client";
-import { motion, useInView } from "framer-motion";
-import { Shield, Clock, IndianRupee, Infinity as InfinityIcon } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
-
-const blocks = [
-  { icon: Shield, title: "Expert Team", desc: "Built by certified full stack developers with hands-on project experience across web, software, and game development." },
-  { icon: Clock, title: "On-Time Delivery", desc: "We respect your timeline. Every project comes with a clear delivery date and we stick to it — always." },
-  { icon: IndianRupee, title: "Affordable Pricing", desc: "Premium agency quality at startup-friendly prices. We believe great websites should not be expensive." },
-  { icon: InfinityIcon, title: "End-to-End Service", desc: "From your first idea to your website going live — we handle design, development, testing, and deployment all in one place." },
-];
-
-const Counter = ({ end, suffix, title }: { end: number, suffix: string, title: string }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (isInView) {
-      let start = 0;
-      const duration = 2000; // 2s
-      const increment = end / (duration / 16);
-      
-      const timer = setInterval(() => {
-        start += increment;
-        if (start >= end) {
-          setCount(end);
-          clearInterval(timer);
-        } else {
-          setCount(Math.ceil(start));
-        }
-      }, 16);
-      return () => clearInterval(timer);
-    }
-  }, [isInView, end]);
-
-  return (
-    <div ref={ref} className="flex flex-col items-center justify-center p-6 border border-white/5 rounded-2xl bg-zinc-900/30">
-      <span className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-2">
-        {count}{suffix}
-      </span>
-      <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest text-center">{title}</span>
-    </div>
-  );
-};
+import { motion } from "framer-motion";
+import { CheckCircle2, ShieldCheck, Zap, Server } from "lucide-react";
 
 export default function WhyUsSection() {
+  const points = [
+    {
+      title: "Enterprise-Grade Architecture",
+      desc: "We build scalable, secure, and robust digital foundations that grow with your business.",
+      icon: Server,
+    },
+    {
+      title: "Performance Optimized",
+      desc: "Lightning-fast load times and seamless user experiences engineered from the ground up.",
+      icon: Zap,
+    },
+    {
+      title: "Uncompromising Security",
+      desc: "Data protection and secure infrastructure are at the core of everything we deploy.",
+      icon: ShieldCheck,
+    },
+    {
+      title: "Future-Proof Solutions",
+      desc: "Using the latest tech stack ensuring your project remains relevant and maintainable.",
+      icon: CheckCircle2,
+    }
+  ];
+
   return (
-    <section className="py-24 bg-[#0A0F1E] relative border-t border-white/5 overflow-hidden">
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
+    <section className="py-24 bg-[#0A0F1E] relative overflow-hidden">
+      {/* Background blueprint/grid styling */}
+      <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dbuznxrrm/image/upload/v1704285811/grid-pattern_q5aocu.svg')] opacity-5" />
+      <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 pointer-events-none">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full stroke-primary" strokeWidth="0.5" fill="none">
+          <path d="M0,100 L20,80 L20,20 L40,0 L60,20 L60,60 L80,40 L100,60" />
+          <path d="M20,80 L40,60 L40,20" />
+          <path d="M60,60 L80,80 L100,60" />
+          <path d="M20,20 L60,60" />
+        </svg>
+      </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-primary font-bold tracking-[0.2em] uppercase text-sm mb-4">Why Businesses Choose Us</h2>
-        </div>
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <div>
+              <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">Digital Infrastructure</span>
+              <h2 className="text-3xl md:text-5xl font-black text-white leading-tight">
+                We Build What <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Others Imagine.</span>
+              </h2>
+            </div>
+            
+            <p className="text-zinc-400 text-lg leading-relaxed">
+              We don't just build websites; we engineer robust digital platforms. Our focus is on clean code, scalable architecture, and delivering high-performance solutions that serve as a strong foundation for your business operations.
+            </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-          {blocks.map((block, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="p-8 rounded-2xl glass-card flex flex-col h-full bg-zinc-900/60">
-              <div className="w-14 h-14 rounded-xl bg-black border border-white/10 flex items-center justify-center mb-6 text-primary shadow-[0_0_15px_rgba(0,191,255,0.2)]">
-                <block.icon className="h-6 w-6" />
+            <div className="grid sm:grid-cols-2 gap-6 pt-4">
+              {points.map((point, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="flex items-start gap-4 p-4 rounded-2xl bg-black/40 border border-white/5 hover:border-primary/30 transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <point.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold text-sm mb-1">{point.title}</h4>
+                    <p className="text-zinc-500 text-xs leading-relaxed">{point.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative h-[500px] w-full lg:h-[600px] rounded-2xl border border-primary/20 bg-black/40 overflow-hidden backdrop-blur-sm"
+          >
+            <div className="absolute inset-0 flex items-center justify-center flex-col">
+              <Server className="w-24 h-24 text-primary/40 mb-8 animate-pulse" />
+              <div className="space-y-4 w-3/4">
+                <div className="h-2 w-full bg-primary/10 rounded overflow-hidden">
+                  <div className="h-full bg-primary w-2/3 animate-[pulse_2s_ease-in-out_infinite]" />
+                </div>
+                <div className="h-2 w-full bg-primary/10 rounded overflow-hidden">
+                  <div className="h-full bg-primary/60 w-4/5 animate-[pulse_3s_ease-in-out_infinite]" />
+                </div>
+                <div className="h-2 w-full bg-primary/10 rounded overflow-hidden">
+                  <div className="h-full bg-accent/80 w-1/2 animate-[pulse_2.5s_ease-in-out_infinite]" />
+                </div>
               </div>
-              <h4 className="text-xl font-bold text-white mb-4">{block.title}</h4>
-              <p className="text-sm text-zinc-400 leading-relaxed flex-grow">{block.desc}</p>
-            </motion.div>
-          ))}
-        </div>
+            </div>
+            
+            <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl border border-white/10 bg-black/60 backdrop-blur-md flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-xs font-mono text-zinc-300">System Status: Online</span>
+              </div>
+              <span className="text-xs font-mono text-primary">100% Uptime Architecture</span>
+            </div>
+          </motion.div>
 
-        {/* Counters */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          <Counter end={50} suffix="+" title="Projects Completed" />
-          <Counter end={30} suffix="+" title="Happy Clients" />
-          <Counter end={3} suffix="+" title="Years Experience" />
-          <Counter end={4} suffix="" title="Service Domains" />
         </div>
       </div>
     </section>
