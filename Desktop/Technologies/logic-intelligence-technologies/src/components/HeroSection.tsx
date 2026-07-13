@@ -1,191 +1,158 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { MessageCircle, CheckCircle2, ChevronDown, ShieldCheck, Server, Activity, ArrowRight, Zap } from "lucide-react";
-import { Typewriter } from 'react-simple-typewriter';
+import { ArrowRight, Code2, Globe2, Sparkles, Phone, ChevronDown, CheckCircle2 } from "lucide-react";
 
 export default function HeroSection() {
   const { scrollY } = useScroll();
   const textY = useTransform(scrollY, [0, 500], [0, -50]);
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
 
-  // Widget floating animations
-  const widget1Y = useTransform(scrollY, [0, 500], [0, -100]);
-  const widget2Y = useTransform(scrollY, [0, 500], [0, -50]);
-  const widget3Y = useTransform(scrollY, [0, 500], [0, -130]);
-
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0F1E] pt-20 pb-20">
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0F1E] pt-24 pb-12">
       
-      {/* Dynamic Animated Background - Professional & Premium */}
+      {/* Background - Tech Forward Abstract */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,191,255,0.05)_0%,rgba(10,15,30,1)_100%)]" />
-        <div className="absolute top-1/4 left-1/4 w-[40rem] h-[40rem] bg-blue-500/10 rounded-full blur-[120px] mix-blend-screen animate-pulse" style={{ animationDuration: '8s' }} />
-        <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-purple-500/10 rounded-full blur-[100px] mix-blend-screen animate-pulse" style={{ animationDuration: '10s', animationDelay: '1s' }} />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,191,255,0.08)_0%,rgba(10,15,30,1)_70%)]" />
         
-        {/* Subtle Grid */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik00MCAwSDBWNDBIMzkuNUYwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiIHN0cm9rZS13aWR0aD0iMSIvPgo8L3N2Zz4=')] [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
+        {/* Animated Blueprint Grid */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik00MCAwSDBWNDBIMzkuNUYwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiIHN0cm9rZS13aWR0aD0iMSIvPgo8L3N2Zz4=')] [mask-image:linear-gradient(to_bottom,black_40%,transparent_100%)] opacity-60" />
+
+        {/* Ambient Glows */}
+        <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-purple-500/10 rounded-full blur-[130px] mix-blend-screen" />
+        <div className="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-blue-500/10 rounded-full blur-[130px] mix-blend-screen" />
       </div>
       
-      {/* Layer 1: Professional Floating Widgets */}
-      <div className="absolute inset-0 max-w-7xl mx-auto w-full h-full pointer-events-none hidden lg:block z-10">
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
         
-        {/* Widget 1: Architecture Status */}
-        <motion.div 
-          style={{ y: widget1Y }}
-          initial={{ opacity: 0, x: -60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-          className="absolute top-32 left-4 xl:left-0 glass-card p-5 rounded-2xl flex items-center gap-4 animate-float border border-white/5 shadow-2xl backdrop-blur-2xl"
-        >
-          <div className="flex flex-col gap-3 w-48">
-            <div className="flex justify-between items-center">
-              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
-                <Server className="w-3 h-3 text-[#00BFFF]" /> Cluster Status
-              </span>
-              <span className="w-2 h-2 rounded-full bg-[#00BFFF] animate-pulse shadow-[0_0_8px_#00BFFF]"></span>
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-white tracking-tight">99.99<span className="text-sm text-zinc-500 font-medium">%</span></p>
-              <p className="text-[11px] text-[#00BFFF] mt-1 flex items-center gap-1.5"><CheckCircle2 className="w-3 h-3" /> All systems operational</p>
-            </div>
-            <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden mt-1">
-              <div className="w-[98%] bg-gradient-to-r from-[#00BFFF] to-[#7B2FBE] h-full rounded-full"></div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Widget 2: Security */}
-        <motion.div 
-          style={{ y: widget2Y, animationDelay: '1s' } as any}
-          initial={{ opacity: 0, x: 60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
-          className="absolute top-1/4 right-4 xl:right-0 glass-card p-5 rounded-2xl flex items-center gap-4 animate-float border border-white/5 shadow-2xl backdrop-blur-2xl"
-        >
-          <div className="flex flex-col gap-3 w-48">
-            <div className="flex justify-between items-center">
-              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
-                <ShieldCheck className="w-3 h-3 text-[#00FF88]" /> Security
-              </span>
-              <div className="flex gap-1">
-                <span className="w-1 h-3 bg-[#00FF88] rounded-full"></span>
-                <span className="w-1 h-3 bg-[#00FF88] rounded-full"></span>
-                <span className="w-1 h-3 bg-[#00FF88] rounded-full opacity-40"></span>
-              </div>
-            </div>
-            <div className="mt-1">
-              <p className="text-sm font-bold text-white tracking-wide">AES-256 Encryption</p>
-              <p className="text-[11px] text-[#00FF88] mt-1.5 flex items-center gap-1.5"><Zap className="w-3 h-3" /> Active Defense Mode</p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Widget 3: Performance */}
-        <motion.div 
-          style={{ y: widget3Y, animationDelay: '2s' } as any}
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
-          className="absolute bottom-1/4 left-[18%] glass-card p-5 rounded-2xl flex items-center gap-4 animate-float border border-white/5 shadow-2xl backdrop-blur-2xl"
-        >
-          <div className="flex flex-col gap-2 w-40">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
-                <Activity className="w-3 h-3 text-[#7B2FBE]" /> Latency
-              </span>
-              <span className="text-xs font-mono text-white bg-[#7B2FBE]/20 px-1.5 py-0.5 rounded text-[10px]">12ms</span>
-            </div>
-            <div className="flex items-end gap-1.5 h-10 mt-1">
-              {[40, 70, 45, 90, 65, 85, 30, 50].map((h, i) => (
-                <div key={i} className="flex-1 bg-gradient-to-t from-[#7B2FBE]/10 to-[#7B2FBE]/80 rounded-t-sm transition-all duration-500 hover:h-full" style={{ height: `${h}%` }}></div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 lg:px-8 text-center flex flex-col items-center">
-        
-        <motion.div style={{ y: textY, opacity }} className="max-w-5xl flex flex-col items-center">
+        <motion.div style={{ y: textY, opacity }} className="max-w-4xl flex flex-col items-center">
           
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 20 }} 
-            animate={{ opacity: 1, scale: 1, y: 0 }} 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex items-center gap-3 px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl mb-6 shadow-[0_0_30px_rgba(0,191,255,0.15)]"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#00BFFF]/30 bg-[#00BFFF]/5 backdrop-blur-md mb-8"
           >
-            <span className="relative flex h-3 w-3">
+            <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00BFFF] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#00BFFF]"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00BFFF]"></span>
             </span>
-            <span className="text-xs font-semibold tracking-[0.2em] uppercase text-zinc-300">Logic Intelligence Pvt. Ltd.</span>
+            <span className="text-[11px] font-semibold tracking-widest uppercase text-[#00BFFF]">Logic Intelligence Technologies</span>
           </motion.div>
           
           <motion.h1 
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-5xl md:text-7xl lg:text-[5.5rem] font-black text-white tracking-tight mb-4 leading-[1.05]"
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+            className="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6"
           >
-            Engineering Digital <br />
-            <span className="inline-block gradient-text-anim mt-2 pb-2">
-              Excellence
-            </span>
+            Where Logic Meets <br className="hidden sm:block"/>
+            <span className="inline-block gradient-text-anim pb-2">Innovation</span>
           </motion.h1>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="text-sm md:text-base text-zinc-400 uppercase tracking-[0.3em] font-semibold mb-8"
-          >
-            Innovate. Scale. Dominate.
-          </motion.p>
-
-          <motion.div 
+          <motion.h2
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-            className="h-16 flex items-center justify-center mb-8 mt-2"
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="text-xl md:text-3xl font-bold text-zinc-300 mb-6"
           >
-            <p className="text-2xl md:text-4xl font-semibold text-zinc-400 flex items-center gap-3">
-              Enterprise <span className="text-white inline-block min-w-[320px] text-left border-l-2 border-[#00BFFF] pl-4">
-                <Typewriter
-                  words={["Web Development", "Software Solutions", "Mobile Applications", "Cloud Architectures"]}
-                  loop={0}
-                  cursor
-                  cursorStyle='_'
-                  typeSpeed={60}
-                  deleteSpeed={40}
-                  delaySpeed={2500}
-                />
-              </span>
-            </p>
-          </motion.div>
+            We Build What Others Imagine.
+          </motion.h2>
 
           <motion.p 
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
-            className="text-lg md:text-xl font-normal text-zinc-400 mb-12 max-w-3xl mx-auto leading-relaxed"
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="text-base md:text-lg text-zinc-400 max-w-3xl mx-auto leading-relaxed mb-10"
           >
-            We architect intelligent, high-performance digital ecosystems. Logic Intelligence delivers premium software solutions designed to scale, secure, and accelerate your enterprise operations.
+            A premium full-stack development studio delivering world-class web applications, 
+            mobile apps, and custom software for any business. From e-commerce to hospitality 
+            and SaaS, we engineer digital solutions that scale, secure, and succeed.
           </motion.p>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8, delay: 0.9, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full sm:w-auto relative z-30"
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto relative z-30 mb-16"
           >
-            <a href="#services" className="neon-btn px-10 py-4 text-base font-bold w-full sm:w-auto text-center flex items-center justify-center gap-2 group">
-              Explore Services <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <a href="#services" className="neon-btn px-8 py-3.5 rounded-xl text-sm font-bold w-full sm:w-auto text-center flex items-center justify-center gap-2 group">
+              View Our Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
-            <a href="mailto:startupwithvikashsaravanan@gmail.com" className="flex items-center justify-center gap-2 px-10 py-4 rounded-xl text-base font-bold text-white border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 hover:border-white/20 transition-all w-full sm:w-auto group shadow-lg">
-              <MessageCircle className="w-5 h-5 text-[#00BFFF] group-hover:text-white transition-colors" /> Contact Sales
+            <a href="https://wa.me/918072120016" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-sm font-bold text-white border border-white/20 bg-transparent hover:bg-white/5 transition-all w-full sm:w-auto group">
+              <Phone className="w-4 h-4 text-[#00BFFF] group-hover:text-white transition-colors" /> WhatsApp Us Now
             </a>
           </motion.div>
+
+          {/* About Us At A Glance Widgets */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+            className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+          >
+            {/* Widget 1 */}
+            <div className="glass-card p-4 rounded-2xl flex items-start text-left gap-3 group">
+              <div className="w-10 h-10 rounded-lg bg-[#00BFFF]/10 flex items-center justify-center shrink-0 border border-[#00BFFF]/20 group-hover:bg-[#00BFFF]/20 transition-colors">
+                <Code2 className="w-5 h-5 text-[#00BFFF]" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white mb-1">Full Stack Studio</h3>
+                <p className="text-[11px] text-zinc-400 leading-tight">End-to-end custom software & app development.</p>
+              </div>
+            </div>
+
+            {/* Widget 2 */}
+            <div className="glass-card p-4 rounded-2xl flex items-start text-left gap-3 group">
+              <div className="w-10 h-10 rounded-lg bg-[#7B2FBE]/10 flex items-center justify-center shrink-0 border border-[#7B2FBE]/20 group-hover:bg-[#7B2FBE]/20 transition-colors">
+                <Globe2 className="w-5 h-5 text-[#7B2FBE]" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white mb-1">Global Reach</h3>
+                <p className="text-[11px] text-zinc-400 leading-tight">Based in Coimbatore, serving clients worldwide.</p>
+              </div>
+            </div>
+
+            {/* Widget 3 */}
+            <div className="glass-card p-4 rounded-2xl flex items-start text-left gap-3 group">
+              <div className="w-10 h-10 rounded-lg bg-[#00FF88]/10 flex items-center justify-center shrink-0 border border-[#00FF88]/20 group-hover:bg-[#00FF88]/20 transition-colors">
+                <Sparkles className="w-5 h-5 text-[#00FF88]" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white mb-1">Custom-Built</h3>
+                <p className="text-[11px] text-zinc-400 leading-tight">No generic templates. 100% tailored solutions.</p>
+              </div>
+            </div>
+
+            {/* Widget 4 */}
+            <div className="glass-card p-4 rounded-2xl flex items-start text-left gap-3 group">
+              <div className="w-10 h-10 rounded-lg bg-[#FF2D78]/10 flex items-center justify-center shrink-0 border border-[#FF2D78]/20 group-hover:bg-[#FF2D78]/20 transition-colors">
+                <CheckCircle2 className="w-5 h-5 text-[#FF2D78]" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white mb-1">Free Demo</h3>
+                <p className="text-[11px] text-zinc-400 leading-tight">Experience your prototype before you pay.</p>
+              </div>
+            </div>
+          </motion.div>
+
         </motion.div>
+        
+        {/* Scroll Indicator */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 1 }}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-zinc-500"
+        >
+          <span className="text-[9px] font-bold tracking-widest uppercase text-zinc-400">Scroll</span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown className="w-4 h-4 text-zinc-500" />
+          </motion.div>
+        </motion.div>
+
       </div>
     </section>
   );
