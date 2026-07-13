@@ -5,6 +5,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+const NavLink = ({ href, children, onHover }: { href: string; children: React.ReactNode; onHover?: () => void }) => {
+  const pathname = usePathname();
+  const isActive = (path: string) => pathname === path || (path !== "/" && pathname.startsWith(path));
+
+  return (
+    <Link 
+      href={href} 
+      className={`text-sm font-medium transition-colors relative py-4 flex items-center gap-1 ${isActive(href) ? "text-primary" : "text-zinc-300 hover:text-primary"}`}
+      onMouseEnter={onHover}
+    >
+      {children}
+      {isActive(href) && (
+        <motion.div layoutId="activeNav" className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-primary" />
+      )}
+    </Link>
+  );
+};
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -23,21 +41,6 @@ export default function Navbar() {
   const handleMouseLeave = () => {
     if (window.innerWidth > 1024) setActiveDropdown(null);
   };
-
-  const isActive = (path: string) => pathname === path || (path !== "/" && pathname.startsWith(path));
-
-  const NavLink = ({ href, children, onHover }: { href: string; children: React.ReactNode; onHover?: () => void }) => (
-    <Link 
-      href={href} 
-      className={`text-sm font-medium transition-colors relative py-4 flex items-center gap-1 ${isActive(href) ? "text-primary" : "text-zinc-300 hover:text-primary"}`}
-      onMouseEnter={onHover}
-    >
-      {children}
-      {isActive(href) && (
-        <motion.div layoutId="activeNav" className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-primary" />
-      )}
-    </Link>
-  );
 
   const servicesCols = [
     [
@@ -100,6 +103,7 @@ export default function Navbar() {
             {/* Desktop Links */}
             <div className="hidden lg:flex items-center gap-8">
               <NavLink href="/">HOME</NavLink>
+              <NavLink href="/#services">SERVICES</NavLink>
               
               {/* Packages Dropdown */}
               <div className="relative group" onMouseEnter={() => handleMouseEnter('packages')} onMouseLeave={handleMouseLeave}>
@@ -149,6 +153,7 @@ export default function Navbar() {
             <motion.div initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }} transition={{ type: "tween", duration: 0.3 }} className="fixed top-0 right-0 w-[85vw] h-[100vh] bg-[rgba(10,15,30,0.98)] backdrop-blur-2xl border-l border-white/10 lg:hidden shadow-2xl z-40 overflow-y-auto">
               <div className="flex flex-col px-6 py-24 space-y-6">
                 <Link href="/" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">HOME</Link>
+                <Link href="/#services" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">SERVICES</Link>
                 <Link href="/packages" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">PACKAGES</Link>
                 <Link href="/about" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">ABOUT</Link>
                 

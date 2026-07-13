@@ -4,6 +4,7 @@ import TechStackMarqueeSection from "@/components/TechStackMarqueeSection";
 import CredentialsStripSection from "@/components/CredentialsStripSection";
 import PackagesSection from "@/components/PackagesSection";
 import WhyUsSection from "@/components/WhyUsSection";
+import ServicesSection from "@/components/ServicesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import AboutSection from "@/components/AboutSection";
 import FreeDemoCTA from "@/components/FreeDemoCTA";
@@ -29,7 +30,10 @@ export default function Home() {
       {/* 4. Architecture / Why Us */}
       <WhyUsSection />
 
-      {/* 5. Packages Section */}
+      {/* 5. Core Services */}
+      <ServicesSection />
+
+      {/* 6. Packages Section */}
       <PackagesSection />
 
       {/* 6. How It Works Roadmap */}
