@@ -30,13 +30,13 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#00BFFF]/30 bg-[#00BFFF]/5 backdrop-blur-md mb-8"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/30 bg-white/5 backdrop-blur-md mb-8"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00BFFF] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00BFFF]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
             </span>
-            <span className="text-[11px] font-semibold tracking-widest uppercase text-[#00BFFF]">Logic Intelligence Technologies</span>
+            <span className="text-[11px] font-semibold tracking-widest uppercase text-white">Logic Intelligence Technologies</span>
           </motion.div>
           
           <motion.h1 
@@ -46,14 +46,14 @@ export default function HeroSection() {
             className="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6"
           >
             Where Logic Meets <br className="hidden sm:block"/>
-            <span className="inline-block gradient-text-anim pb-2">Innovation</span>
+            <span className="inline-block text-white pb-2">Innovation</span>
           </motion.h1>
 
           <motion.h2
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-xl md:text-3xl font-bold text-zinc-300 mb-6"
+            className="text-xl md:text-3xl font-bold text-white mb-6"
           >
             We Build What Others Imagine.
           </motion.h2>
@@ -62,7 +62,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="text-base md:text-lg text-zinc-400 max-w-3xl mx-auto leading-relaxed mb-10"
+            className="text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed mb-10"
           >
             A premium full-stack development studio delivering world-class web applications, 
             mobile apps, and custom software for any business. From e-commerce to hospitality 
@@ -75,11 +75,11 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto relative z-30 mb-16"
           >
-            <a href="#services" className="neon-btn px-8 py-3.5 rounded-xl text-sm font-bold w-full sm:w-auto text-center flex items-center justify-center gap-2 group">
+            <a href="#services" className="bg-white text-black px-8 py-3.5 rounded-xl text-sm font-bold w-full sm:w-auto text-center flex items-center justify-center gap-2 group hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.2)]">
               View Our Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
             <a href="https://wa.me/918072120016" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-sm font-bold text-white border border-white/20 bg-transparent hover:bg-white/5 transition-all w-full sm:w-auto group">
-              <Phone className="w-4 h-4 text-[#00BFFF] group-hover:text-white transition-colors" /> WhatsApp Us Now
+              <Phone className="w-4 h-4 text-white transition-colors" /> WhatsApp Us Now
             </a>
           </motion.div>
 
@@ -88,49 +88,49 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-            className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+            className="w-full glass-card rounded-3xl p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-white/10"
           >
             {/* Widget 1 */}
-            <div className="glass-card p-4 rounded-2xl flex items-start text-left gap-3 group">
-              <div className="w-10 h-10 rounded-lg bg-[#00BFFF]/10 flex items-center justify-center shrink-0 border border-[#00BFFF]/20 group-hover:bg-[#00BFFF]/20 transition-colors">
-                <Code2 className="w-5 h-5 text-[#00BFFF]" />
+            <div className="flex items-start text-left gap-4 group pt-4 sm:pt-0 sm:px-4 first:pt-0 first:pl-0">
+              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-white/10 transition-colors">
+                <Code2 className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white mb-1">Full Stack Studio</h3>
-                <p className="text-[11px] text-zinc-400 leading-tight">End-to-end custom software & app development.</p>
+                <p className="text-[11px] text-white/70 leading-tight">End-to-end custom software & app development.</p>
               </div>
             </div>
 
             {/* Widget 2 */}
-            <div className="glass-card p-4 rounded-2xl flex items-start text-left gap-3 group">
-              <div className="w-10 h-10 rounded-lg bg-[#7B2FBE]/10 flex items-center justify-center shrink-0 border border-[#7B2FBE]/20 group-hover:bg-[#7B2FBE]/20 transition-colors">
-                <Globe2 className="w-5 h-5 text-[#7B2FBE]" />
+            <div className="flex items-start text-left gap-4 group pt-4 sm:pt-0 sm:px-4">
+              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-white/10 transition-colors">
+                <Globe2 className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white mb-1">Global Reach</h3>
-                <p className="text-[11px] text-zinc-400 leading-tight">Based in Coimbatore, serving clients worldwide.</p>
+                <p className="text-[11px] text-white/70 leading-tight">Based in Coimbatore, serving clients worldwide.</p>
               </div>
             </div>
 
             {/* Widget 3 */}
-            <div className="glass-card p-4 rounded-2xl flex items-start text-left gap-3 group">
-              <div className="w-10 h-10 rounded-lg bg-[#00FF88]/10 flex items-center justify-center shrink-0 border border-[#00FF88]/20 group-hover:bg-[#00FF88]/20 transition-colors">
-                <Sparkles className="w-5 h-5 text-[#00FF88]" />
+            <div className="flex items-start text-left gap-4 group pt-4 sm:pt-0 sm:px-4">
+              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-white/10 transition-colors">
+                <Sparkles className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white mb-1">Custom-Built</h3>
-                <p className="text-[11px] text-zinc-400 leading-tight">No generic templates. 100% tailored solutions.</p>
+                <p className="text-[11px] text-white/70 leading-tight">No generic templates. 100% tailored solutions.</p>
               </div>
             </div>
 
             {/* Widget 4 */}
-            <div className="glass-card p-4 rounded-2xl flex items-start text-left gap-3 group">
-              <div className="w-10 h-10 rounded-lg bg-[#FF2D78]/10 flex items-center justify-center shrink-0 border border-[#FF2D78]/20 group-hover:bg-[#FF2D78]/20 transition-colors">
-                <CheckCircle2 className="w-5 h-5 text-[#FF2D78]" />
+            <div className="flex items-start text-left gap-4 group pt-4 sm:pt-0 sm:px-4">
+              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-white/10 transition-colors">
+                <CheckCircle2 className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white mb-1">Free Demo</h3>
-                <p className="text-[11px] text-zinc-400 leading-tight">Experience your prototype before you pay.</p>
+                <p className="text-[11px] text-white/70 leading-tight">Experience your prototype before you pay.</p>
               </div>
             </div>
           </motion.div>
