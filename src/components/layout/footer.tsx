@@ -54,12 +54,9 @@ export default function Footer() {
                   }}
                 />
               </div>
-              <div>
-                <span className="text-2xl font-bold text-white tracking-tight leading-none block">
-                  {COMPANY.displayName}
-                </span>
-                <span className="text-xs text-zinc-400 tracking-[0.2em] leading-none block uppercase mt-1 font-medium">
-                  Technologies Pvt. Ltd.
+              <div className="flex items-center">
+                <span className="text-sm md:text-base lg:text-xl font-bold text-white tracking-wider leading-none block whitespace-nowrap">
+                  LOGIC INTELLIGENCE TECHNOLOGIES PVT. LTD.
                 </span>
               </div>
             </Link>

@@ -64,20 +64,19 @@ export default function Navbar() {
               >
                 <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </motion.div>
-              <div className="flex flex-col">
+              <div className="flex items-center">
                 <motion.span 
-                  className="text-lg font-bold text-white tracking-tight leading-none flex"
+                  className="text-sm md:text-base lg:text-lg font-bold text-white tracking-wider leading-none whitespace-nowrap"
                   initial="hidden"
                   animate="visible"
-                  variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+                  variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
                 >
-                  {Array.from("Logic Intelligence").map((letter, i) => (
+                  {Array.from("LOGIC INTELLIGENCE TECHNOLOGIES PVT. LTD.").map((letter, i) => (
                     <motion.span key={i} variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
                       {letter === " " ? "\u00A0" : letter}
                     </motion.span>
                   ))}
                 </motion.span>
-                <span className="text-[10px] text-zinc-400 tracking-[0.2em] leading-none block uppercase mt-1">Technologies Pvt. Ltd.</span>
               </div>
             </Link>
 
@@ -116,6 +115,9 @@ export default function Navbar() {
                 </span>
               </div>
               
+              <Link href="/login" className="hidden lg:flex px-6 py-2.5 rounded-full text-sm font-bold text-white border border-white/20 hover:bg-white/10 transition-colors">
+                Client Login
+              </Link>
               <Link href="/contact" className="hidden lg:flex px-6 py-2.5 rounded-full text-sm font-bold text-white neon-btn">
                 Start Project
               </Link>
@@ -139,6 +141,9 @@ export default function Navbar() {
                 <Link href="/about" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">ABOUT</Link>
                 
                 <div className="mt-auto pt-8 flex flex-col space-y-4">
+                  <Link href="/login" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white border border-white/20 hover:bg-white/10 w-full transition-colors">
+                    Client Login
+                  </Link>
                   <Link href="/contact" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white neon-btn w-full">
                     Start Project
                   </Link>
