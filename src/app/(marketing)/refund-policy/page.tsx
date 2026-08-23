@@ -1,13 +1,22 @@
+import { Metadata } from "next";
 import FloatingElements from "@/components/FloatingElements";
-import { companyConfig } from "@/config/company";
+import BackToHome from "@/components/ui/back-to-home";
+import { companyConfig, LEGAL_LAST_UPDATED } from "@/config/company";
+
+export const metadata: Metadata = {
+  title: "Refund & Cancellation Policy | Logic Intelligence Technologies",
+  description:
+    "Understand our milestone-based refund and cancellation policy for custom web development, e-commerce, and software projects.",
+};
 
 export default function RefundPolicyPage() {
   return (
     <main className="min-h-screen bg-[#0A0D1A] text-white pt-24 relative overflow-hidden">
       <div className="absolute top-0 right-1/4 w-[800px] h-[600px] bg-red-500/5 blur-[150px] rounded-full pointer-events-none" />
+      <BackToHome />
       <section className="py-20 px-6 lg:px-8 max-w-4xl mx-auto relative z-10">
         <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">Refund Policy</h1>
-        <p className="text-zinc-400 mb-12">Last updated: August 2026</p>
+        <p className="text-zinc-400 mb-12">Last updated: {LEGAL_LAST_UPDATED}</p>
         
         <div className="prose prose-invert prose-zinc max-w-none prose-headings:text-white prose-a:text-primary hover:prose-a:text-primary/80">
           <p className="text-lg text-zinc-300 leading-relaxed mb-8">

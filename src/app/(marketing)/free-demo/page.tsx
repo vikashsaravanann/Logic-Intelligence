@@ -1,12 +1,14 @@
 "use client";
 import FloatingElements from "@/components/FloatingElements";
+import BackToHome from "@/components/ui/back-to-home";
 import { useState } from "react";
-import { Send, CheckCircle2, MessageSquare, ShieldCheck } from "lucide-react";
+import { Send, CheckCircle2, MessageSquare, ShieldCheck, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function FreeDemoPage() {
   const [sent, setSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: "",
     business: "",
@@ -42,7 +44,8 @@ export default function FreeDemoPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+    setError(null);
+
     try {
       const res = await fetch("/api/free-demo", {
         method: "POST",
@@ -52,14 +55,16 @@ export default function FreeDemoPage() {
           requirements: `Selected Features: ${form.features.join(", ")} | Brand Ready: ${form.brand_ready} | Details: ${form.details}`
         }),
       });
-      
+
       if (res.ok) {
         setSent(true);
       } else {
-        console.error("Submission failed");
+        const data = await res.json().catch(() => ({}));
+        setError(data?.message || "Submission failed. Please try again or reach us on WhatsApp.");
       }
     } catch (err) {
       console.error(err);
+      setError("Something went wrong. Please check your connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -73,6 +78,7 @@ export default function FreeDemoPage() {
 
   return (
     <main className="min-h-screen bg-[#0A0D1A] text-white pt-24">
+      <BackToHome />
       {/* Hero Section */}
       <section className="relative py-20 px-6 lg:px-8 overflow-hidden border-b border-white/5">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
@@ -329,8 +335,18 @@ export default function FreeDemoPage() {
                 </div>
 
                 <div className="mt-12">
+                  {error && (
+                    <div className="mb-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-start gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                      {error}
+                    </div>
+                  )}
                   <button type="submit" disabled={isSubmitting} className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-black bg-white hover:bg-primary transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] disabled:opacity-50 disabled:cursor-not-allowed">
-                    {isSubmitting ? 'Submitting...' : <><Send className="w-5 h-5" /> Request My Free Demo</>}
+                    {isSubmitting ? (
+                      <><span className="w-4 h-4 border-2 border-black/40 border-t-black rounded-full animate-spin" /> Submitting…</>
+                    ) : (
+                      <><Send className="w-5 h-5" /> Request My Free Demo</>
+                    )}
                   </button>
                   <p className="text-center text-xs text-zinc-500 mt-6 flex justify-center items-center gap-1">
                     <ShieldCheck className="w-4 h-4 text-zinc-400" /> Your data is secure and never shared. You can opt out anytime.

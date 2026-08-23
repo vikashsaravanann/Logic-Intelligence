@@ -1,5 +1,5 @@
 "use client";
-import { Mail, Phone, MapPin, MessageCircle, Heart, Send, ExternalLink } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, Heart, Send } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { COMPANY } from "@/config/company";
@@ -16,18 +16,23 @@ const FacebookIcon = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
 );
 
+/**
+ * Social links — each with icon-only display in the footer.
+ * For a dedicated "connect with us" section, use icon + label.
+ * hoverColor: Tailwind arbitrary color class for brand-accurate hover.
+ */
 const socialLinks = [
-  { icon: InstagramIcon, label: "Instagram",      href: COMPANY.instagramUrl,    color: "hover:text-[#e1306c]" },
-  { icon: LinkedinIcon,  label: "LinkedIn",       href: COMPANY.linkedinUrl,     color: "hover:text-[#0077b5]" },
-  { icon: FacebookIcon,  label: "Facebook",       href: COMPANY.facebookUrl,     color: "hover:text-[#1877f2]" },
-  { icon: MessageCircle, label: "WhatsApp Group", href: COMPANY.whatsappGroupUrl, color: "hover:text-[#25d366]" },
-  { icon: Send,      label: "Telegram Bot",   href: COMPANY.telegramBotUrl,  color: "hover:text-[#2aabee]" },
+  { icon: InstagramIcon, label: "Instagram", href: COMPANY.instagramUrl,    hoverColor: "hover:text-[#e1306c] hover:border-[#e1306c]/30 hover:bg-[#e1306c]/10" },
+  { icon: LinkedinIcon,  label: "LinkedIn",  href: COMPANY.linkedinUrl,     hoverColor: "hover:text-[#0a66c2] hover:border-[#0a66c2]/30 hover:bg-[#0a66c2]/10" },
+  { icon: FacebookIcon,  label: "Facebook",  href: COMPANY.facebookUrl,     hoverColor: "hover:text-[#1877f2] hover:border-[#1877f2]/30 hover:bg-[#1877f2]/10" },
+  { icon: MessageCircle, label: "WhatsApp",  href: COMPANY.whatsappGroupUrl, hoverColor: "hover:text-[#25d366] hover:border-[#25d366]/30 hover:bg-[#25d366]/10" },
+  { icon: Send,          label: "Telegram",  href: COMPANY.telegramBotUrl,  hoverColor: "hover:text-[#2aabee] hover:border-[#2aabee]/30 hover:bg-[#2aabee]/10" },
 ];
 
 const legalLinks = [
-  { label: "Terms of Service",        href: "/terms" },
-  { label: "Privacy Policy",          href: "/privacy" },
-  { label: "Refund & Cancellation",   href: "/refund-policy" },
+  { label: "Terms of Service",      href: "/terms" },
+  { label: "Privacy Policy",        href: "/privacy" },
+  { label: "Refund & Cancellation", href: "/refund-policy" },
 ];
 
 export default function Footer() {
@@ -61,7 +66,8 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-sm text-zinc-400 leading-relaxed font-medium max-w-sm">
-              &quot;{COMPANY.tagline}&quot; — Coimbatore&apos;s AI-integrated development studio. Transparent pricing, free demo before payment.
+              &quot;{COMPANY.tagline}&quot; — Coimbatore&apos;s AI-integrated development studio.
+              Transparent pricing, free demo before payment.
             </p>
           </div>
 
@@ -110,18 +116,19 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Social Icons */}
-        <div className="flex items-center justify-center gap-4 mb-6">
-          {socialLinks.map(({ icon: Icon, label, href, color }) => (
+        {/* ── Social Buttons — rectangular with rounded corners ── */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+          {socialLinks.map(({ icon: Icon, label, href, hoverColor }) => (
             <a
               key={label}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={label}
-              className={`w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-zinc-500 transition-all hover:border-white/30 hover:scale-110 ${color}`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 bg-white/[0.03] text-zinc-400 text-xs font-semibold transition-all duration-200 hover:scale-105 ${hoverColor}`}
             >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-4 h-4 shrink-0" />
+              <span>{label}</span>
             </a>
           ))}
         </div>
@@ -132,7 +139,7 @@ export default function Footer() {
             <Link
               key={href}
               href={href}
-              className="px-6 py-2.5 rounded-full text-xs font-semibold text-zinc-300 border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/30 hover:text-white transition-all shadow-sm"
+              className="px-5 py-2 rounded-lg text-xs font-semibold text-zinc-300 border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/30 hover:text-white transition-all shadow-sm"
             >
               {label}
             </Link>
@@ -142,6 +149,9 @@ export default function Footer() {
         <div className="pt-8 border-t border-white/10 flex flex-col items-center justify-center gap-4 text-center">
           <p className="text-xs text-zinc-500 max-w-2xl">
             © {new Date().getFullYear()} {COMPANY.legalName}. All Rights Reserved. | CIN: {COMPANY.cin}
+          </p>
+          <p className="text-xs text-zinc-600 flex items-center gap-1">
+            Built with <Heart className="w-3 h-3 text-red-500 fill-red-500" /> in Coimbatore
           </p>
         </div>
       </div>

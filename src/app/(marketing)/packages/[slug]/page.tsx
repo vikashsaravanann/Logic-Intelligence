@@ -2,6 +2,7 @@ import { packagesData } from "@/data/packagesData";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import FloatingElements from "@/components/FloatingElements";
+import BackToHome from "@/components/ui/back-to-home";
 import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
@@ -28,6 +29,7 @@ export default function PackageDetailPage({ params }: { params: { slug: string }
 
   return (
     <main className="min-h-screen bg-[#0A0F1E] text-white pt-32">
+      <BackToHome />
       <section className="py-20 px-6 lg:px-8 max-w-5xl mx-auto text-center relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-[300px] opacity-[0.1] blur-[100px] bg-gradient-to-r from-primary to-accent pointer-events-none" />
         <h1 className="text-4xl md:text-6xl font-black text-white mb-4 relative z-10">{pkg.title}</h1>

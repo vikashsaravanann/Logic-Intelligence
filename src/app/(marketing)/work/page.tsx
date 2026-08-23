@@ -2,12 +2,20 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import FloatingElements from "@/components/FloatingElements";
+import BackToHome from "@/components/ui/back-to-home";
 import { portfolioProjects } from "@/data/portfolioData";
 
+import { COMPANY } from "@/config/company";
+
 export const metadata: Metadata = {
-  title: "Work",
+  title: "Our Work | Logic Intelligence Technologies",
   description:
     "Selected web apps, e-commerce builds, and custom software projects from Logic Intelligence Technologies — Coimbatore's AI-integrated development studio.",
+  openGraph: {
+    title: "Our Work | Logic Intelligence Technologies",
+    description: "See the kind of projects we build — full-stack apps, stores, and custom software.",
+    images: [{ url: COMPANY.bannerPath, width: 1200, height: 630, alt: "Logic Intelligence Technologies" }],
+  },
 };
 
 function ProjectCardImage({ title, category }: { title: string; category: string }) {
@@ -26,6 +34,7 @@ function ProjectCardImage({ title, category }: { title: string; category: string
 export default function WorkPage() {
   return (
     <main className="min-h-screen bg-[#0A0F1E] text-white pt-32">
+      <BackToHome />
       <section className="py-16 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">

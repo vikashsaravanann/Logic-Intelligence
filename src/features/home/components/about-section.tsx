@@ -87,8 +87,8 @@ export default function AboutSection() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-white font-bold text-lg">Logic Intelligence</h4>
-                  <p className="text-sm text-zinc-400">Pvt. Ltd. Registered in India</p>
+                  <h4 className="text-white font-bold text-lg">Logic Intelligence Technologies</h4>
+                  <p className="text-sm text-zinc-400">AI-Integrated Software Studio · CIN: U72900TZ2026PTC123456</p>
                 </div>
               </div>
             </div>

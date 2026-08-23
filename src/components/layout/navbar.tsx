@@ -138,6 +138,7 @@ export default function Navbar() {
               <div className="flex flex-col px-6 py-24 space-y-6">
                 <Link href="/" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">HOME</Link>
                 <Link href="/#services" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">SERVICES</Link>
+                <Link href="/work" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">WORK</Link>
                 <Link href="/packages" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">PACKAGES</Link>
                 <Link href="/about" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">ABOUT</Link>
                 <Link href="/checklist" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">CHECKLIST</Link>
