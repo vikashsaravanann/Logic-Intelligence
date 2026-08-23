@@ -1,5 +1,6 @@
 "use client";
 import FloatingElements from "@/components/FloatingElements";
+import BackToHome from "@/components/ui/back-to-home";
 import { useState } from "react";
 import { Send, CheckCircle2, MessageSquare, Download } from "lucide-react";
 import { motion } from "framer-motion";
@@ -110,6 +111,7 @@ export default function ChecklistPage() {
 
   return (
     <main className="min-h-screen bg-[#0A0D1A] text-white pt-24">
+      <BackToHome />
       {/* Hero Section */}
       <section className="relative py-20 px-6 lg:px-8 overflow-hidden border-b border-white/5">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
