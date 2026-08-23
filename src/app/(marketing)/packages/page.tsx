@@ -1,8 +1,8 @@
 "use client";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 import FloatingElements from "@/components/FloatingElements";
-import PackagesSection from "@/components/PackagesSection";
+import PackagesSection from "@/features/home/components/packages-section";
 
 export default function PackagesPage() {
   return (

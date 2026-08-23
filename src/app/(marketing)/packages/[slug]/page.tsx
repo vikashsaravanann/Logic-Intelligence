@@ -1,8 +1,8 @@
 import { packagesData } from "@/data/packagesData";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 import FloatingElements from "@/components/FloatingElements";
 import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";

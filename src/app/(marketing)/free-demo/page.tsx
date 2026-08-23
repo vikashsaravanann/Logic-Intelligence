@@ -1,6 +1,6 @@
 "use client";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 import FloatingElements from "@/components/FloatingElements";
 import { useState } from "react";
 import { Send, CheckCircle2, MessageSquare, Clock, Zap, ShieldCheck, ChevronDown } from "lucide-react";
