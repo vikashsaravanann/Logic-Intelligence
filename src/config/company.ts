@@ -12,9 +12,9 @@ export const COMPANY = {
   linkedinUrl: 'https://www.linkedin.com/company/logic-intelligence-technologies/',
   facebookUrl: 'https://www.facebook.com/share/166anMT53Cj/?mibextid=wwXIfr',
   websiteUrl: 'https://logicintelligence.in',
-  logoIconPath: '/assets/logo-icon.png',
-  logoFullPath: '/assets/logo-full.png',
-  bannerPath: '/assets/banner.png',
+  logoIconPath: '/logo.jpg',
+  logoFullPath: '/logo.jpg',
+  bannerPath: '/banner.jpg',
 } as const;
 
 export const LEGAL_LAST_UPDATED = 'August 23, 2026';
