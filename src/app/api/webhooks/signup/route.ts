@@ -55,7 +55,7 @@ export async function POST(req: Request) {
     // 3. Idempotency Check: Did we already send the welcome email?
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
-      .select("welcome_email_sent_at")
+      .select("welcome_email_sent")
       .eq("id", userId)
       .single();
 
@@ -64,8 +64,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Database error" }, { status: 500 });
     }
 
-    if (profile?.welcome_email_sent_at) {
-      console.log(`Welcome email already sent to ${userEmail} at ${profile.welcome_email_sent_at}`);
+    if (profile?.welcome_email_sent) {
+      console.log(`Welcome email already sent to ${userEmail}`);
       return NextResponse.json({ message: "Already sent" });
     }
 
@@ -83,11 +83,11 @@ export async function POST(req: Request) {
     // 5. Update Profile to mark welcome email as sent
     const { error: updateError } = await supabase
       .from("profiles")
-      .update({ welcome_email_sent_at: new Date().toISOString() })
+      .update({ welcome_email_sent: true })
       .eq("id", userId);
 
     if (updateError) {
-      console.error("Failed to update welcome_email_sent_at:", updateError);
+      console.error("Failed to update welcome_email_sent:", updateError);
       // We don't fail the request here since the email was already sent
     }
 
