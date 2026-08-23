@@ -4,7 +4,7 @@ import BackToHome from "@/components/ui/back-to-home";
 import { companyConfig, LEGAL_LAST_UPDATED } from "@/config/company";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Logic Intelligence Technologies",
+  title: "Terms of Service",
   description:
     "The terms and conditions governing use of Logic Intelligence Technologies' website and services. Please read carefully before engaging our services.",
 };

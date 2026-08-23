@@ -31,13 +31,19 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/30 bg-white/5 backdrop-blur-md mb-8"
+            className="flex flex-col items-center gap-4 mb-8"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-            </span>
-            <span className="text-[11px] font-semibold tracking-widest uppercase text-white">Logic Intelligence Technologies</span>
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-primary/30 shadow-[0_0_30px_rgba(0,191,255,0.3)] bg-black animate-neon-pulse">
+              <img src={COMPANY.logoIconPath} alt="Company Logo" className="w-full h-full object-cover" />
+            </div>
+            
+            <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/30 bg-white/5 backdrop-blur-md">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+              </span>
+              <span className="text-[11px] font-semibold tracking-widest uppercase text-white">{COMPANY.legalName}</span>
+            </div>
           </motion.div>
           
           <motion.h1 

@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { COMPANY } from "@/config/company";
 
 export default function AboutSection() {
   const capabilities = [
@@ -28,16 +29,15 @@ export default function AboutSection() {
             <div>
               <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">About Us</span>
               <h2 className="text-3xl md:text-5xl font-black text-white leading-tight">
-                Built in Coimbatore, <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">ready for your business.</span>
+                Our Story
               </h2>
             </div>
             
             <p className="text-zinc-400 text-lg leading-relaxed">
-              Logic Intelligence Technologies is a registered Pvt. Ltd. studio in Coimbatore, founded to give local businesses access to modern web development and AI integration — without agency fluff or hidden costs.
+              Logic Intelligence Technologies is a registered software studio in Coimbatore. We were founded to give local businesses access to modern web development and true AI integration — without the fluff, template recycling, or opaque pricing common in the industry.
             </p>
             <p className="text-zinc-400 text-lg leading-relaxed">
-              We work directly with you from discovery to launch: clear scope, milestone-based delivery, and a free demo so you see the direction before committing. Whether you need a storefront, a booking system, or custom software, we build it to fit how you actually operate.
+              Our process is straightforward: transparent costs, a clear technical roadmap, and a free demo before you commit. We build everything from e-commerce platforms to custom enterprise tools, entirely in-house. <Link href="/work" className="text-primary hover:underline font-medium">See our recent work here.</Link>
             </p>
 
             <div className="pt-4 border-t border-white/10">
@@ -81,10 +81,8 @@ export default function AboutSection() {
             
             <div className="absolute bottom-8 left-8 right-8 p-6 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-primary to-accent p-[2px]">
-                  <div className="w-full h-full bg-black rounded-full flex items-center justify-center">
-                    <span className="font-black text-transparent bg-clip-text bg-gradient-to-tr from-primary to-accent text-sm">LIT</span>
-                  </div>
+                <div className="w-12 h-12 rounded-full overflow-hidden bg-black p-[2px] border border-primary/30 shadow-[0_0_15px_rgba(0,191,255,0.2)]">
+                  <img src={COMPANY.logoIconPath} alt="Company Logo" className="w-full h-full object-cover rounded-full" />
                 </div>
                 <div>
                   <h4 className="text-white font-bold text-lg">Logic Intelligence Technologies</h4>

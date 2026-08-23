@@ -16,6 +16,10 @@ const FacebookIcon = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
 );
 
+const WhatsappIcon = ({ className }: { className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+);
+
 /**
  * Social links — each with icon-only display in the footer.
  * For a dedicated "connect with us" section, use icon + label.
@@ -25,7 +29,7 @@ const socialLinks = [
   { icon: InstagramIcon, label: "Instagram", href: COMPANY.instagramUrl,    hoverColor: "hover:text-[#e1306c] hover:border-[#e1306c]/30 hover:bg-[#e1306c]/10" },
   { icon: LinkedinIcon,  label: "LinkedIn",  href: COMPANY.linkedinUrl,     hoverColor: "hover:text-[#0a66c2] hover:border-[#0a66c2]/30 hover:bg-[#0a66c2]/10" },
   { icon: FacebookIcon,  label: "Facebook",  href: COMPANY.facebookUrl,     hoverColor: "hover:text-[#1877f2] hover:border-[#1877f2]/30 hover:bg-[#1877f2]/10" },
-  { icon: MessageCircle, label: "WhatsApp",  href: COMPANY.whatsappGroupUrl, hoverColor: "hover:text-[#25d366] hover:border-[#25d366]/30 hover:bg-[#25d366]/10" },
+  { icon: WhatsappIcon, label: "WhatsApp",  href: COMPANY.whatsappGroupUrl, hoverColor: "hover:text-[#25d366] hover:border-[#25d366]/30 hover:bg-[#25d366]/10" },
   { icon: Send,          label: "Telegram",  href: COMPANY.telegramBotUrl,  hoverColor: "hover:text-[#2aabee] hover:border-[#2aabee]/30 hover:bg-[#2aabee]/10" },
 ];
 
@@ -110,7 +114,7 @@ export default function Footer() {
                 aria-label="Chat with us on WhatsApp"
                 className="flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-bold text-white bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:scale-105 transition-transform shadow-[0_0_15px_rgba(37,211,102,0.3)]"
               >
-                <MessageCircle className="w-5 h-5" /> WhatsApp Us
+                <WhatsappIcon className="w-5 h-5" /> WhatsApp Us
               </a>
             </div>
           </div>

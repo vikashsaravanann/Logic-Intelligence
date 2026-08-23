@@ -4,7 +4,7 @@ import BackToHome from "@/components/ui/back-to-home";
 import { companyConfig, LEGAL_LAST_UPDATED } from "@/config/company";
 
 export const metadata: Metadata = {
-  title: "Refund & Cancellation Policy | Logic Intelligence Technologies",
+  title: "Refund & Cancellation Policy",
   description:
     "Understand our milestone-based refund and cancellation policy for custom web development, e-commerce, and software projects.",
 };

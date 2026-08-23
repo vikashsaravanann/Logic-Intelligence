@@ -127,7 +127,7 @@ export default function LoginPage() {
                   />
                 </div>
               </Link>
-              <h1 className="text-2xl font-black text-white tracking-tight">Client Portal</h1>
+              <h1 className="text-2xl font-black text-white tracking-tight">Login</h1>
               <p className="text-zinc-400 text-sm mt-1 text-center">
                 {COMPANY.displayName} — Sign in to manage your project
               </p>

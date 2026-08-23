@@ -5,11 +5,11 @@ import { COMPANY } from "@/config/company";
 import { CheckCircle2, ExternalLink, Mail, Phone } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: `About Us | Logic Intelligence Technologies`,
+  title: `About Us`,
   description:
     "Learn about Logic Intelligence Technologies — a Coimbatore-based web and AI development studio founded by an AI & Data Science specialist. Transparent pricing, free demo before payment.",
   openGraph: {
-    title: "About Us | Logic Intelligence Technologies",
+    title: "About Us",
     description:
       "Coimbatore-based AI-integrated development studio. Custom websites, e-commerce, and software with transparent pricing.",
     images: [{ url: COMPANY.bannerPath, width: 1200, height: 630, alt: "Logic Intelligence Technologies" }],

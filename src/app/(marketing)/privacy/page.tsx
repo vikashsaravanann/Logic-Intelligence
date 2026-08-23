@@ -5,7 +5,7 @@ import { companyConfig } from "@/config/company";
 import { LEGAL_LAST_UPDATED } from "@/config/company";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Logic Intelligence Technologies",
+  title: "Privacy Policy",
   description:
     "How Logic Intelligence Technologies collects, uses, and protects your personal information. Read our full privacy policy.",
 };

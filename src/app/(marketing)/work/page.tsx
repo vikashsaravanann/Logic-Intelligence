@@ -8,11 +8,11 @@ import { portfolioProjects } from "@/data/portfolioData";
 import { COMPANY } from "@/config/company";
 
 export const metadata: Metadata = {
-  title: "Our Work | Logic Intelligence Technologies",
+  title: "Our Work",
   description:
     "Selected web apps, e-commerce builds, and custom software projects from Logic Intelligence Technologies — Coimbatore's AI-integrated development studio.",
   openGraph: {
-    title: "Our Work | Logic Intelligence Technologies",
+    title: "Our Work",
     description: "See the kind of projects we build — full-stack apps, stores, and custom software.",
     images: [{ url: COMPANY.bannerPath, width: 1200, height: 630, alt: "Logic Intelligence Technologies" }],
   },

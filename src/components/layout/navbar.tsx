@@ -65,27 +65,15 @@ export default function Navbar() {
               >
                 <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </motion.div>
-              <div className="hidden xl:flex items-center">
-                <motion.span 
-                  className="text-sm md:text-base lg:text-lg font-bold text-white tracking-wider leading-none whitespace-nowrap"
-                  initial="hidden"
-                  animate="visible"
-                  variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
-                >
-                  {Array.from("LOGIC INTELLIGENCE TECHNOLOGIES").map((letter, i) => (
-                    <motion.span key={i} variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
-                      {letter === " " ? "\u00A0" : letter}
-                    </motion.span>
-                  ))}
-                </motion.span>
+              <div className="flex items-center">
+                <span className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-white tracking-wider leading-none">
+                  {COMPANY.displayName.toUpperCase()}
+                </span>
               </div>
-              <span className="xl:hidden text-sm font-bold text-white tracking-wider leading-none">
-                LOGIC INTELLIGENCE
-              </span>
             </Link>
 
             {/* Desktop Links */}
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden xl:flex items-center gap-4">
               <NavLink href="/">HOME</NavLink>
               <NavLink href="/#services">SERVICES</NavLink>
               <NavLink href="/work">WORK</NavLink>
@@ -116,10 +104,10 @@ export default function Navbar() {
             {/* CTA & Mobile Toggle */}
             <div className="flex items-center gap-4">
               
-              <Link href="/login" className="hidden lg:flex px-6 py-2.5 rounded-full text-sm font-bold text-white border border-white/20 hover:bg-white/10 transition-colors">
-                Client Login
+              <Link href="/login" className="hidden lg:flex px-4 py-2 rounded-full text-xs font-bold text-white border border-white/20 hover:bg-white/10 transition-colors whitespace-nowrap">
+                Login
               </Link>
-              <Link href="/contact" className="hidden lg:flex px-6 py-2.5 rounded-full text-sm font-bold text-white neon-btn">
+              <Link href="/contact" className="hidden lg:flex px-4 py-2 rounded-full text-xs font-bold text-white neon-btn whitespace-nowrap">
                 Start Project
               </Link>
               
@@ -145,7 +133,7 @@ export default function Navbar() {
                 
                 <div className="mt-auto pt-8 flex flex-col space-y-4">
                   <Link href="/login" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white border border-white/20 hover:bg-white/10 w-full transition-colors">
-                    Client Login
+                    Login
                   </Link>
                   <Link href="/contact" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white neon-btn w-full">
                     Start Project
