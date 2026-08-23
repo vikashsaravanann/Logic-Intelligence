@@ -1,6 +1,4 @@
 "use client";
-import Navbar from "@/components/layout/navbar";
-import Footer from "@/components/layout/footer";
 import FloatingElements from "@/components/FloatingElements";
 import { useState } from "react";
 import { Send, CheckCircle2, ArrowRight, ArrowLeft } from "lucide-react";
@@ -45,8 +43,6 @@ export default function ContactPage() {
 
   return (
     <main className="min-h-screen bg-[#0A0F1E] text-white pt-24">
-      <Navbar />
-      
       <section className="relative py-20 px-6 lg:px-8 overflow-hidden min-h-[80vh] flex flex-col justify-center">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[150px] rounded-full pointer-events-none" />
         
@@ -198,7 +194,6 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <Footer />
       <FloatingElements />
     </main>
   );

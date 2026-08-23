@@ -10,16 +10,17 @@ import PackagesSection from '@/features/home/components/packages-section';
 import TrustBadgesSection from '@/features/home/components/trust-badges-section';
 import ConnectSection from '@/features/home/components/connect-section';
 import InstagramFeedSection from '@/features/home/components/instagram-feed-section';
+import TestimonialsSection from '@/features/home/components/testimonials-section';
 import FreeDemoCTA from '@/features/leads/components/free-demo-cta';
 import { COMPANY } from '@/config/company';
 
 export const metadata: Metadata = {
-  title: 'Logic Intelligence Technologies | Premium Web & Software Development',
+  title: 'Home',
   description:
-    'Coimbatore-based full-stack development studio. Custom web apps, mobile apps, and enterprise software for businesses worldwide. Free demo available.',
+    'Coimbatore-based web & AI development studio. Custom websites, e-commerce, and software with transparent pricing and a free demo before payment.',
   openGraph: {
-    title: `${COMPANY.legalName} — Where Logic Meets Innovation`,
-    description: 'We Build What Others Imagine. Based in Coimbatore, India.',
+    title: `${COMPANY.legalName} — ${COMPANY.tagline}`,
+    description: 'AI-integrated development for Coimbatore businesses. Free demo before payment.',
     images: [{ url: COMPANY.bannerPath, width: 1200, height: 630, alt: 'Logic Intelligence Technologies' }],
   },
 };
@@ -32,6 +33,7 @@ export default function HomePage() {
       <ServicesSection />
       <WhyUsSection />
       <HowItWorksSection />
+      <TestimonialsSection />
       <AboutSection />
       <TechStackMarqueeSection />
       <PackagesSection />

@@ -1,6 +1,7 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Code2, Globe2, Sparkles, Phone, ChevronDown, CheckCircle2 } from "lucide-react";
+import { COMPANY } from "@/config/company";
 
 export default function HeroSection() {
   const { scrollY } = useScroll();
@@ -45,8 +46,8 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
             className="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6"
           >
-            Where Logic Meets <br className="hidden sm:block"/>
-            <span className="inline-block text-white pb-2">Innovation</span>
+            {COMPANY.tagline.split(" ").slice(0, 3).join(" ")} <br className="hidden sm:block"/>
+            <span className="inline-block text-white pb-2">{COMPANY.tagline.split(" ").slice(3).join(" ")}</span>
           </motion.h1>
 
           <motion.h2
@@ -55,7 +56,7 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="text-xl md:text-3xl font-bold text-white mb-6"
           >
-            We Build What Others Imagine.
+            Web &amp; AI development for Coimbatore businesses.
           </motion.h2>
 
           <motion.p 
@@ -64,9 +65,8 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             className="text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed mb-10"
           >
-            A premium full-stack development studio delivering world-class web applications, 
-            mobile apps, and custom software for any business. From e-commerce to hospitality 
-            and SaaS, we engineer digital solutions that scale, secure, and succeed.
+            Founded by an AI &amp; Data Science specialist, we build custom websites, e-commerce
+            stores, and software with transparent pricing — and a free demo before you pay anything.
           </motion.p>
 
           <motion.div 
@@ -78,7 +78,7 @@ export default function HeroSection() {
             <a href="#services" className="bg-white text-black px-8 py-3.5 rounded-xl text-sm font-bold w-full sm:w-auto text-center flex items-center justify-center gap-2 group hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.2)]">
               View Our Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
-            <a href="https://wa.me/919342877474" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-sm font-bold text-white border border-white/20 bg-transparent hover:bg-white/5 transition-all w-full sm:w-auto group">
+            <a href={`https://wa.me/${COMPANY.whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-sm font-bold text-white border border-white/20 bg-transparent hover:bg-white/5 transition-all w-full sm:w-auto group">
               <Phone className="w-4 h-4 text-white transition-colors" /> WhatsApp Us Now
             </a>
           </motion.div>
@@ -107,8 +107,8 @@ export default function HeroSection() {
                 <Globe2 className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white mb-1">Global Reach</h3>
-                <p className="text-[11px] text-white/70 leading-tight">Based in Coimbatore, serving clients worldwide.</p>
+                <h3 className="text-sm font-bold text-white mb-1">Coimbatore-Based</h3>
+                <p className="text-[11px] text-white/70 leading-tight">Local team, clear communication, on-site when needed.</p>
               </div>
             </div>
 

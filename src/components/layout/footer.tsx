@@ -56,12 +56,12 @@ export default function Footer() {
               </div>
               <div className="flex items-center">
                 <span className="text-sm md:text-base lg:text-xl font-bold text-white tracking-wider leading-none block whitespace-nowrap">
-                  LOGIC INTELLIGENCE TECHNOLOGIES PVT. LTD.
+                  LOGIC INTELLIGENCE TECHNOLOGIES
                 </span>
               </div>
             </Link>
-            <p className="text-sm text-zinc-400 leading-relaxed font-medium">
-              &quot;Where Logic Meets Innovation — We Build What Others Imagine&quot;
+            <p className="text-sm text-zinc-400 leading-relaxed font-medium max-w-sm">
+              &quot;{COMPANY.tagline}&quot; — Coimbatore&apos;s AI-integrated development studio. Transparent pricing, free demo before payment.
             </p>
           </div>
 
@@ -127,12 +127,12 @@ export default function Footer() {
         </div>
 
         {/* Legal Links */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-6">
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-10">
           {legalLinks.map(({ label, href }) => (
             <Link
               key={href}
               href={href}
-              className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+              className="px-6 py-2.5 rounded-full text-xs font-semibold text-zinc-300 border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/30 hover:text-white transition-all shadow-sm"
             >
               {label}
             </Link>
@@ -143,39 +143,6 @@ export default function Footer() {
           <p className="text-xs text-zinc-500 max-w-2xl">
             © {new Date().getFullYear()} {COMPANY.legalName}. All Rights Reserved. | CIN: {COMPANY.cin}
           </p>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
-            }}
-            className="text-xs font-medium text-zinc-400 flex items-center gap-1"
-          >
-            {"Made with ".split("").map((char, i) => (
-              <motion.span
-                key={i}
-                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-              >
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-            >
-              <Heart className="w-3 h-3 text-red-500 fill-red-500 inline mx-1" />
-            </motion.div>
-            {" in Coimbatore, India".split("").map((char, i) => (
-              <motion.span
-                key={i}
-                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-              >
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
-          </motion.div>
         </div>
       </div>
     </footer>

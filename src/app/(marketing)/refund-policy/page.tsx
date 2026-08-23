@@ -1,5 +1,3 @@
-import Navbar from "@/components/layout/navbar";
-import Footer from "@/components/layout/footer";
 import FloatingElements from "@/components/FloatingElements";
 import { companyConfig } from "@/config/company";
 
@@ -7,7 +5,6 @@ export default function RefundPolicyPage() {
   return (
     <main className="min-h-screen bg-[#0A0D1A] text-white pt-24 relative overflow-hidden">
       <div className="absolute top-0 right-1/4 w-[800px] h-[600px] bg-red-500/5 blur-[150px] rounded-full pointer-events-none" />
-      <Navbar />
       <section className="py-20 px-6 lg:px-8 max-w-4xl mx-auto relative z-10">
         <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">Refund Policy</h1>
         <p className="text-zinc-400 mb-12">Last updated: August 2026</p>
@@ -72,7 +69,6 @@ export default function RefundPolicyPage() {
           </div>
         </div>
       </section>
-      <Footer />
       <FloatingElements />
     </main>
   );

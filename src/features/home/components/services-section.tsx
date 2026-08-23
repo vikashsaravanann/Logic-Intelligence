@@ -1,13 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
-import { Monitor, Code, Smartphone, ArrowRight, Hotel, Plane, ShoppingCart, Gamepad2, Search, Palette, CloudUpload } from "lucide-react";
+import { Monitor, Code, ArrowRight, ShoppingCart, Brain } from "lucide-react";
 import Link from "next/link";
 
 export default function ServicesSection() {
   const services = [
     {
       title: "Full Stack Web Development",
-      description: "Robust, scalable, and custom-coded web applications built from scratch to meet your exact business requirements.",
+      description: "Custom websites and web apps built from scratch — scoped to your business, not a template.",
       icon: Monitor,
       features: ["Custom front-end design", "Back-end & database setup", "API integrations", "Deployment & hosting setup", "Post-launch support"],
       link: "/contact?service=full-stack",
@@ -18,7 +18,7 @@ export default function ServicesSection() {
     },
     {
       title: "E-Commerce Websites",
-      description: "High-conversion online stores with secure checkout, inventory management, and seamless user shopping experiences.",
+      description: "Online stores with secure checkout, inventory tools, and admin dashboards you can actually use.",
       icon: ShoppingCart,
       features: ["Custom storefront design", "Secure payment gateways", "Inventory management system", "Admin dashboard", "Mobile shopping optimized"],
       link: "/contact?service=ecommerce",
@@ -29,7 +29,7 @@ export default function ServicesSection() {
     },
     {
       title: "Custom Software Development",
-      description: "Tailored backend systems, CRMs, and business automations designed to solve your unique operational challenges.",
+      description: "CRMs, booking systems, and internal tools designed around how your team already works.",
       icon: Code,
       features: ["Requirement analysis", "Custom CRM / ERP builds", "Workflow automation", "Secure data architecture", "Ongoing maintenance"],
       link: "/contact?service=software",
@@ -37,6 +37,17 @@ export default function ServicesSection() {
       borderHover: "group-hover:border-emerald-500/50",
       shadowHover: "group-hover:shadow-[0_0_40px_rgba(16,185,129,0.3)]",
       iconColor: "text-emerald-400"
+    },
+    {
+      title: "AI-Powered Solutions",
+      description: "Practical AI features — chatbots, dashboards, and automations — integrated into your existing product or workflow.",
+      icon: Brain,
+      features: ["AI chatbot integration", "Data dashboards & analytics", "ML-powered features", "Automation workflows", "API integration with AI models"],
+      link: "/contact?service=ai-solutions",
+      accent: "from-amber-500/20 to-orange-500/20",
+      borderHover: "group-hover:border-amber-500/50",
+      shadowHover: "group-hover:shadow-[0_0_40px_rgba(245,158,11,0.3)]",
+      iconColor: "text-amber-400"
     }
   ];
 
@@ -66,7 +77,7 @@ export default function ServicesSection() {
             className="text-4xl md:text-5xl font-black text-white tracking-tight mb-6"
           >
             Comprehensive Digital <br />
-            <span className="text-white opacity-90 font-light">Solutions & Services</span>
+            <span className="text-white opacity-90 font-light">Solutions for Real Businesses</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -75,11 +86,11 @@ export default function ServicesSection() {
             transition={{ delay: 0.2 }}
             className="text-zinc-400 max-w-2xl mx-auto text-lg leading-relaxed"
           >
-            From custom software architecture to high-converting eCommerce platforms, we provide end-to-end technology solutions tailored for your enterprise.
+            From storefronts and booking systems to AI chatbots and custom software — pick a service or tell us what you need on a free demo call.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {services.map((service, index) => (
             <motion.div
               key={service.title}

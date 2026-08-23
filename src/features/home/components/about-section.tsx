@@ -28,16 +28,16 @@ export default function AboutSection() {
             <div>
               <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">About Us</span>
               <h2 className="text-3xl md:text-5xl font-black text-white leading-tight">
-                Where Logic Meets <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Innovation.</span>
+                Built in Coimbatore, <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">ready for your business.</span>
               </h2>
             </div>
             
             <p className="text-zinc-400 text-lg leading-relaxed">
-              Logic Intelligence Technologies is a specialized digital engineering firm based in Coimbatore, India. We partner with forward-thinking businesses to design, build, and deploy high-performance software solutions and enterprise-grade websites.
+              Logic Intelligence Technologies is a registered Pvt. Ltd. studio in Coimbatore, founded to give local businesses access to modern web development and AI integration — without agency fluff or hidden costs.
             </p>
             <p className="text-zinc-400 text-lg leading-relaxed">
-              Our methodology strips away the jargon and focuses purely on capability, clean architecture, and delivering tangible business outcomes. Whether you're launching a disruptive startup or scaling an established enterprise, we build the digital infrastructure that empowers your growth.
+              We work directly with you from discovery to launch: clear scope, milestone-based delivery, and a free demo so you see the direction before committing. Whether you need a storefront, a booking system, or custom software, we build it to fit how you actually operate.
             </p>
 
             <div className="pt-4 border-t border-white/10">

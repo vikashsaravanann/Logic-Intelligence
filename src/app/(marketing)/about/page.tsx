@@ -1,5 +1,3 @@
-import Navbar from "@/components/layout/navbar";
-import Footer from "@/components/layout/footer";
 import FloatingElements from "@/components/FloatingElements";
 import { Metadata } from "next";
 
@@ -11,8 +9,6 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[#0A0F1E] text-white pt-32">
-      <Navbar />
-      
       <section className="py-20 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-black text-white mb-6">About Logic Intelligence Technologies Pvt. Ltd.</h1>
@@ -93,7 +89,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <Footer />
       <FloatingElements />
     </main>
   );

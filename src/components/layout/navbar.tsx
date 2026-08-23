@@ -4,6 +4,7 @@ import { Menu, X, ChevronDown, Monitor, LayoutTemplate, Palette, CloudUpload, Co
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { COMPANY } from "@/config/company";
 
 const NavLink = ({ href, children, onHover }: { href: string; children: React.ReactNode; onHover?: () => void }) => {
   const pathname = usePathname();
@@ -64,26 +65,30 @@ export default function Navbar() {
               >
                 <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </motion.div>
-              <div className="flex items-center">
+              <div className="hidden xl:flex items-center">
                 <motion.span 
                   className="text-sm md:text-base lg:text-lg font-bold text-white tracking-wider leading-none whitespace-nowrap"
                   initial="hidden"
                   animate="visible"
                   variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
                 >
-                  {Array.from("LOGIC INTELLIGENCE TECHNOLOGIES PVT. LTD.").map((letter, i) => (
+                  {Array.from("LOGIC INTELLIGENCE TECHNOLOGIES").map((letter, i) => (
                     <motion.span key={i} variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
                       {letter === " " ? "\u00A0" : letter}
                     </motion.span>
                   ))}
                 </motion.span>
               </div>
+              <span className="xl:hidden text-sm font-bold text-white tracking-wider leading-none">
+                LOGIC INTELLIGENCE
+              </span>
             </Link>
 
             {/* Desktop Links */}
             <div className="hidden lg:flex items-center gap-8">
               <NavLink href="/">HOME</NavLink>
               <NavLink href="/#services">SERVICES</NavLink>
+              <NavLink href="/work">WORK</NavLink>
               
               {/* Packages Dropdown */}
               <div className="relative group" onMouseEnter={() => handleMouseEnter('packages')} onMouseLeave={handleMouseLeave}>
@@ -105,15 +110,11 @@ export default function Navbar() {
               </div>
 
               <NavLink href="/about">ABOUT</NavLink>
+              <NavLink href="/checklist">CHECKLIST</NavLink>
             </div>
 
             {/* CTA & Mobile Toggle */}
             <div className="flex items-center gap-4">
-              <div className="hidden xl:flex items-center gap-3">
-                <span className="text-[10px] font-bold gradient-text-anim bg-white/5 px-3 py-1.5 rounded-full border border-primary/30 flex items-center gap-2 tracking-widest">
-                  🇮🇳 PVT. LTD.
-                </span>
-              </div>
               
               <Link href="/login" className="hidden lg:flex px-6 py-2.5 rounded-full text-sm font-bold text-white border border-white/20 hover:bg-white/10 transition-colors">
                 Client Login
@@ -139,6 +140,7 @@ export default function Navbar() {
                 <Link href="/#services" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">SERVICES</Link>
                 <Link href="/packages" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">PACKAGES</Link>
                 <Link href="/about" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">ABOUT</Link>
+                <Link href="/checklist" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">CHECKLIST</Link>
                 
                 <div className="mt-auto pt-8 flex flex-col space-y-4">
                   <Link href="/login" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white border border-white/20 hover:bg-white/10 w-full transition-colors">

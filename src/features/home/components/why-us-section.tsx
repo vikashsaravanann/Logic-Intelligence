@@ -51,13 +51,13 @@ export default function WhyUsSection() {
             <div>
               <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">Digital Infrastructure</span>
               <h2 className="text-3xl md:text-5xl font-black text-white leading-tight">
-                We Build What <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Others Imagine.</span>
+                Why businesses <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">choose us.</span>
               </h2>
             </div>
             
             <p className="text-zinc-400 text-lg leading-relaxed">
-              We don't just build websites; we engineer robust digital platforms. Our focus is on clean code, scalable architecture, and delivering high-performance solutions that serve as a strong foundation for your business operations.
+              You get a direct line to the founder — an AI &amp; Data Science student who writes code, not sales decks. Every project starts with understanding your workflow, then building something that works on day one and stays maintainable long after launch.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-6 pt-4">
