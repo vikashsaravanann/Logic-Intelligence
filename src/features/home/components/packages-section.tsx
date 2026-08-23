@@ -65,7 +65,7 @@ export default function PackagesSection() {
         <div className="mt-16 text-center max-w-2xl mx-auto p-6 rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-md">
           <p className="text-zinc-300 font-medium">
             <span className="text-xl mr-2">💡</span>
-            Not sure which package fits you? <a href="https://wa.me/918072120016" className="text-primary font-bold hover:underline" target="_blank" rel="noopener noreferrer">WhatsApp us</a> and we'll recommend the right one for your business — for free.
+            Not sure which package fits you? <a href="https://wa.me/919342877474" className="text-primary font-bold hover:underline" target="_blank" rel="noopener noreferrer">WhatsApp us</a> and we'll recommend the right one for your business — for free.
           </p>
         </div>
       </div>

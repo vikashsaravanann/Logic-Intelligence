@@ -36,7 +36,7 @@ export default function ContactPage() {
     const body = encodeURIComponent(
       `Business: ${form.businessName}\nIndustry: ${form.industry}\nExisting URL: ${form.existingUrl}\n\nService: ${form.serviceType}\nFeatures: ${form.keyFeatures}\nDesign Refs: ${form.designRefs}\nContent Ready: ${form.contentReady}\n\nBudget: ${form.budget}\nTimeline: ${form.timeline}\nContact Method: ${form.preferredContact}\nEmail: ${form.email}\nPhone: ${form.phone}\nNotes: ${form.notes}`
     );
-    window.open(`mailto:startupwithvikashsaravanan@gmail.com?subject=${subject}&body=${body}`, "_blank");
+    window.open(`mailto:logicwithvikash@gmail.com?subject=${subject}&body=${body}`, "_blank");
     setSent(true);
   };
 

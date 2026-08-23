@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
-
-// Initialize Resend with a fallback to prevent build errors if env var is missing
-const resend = new Resend(process.env.RESEND_API_KEY || "fallback_key");
+import { sendEmail } from "@/lib/email/send-email";
+import NewLeadNotificationEmail from "../../../../emails/new-lead-notification-email";
+import LeadConfirmationEmail from "../../../../emails/lead-confirmation-email";
+import * as React from "react";
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
@@ -16,54 +16,42 @@ export async function POST(req: Request) {
     const { fullName, email, phone, companyName, projectType, budgetRange, timeline, description } = body;
 
     // Optional: Save lead to Supabase (Uncomment when credentials are set)
-    /*
     const { error: dbError } = await supabase
-      .from("leads")
+      .from("contact_leads")
       .insert([
         { 
-          full_name: fullName, 
+          name: fullName, 
           email, 
-          phone, 
-          company_name: companyName, 
-          project_type: projectType,
-          budget_range: budgetRange,
-          timeline,
-          description,
-          status: 'New'
+          company: companyName,
+          message: description
         }
       ]);
     
     if (dbError) {
       console.error("Supabase Error:", dbError);
     }
-    */
 
-    // Send email notification via Resend
-    // Note: We'll skip actual sending if the API key is a placeholder
-    if (process.env.RESEND_API_KEY) {
-      await resend.emails.send({
-        from: "Logic Intelligence Technologies <onboarding@resend.dev>",
-        to: ["hello@logicintel.com"], // Replace with actual agency owner email
-        subject: `New Lead: ${projectType} from ${fullName}`,
-        text: `
-          New Lead Received:
-          
-          Name: ${fullName}
-          Email: ${email}
-          Phone: ${phone || 'N/A'}
-          Company: ${companyName || 'N/A'}
-          
-          Project Type: ${projectType}
-          Budget Range: ${budgetRange}
-          Timeline: ${timeline}
-          
-          Description:
-          ${description}
-        `,
-      });
-    } else {
-      console.log("Mock submission successful. Provide RESEND_API_KEY to enable real emails.");
-    }
+    // 1. Send internal notification
+    await sendEmail({
+      to: process.env.LEAD_NOTIFICATION_EMAIL || "logicwithvikash@gmail.com",
+      subject: `New Lead: ${projectType} from ${fullName}`,
+      react: React.createElement(NewLeadNotificationEmail, {
+        fullName,
+        email,
+        phone: phone || "N/A",
+        companyName: companyName || "N/A",
+        service: projectType,
+        requirements: `Budget: ${budgetRange} | Timeline: ${timeline}\n\n${description}`,
+        submissionDate: new Date().toISOString()
+      })
+    });
+
+    // 2. Send user confirmation
+    await sendEmail({
+      to: email,
+      subject: "We received your enquiry — Logic Intelligence Technologies",
+      react: React.createElement(LeadConfirmationEmail, { fullName, service: projectType })
+    });
 
     return NextResponse.json({ success: true, message: "Message sent successfully" });
   } catch (error) {

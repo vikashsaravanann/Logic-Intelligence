@@ -142,7 +142,7 @@ export default function Navbar() {
                   <Link href="/contact" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white neon-btn w-full">
                     Start Project
                   </Link>
-                  <a href="https://wa.me/918072120016" className="px-6 py-4 text-center rounded-xl text-base font-bold text-white bg-gradient-to-r from-[#25D366] to-[#128C7E] w-full flex items-center justify-center gap-2">
+                  <a href="https://wa.me/919342877474" className="px-6 py-4 text-center rounded-xl text-base font-bold text-white bg-gradient-to-r from-[#25D366] to-[#128C7E] w-full flex items-center justify-center gap-2">
                     WhatsApp Us
                   </a>
                 </div>

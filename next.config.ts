@@ -1,12 +1,18 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  basePath: '/Logic-Intelligence',
-  trailingSlash: true,
-  assetPrefix: '/Logic-Intelligence/',
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'graph.facebook.com',
+      },
+    ],
   },
 };
 

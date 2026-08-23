@@ -10,7 +10,7 @@ export default function LiveChatWidget() {
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     if (!message.trim()) return;
-    window.location.href = `mailto:startupwithvikashsaravanan@gmail.com?subject=New Chat Inquiry&body=${encodeURIComponent(message)}`;
+    window.location.href = `mailto:logicwithvikash@gmail.com?subject=New Chat Inquiry&body=${encodeURIComponent(message)}`;
     setMessage("");
     setIsOpen(false);
   };
