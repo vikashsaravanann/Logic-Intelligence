@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { redirect } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { LogOut, Home } from "lucide-react";
+import Link from "next/link";
 
 import { env } from "@/config/env";
 
@@ -35,7 +36,10 @@ export default async function DashboardPage() {
           <strong className="text-white mt-1 inline-block">{session.user.email}</strong>
         </p>
         
-        <form action="/auth/signout" method="POST">
+        <form action="/auth/signout" method="POST" className="flex flex-col gap-3">
+          <Link href="/" className="flex items-center gap-2 justify-center w-full py-3 rounded-xl bg-primary/10 text-primary font-bold hover:bg-primary/20 transition-colors border border-primary/20">
+            <Home className="w-4 h-4" /> Return to Homepage
+          </Link>
           <button className="flex items-center gap-2 justify-center w-full py-3 rounded-xl bg-red-500/10 text-red-400 font-bold hover:bg-red-500/20 transition-colors border border-red-500/20">
             <LogOut className="w-4 h-4" /> Sign Out
           </button>

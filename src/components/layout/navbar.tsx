@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { COMPANY } from "@/config/company";
-
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { env } from "@/config/env";
 const NavLink = ({ href, children, onHover }: { href: string; children: React.ReactNode; onHover?: () => void }) => {
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path || (path !== "/" && pathname.startsWith(path));
@@ -28,7 +29,28 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [session, setSession] = useState<any>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const supabase = createClientComponentClient({
+      supabaseUrl: env.NEXT_PUBLIC_SUPABASE_URL,
+      supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    });
+    
+    const fetchSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+    };
+    
+    fetchSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -104,9 +126,44 @@ export default function Navbar() {
             {/* CTA & Mobile Toggle */}
             <div className="flex items-center gap-4">
               
-              <Link href="/login" className="hidden lg:flex px-4 py-2 rounded-full text-xs font-bold text-white border border-white/20 hover:bg-white/10 transition-colors whitespace-nowrap">
-                Login
-              </Link>
+              {session ? (
+                <div className="hidden lg:flex relative group" onMouseEnter={() => handleMouseEnter('user')} onMouseLeave={handleMouseLeave}>
+                  <button className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 hover:bg-white/10 transition-colors">
+                    {session.user?.user_metadata?.avatar_url ? (
+                      <img src={session.user.user_metadata.avatar_url} alt="Profile" className="w-6 h-6 rounded-full" />
+                    ) : (
+                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold">
+                        {session.user?.email?.[0]?.toUpperCase() || 'U'}
+                      </div>
+                    )}
+                    <span className="text-xs font-bold text-white max-w-[100px] truncate">
+                      {session.user?.user_metadata?.full_name || session.user?.email}
+                    </span>
+                    <ChevronDown className="w-3 h-3 text-white" />
+                  </button>
+                  <AnimatePresence>
+                    {activeDropdown === 'user' && (
+                      <motion.div 
+                        initial={{ opacity: 0, scaleY: 0 }} animate={{ opacity: 1, scaleY: 1 }} exit={{ opacity: 0, scaleY: 0 }} style={{ transformOrigin: "top right" }}
+                        className="absolute top-[100%] right-0 mt-2 w-[200px] bg-[rgba(10,15,30,0.98)] backdrop-blur-[30px] border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(0,191,255,0.1)] p-2 flex flex-col space-y-1"
+                      >
+                        <Link href="/dashboard" className="flex items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">
+                          Dashboard
+                        </Link>
+                        <form action="/auth/signout" method="post">
+                          <button type="submit" className="w-full flex items-center text-sm font-medium text-red-400 hover:text-red-300 p-2 hover:bg-red-500/10 rounded-lg transition-colors">
+                            Sign Out
+                          </button>
+                        </form>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <Link href="/login" className="hidden lg:flex px-4 py-2 rounded-full text-xs font-bold text-white border border-white/20 hover:bg-white/10 transition-colors whitespace-nowrap">
+                  Login
+                </Link>
+              )}
               <Link href="/contact" className="hidden lg:flex px-4 py-2 rounded-full text-xs font-bold text-white neon-btn whitespace-nowrap">
                 Start Project
               </Link>
@@ -132,9 +189,18 @@ export default function Navbar() {
                 <Link href="/checklist" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">CHECKLIST</Link>
                 
                 <div className="mt-auto pt-8 flex flex-col space-y-4">
-                  <Link href="/login" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white border border-white/20 hover:bg-white/10 w-full transition-colors">
-                    Login
-                  </Link>
+                  {session ? (
+                    <Link href="/dashboard" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white border border-primary/50 bg-primary/10 hover:bg-primary/20 w-full transition-colors flex items-center justify-center gap-2">
+                      {session.user?.user_metadata?.avatar_url && (
+                        <img src={session.user.user_metadata.avatar_url} alt="Profile" className="w-6 h-6 rounded-full" />
+                      )}
+                      Go to Dashboard
+                    </Link>
+                  ) : (
+                    <Link href="/login" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white border border-white/20 hover:bg-white/10 w-full transition-colors">
+                      Login
+                    </Link>
+                  )}
                   <Link href="/contact" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white neon-btn w-full">
                     Start Project
                   </Link>

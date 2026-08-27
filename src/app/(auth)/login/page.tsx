@@ -61,6 +61,17 @@ function AuthContent() {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    // If the user is already logged in, redirect them to the dashboard
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        router.push('/dashboard');
+      }
+    };
+    checkSession();
+  }, [router, supabase.auth]);
+
   const handleOAuthLogin = async (provider: 'google' | 'apple' | 'github') => {
     try {
       setIsLoading(true);
