@@ -5,13 +5,8 @@ import { Lock, Mail, Eye, EyeOff, ArrowRight, Shield, Smartphone } from "lucide-
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { COMPANY } from "@/config/company";
-import { createClient } from "@supabase/supabase-js";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { env } from "@/config/env";
-
-const supabase = createClient(
-  env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
-  env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder"
-);
 
 function validateEmail(email: string) {
   if (!email) return "Email is required.";
@@ -32,6 +27,7 @@ function validatePassword(password: string, isSignUp: boolean) {
 }
 
 function AuthContent() {
+  const supabase = createClientComponentClient();
   const [isSignUp, setIsSignUp] = useState(false);
   const [authMode, setAuthMode] = useState<"email" | "phone">("email");
   
