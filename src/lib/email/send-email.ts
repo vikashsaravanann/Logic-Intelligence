@@ -23,7 +23,7 @@ export async function sendEmail({
   to,
   subject,
   react,
-  replyTo = process.env.SMTP_REPLY_TO || "logicwithvikash@gmail.com",
+  replyTo = process.env.SMTP_REPLY_TO || "contact@logicintelligencetechnologies.in",
 }: SendEmailOptions): Promise<EmailResponse> {
   if (!isSmtpConfigured) {
     console.warn(`[Email MOCK] Would have sent "${subject}" to ${to}`);

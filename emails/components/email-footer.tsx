@@ -7,7 +7,7 @@ export const EmailFooter = () => {
       <Text style={footerText}>
         Logic Intelligence Technologies Pvt. Ltd.<br />
         Coimbatore, Tamil Nadu, India<br />
-        logicwithvikash@gmail.com | +91 93428 77474
+        contact@logicintelligencetechnologies.in | +91 93428 77474
       </Text>
     </Section>
   );

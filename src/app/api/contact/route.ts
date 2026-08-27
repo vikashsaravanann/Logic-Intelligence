@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
     // 1. Send internal notification
     await sendEmail({
-      to: process.env.LEAD_NOTIFICATION_EMAIL || "logicwithvikash@gmail.com",
+      to: process.env.LEAD_NOTIFICATION_EMAIL || "contact@logicintelligencetechnologies.in",
       subject: `New Lead: ${projectType} from ${fullName}`,
       react: React.createElement(NewLeadNotificationEmail, {
         fullName,

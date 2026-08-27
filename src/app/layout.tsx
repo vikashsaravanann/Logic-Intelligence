@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     'full stack',
   ],
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://logicintelligence.in'
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.logicintelligencetechnologies.in'
   ),
   openGraph: {
     type: 'website',

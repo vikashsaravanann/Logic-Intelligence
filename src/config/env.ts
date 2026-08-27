@@ -4,12 +4,12 @@ const envSchema = z.object({
   // Public
   NEXT_PUBLIC_SUPABASE_URL: z.string().min(1, "Supabase URL is required"),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1, "Supabase Anon Key is required"),
-  NEXT_PUBLIC_SITE_URL: z.string().optional().default("https://logicintel.com"),
+  NEXT_PUBLIC_SITE_URL: z.string().optional().default("https://www.logicintelligencetechnologies.in"),
 
   // Secrets
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   SUPABASE_WEBHOOK_SECRET: z.string().optional(),
-  LEAD_NOTIFICATION_EMAIL: z.string().optional().default("logicwithvikash@gmail.com"),
+  LEAD_NOTIFICATION_EMAIL: z.string().optional().default("contact@logicintelligencetechnologies.in"),
   
   // Redis (Optional)
   UPSTASH_REDIS_REST_URL: z.string().optional(),
