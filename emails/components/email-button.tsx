@@ -15,14 +15,15 @@ export const EmailButton = ({ href, children }: EmailButtonProps) => {
 };
 
 const button = {
-  backgroundColor: '#00bfff', // Primary cyan color
-  borderRadius: '4px',
-  color: '#0a0d1a', // Dark text for contrast
-  fontSize: '16px',
-  fontWeight: 'bold',
+  backgroundColor: '#00bfff',
+  borderRadius: '8px',
+  color: '#0a0d1a',
+  fontSize: '15px',
+  fontWeight: '700' as const,
   textDecoration: 'none',
   textAlign: 'center' as const,
-  display: 'block',
-  width: '100%',
-  padding: '12px',
+  display: 'inline-block' as const,
+  padding: '14px 32px',
+  margin: '8px 0',
+  letterSpacing: '0.5px',
 };

@@ -1,4 +1,4 @@
-import { Text, Section } from '@react-email/components';
+import { Text, Section, Hr } from '@react-email/components';
 import * as React from 'react';
 import { EmailLayout } from './components/email-layout';
 import { EmailHeader } from './components/email-header';
@@ -24,21 +24,48 @@ export const LoginNotificationEmail = ({
   ipAddress
 }: LoginNotificationEmailProps) => {
   return (
-    <EmailLayout>
+    <EmailLayout preview={`Login Activity: ${email}`}>
       <EmailHeader />
       <Section style={content}>
-        <Text style={heading}>Client Portal Login</Text>
-        
-        <Section style={detailsSection}>
-          <Text style={detailItem}><strong>Email:</strong> {email}</Text>
-          <Text style={detailItem}><strong>Timestamp:</strong> {loginTimestamp}</Text>
-          <Text style={detailItem}><strong>Device:</strong> {deviceSummary || 'Unknown'}</Text>
-          <Text style={detailItem}><strong>Screen Size:</strong> {screenSize || 'Unknown'}</Text>
-          <Text style={detailItem}><strong>Timezone:</strong> {timezone || 'Unknown'}</Text>
-          <Text style={detailItem}><strong>IP Address:</strong> {ipAddress || 'Hidden'}</Text>
+        <Section style={alertBanner}>
+          <Text style={alertText}>🔐 CLIENT PORTAL LOGIN</Text>
+        </Section>
+
+        <Section style={detailsCard}>
+          <Section style={detailRow}>
+            <Text style={detailLabel}>Email</Text>
+            <Text style={detailValueHighlight}>{email}</Text>
+          </Section>
+          <Hr style={rowDivider} />
+          <Section style={detailRow}>
+            <Text style={detailLabel}>Timestamp</Text>
+            <Text style={detailValue}>
+              {new Date(loginTimestamp).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+            </Text>
+          </Section>
+          <Hr style={rowDivider} />
+          <Section style={detailRow}>
+            <Text style={detailLabel}>Device</Text>
+            <Text style={detailValue}>{deviceSummary || 'Unknown'}</Text>
+          </Section>
+          <Hr style={rowDivider} />
+          <Section style={detailRow}>
+            <Text style={detailLabel}>Screen Size</Text>
+            <Text style={detailValue}>{screenSize || 'Unknown'}</Text>
+          </Section>
+          <Hr style={rowDivider} />
+          <Section style={detailRow}>
+            <Text style={detailLabel}>Timezone</Text>
+            <Text style={detailValue}>{timezone || 'Unknown'}</Text>
+          </Section>
+          <Hr style={rowDivider} />
+          <Section style={detailRow}>
+            <Text style={detailLabel}>IP Address</Text>
+            <Text style={detailValue}>{ipAddress || 'Hidden'}</Text>
+          </Section>
         </Section>
         
-        <Text style={subheading}>Raw User Agent:</Text>
+        <Text style={subheading}>🖥️ Raw User Agent</Text>
         <Section style={userAgentBox}>
           <Text style={userAgentText}>{userAgent || 'Not provided'}</Text>
         </Section>
@@ -51,48 +78,86 @@ export const LoginNotificationEmail = ({
 export default LoginNotificationEmail;
 
 const content = {
-  padding: '20px',
+  padding: '0 40px 36px 40px',
 };
 
-const heading = {
-  color: '#0a0d1a',
-  fontSize: '24px',
-  fontWeight: 'bold',
-  marginBottom: '20px',
+const alertBanner = {
+  backgroundColor: '#10b981',
+  padding: '12px 24px',
+  margin: '0 -40px 28px -40px',
+  textAlign: 'center' as const,
+};
+
+const alertText = {
+  color: '#ffffff',
+  fontSize: '13px',
+  fontWeight: '800' as const,
+  letterSpacing: '2px',
+  margin: '0',
 };
 
 const subheading = {
   color: '#0a0d1a',
-  fontSize: '18px',
-  fontWeight: 'bold',
-  marginTop: '20px',
-  marginBottom: '10px',
+  fontSize: '16px',
+  fontWeight: '700' as const,
+  margin: '28px 0 12px 0',
 };
 
-const detailsSection = {
-  backgroundColor: '#f6f9fc',
-  padding: '16px',
-  borderRadius: '8px',
-  marginBottom: '20px',
+const detailsCard = {
+  backgroundColor: '#f8fafc',
+  borderRadius: '12px',
+  border: '1px solid #e5e7eb',
+  padding: '4px 20px',
 };
 
-const detailItem = {
-  margin: '8px 0',
-  color: '#525f7f',
-  fontSize: '14px',
+const detailRow = {
+  padding: '4px 0',
+};
+
+const rowDivider = {
+  borderTop: '1px solid #e5e7eb',
+  margin: '0',
+};
+
+const detailLabel = {
+  color: '#6b7280',
+  fontSize: '12px',
+  fontWeight: '600' as const,
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.5px',
+  margin: '0 0 2px 0',
+  lineHeight: '16px',
+};
+
+const detailValue = {
+  color: '#1a1a2e',
+  fontSize: '15px',
+  fontWeight: '500' as const,
+  margin: '0',
+  lineHeight: '22px',
+};
+
+const detailValueHighlight = {
+  color: '#00bfff',
+  fontSize: '15px',
+  fontWeight: '600' as const,
+  margin: '0',
+  lineHeight: '22px',
 };
 
 const userAgentBox = {
-  backgroundColor: '#f6f9fc',
-  padding: '16px',
-  borderRadius: '8px',
-  borderLeft: '4px solid #00bfff',
+  backgroundColor: '#f8fafc',
+  padding: '16px 20px',
+  borderRadius: '12px',
+  borderLeft: '4px solid #10b981',
+  border: '1px solid #e5e7eb',
 };
 
 const userAgentText = {
   margin: '0',
-  color: '#525f7f',
-  fontSize: '12px',
-  fontFamily: 'monospace',
+  color: '#6b7280',
+  fontSize: '11px',
+  fontFamily: '"SF Mono", Monaco, "Cascadia Code", monospace',
+  lineHeight: '18px',
   wordBreak: 'break-all' as const,
 };

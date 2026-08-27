@@ -15,43 +15,55 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { fullName, email, phone, companyName, projectType, budgetRange, timeline, description } = body;
 
-    // Optional: Save lead to Supabase (Uncomment when credentials are set)
-    const { error: dbError } = await supabase
-      .from("contact_leads")
-      .insert([
-        { 
-          name: fullName, 
-          email, 
-          company: companyName,
-          message: description
-        }
-      ]);
-    
-    if (dbError) {
-      console.error("Supabase Error:", dbError);
+    // Save lead to Supabase
+    try {
+      const { error: dbError } = await supabase
+        .from("contact_leads")
+        .insert([
+          { 
+            name: fullName, 
+            email, 
+            company: companyName,
+            message: description
+          }
+        ]);
+      
+      if (dbError) {
+        console.error("[DB Error] Contact lead insert:", dbError);
+      }
+    } catch (dbErr) {
+      console.error("[DB Error] Contact lead insert exception:", dbErr);
     }
 
-    // 1. Send internal notification
-    await sendEmail({
-      to: process.env.LEAD_NOTIFICATION_EMAIL || "contact@logicintelligencetechnologies.in",
-      subject: `New Lead: ${projectType} from ${fullName}`,
-      react: React.createElement(NewLeadNotificationEmail, {
-        fullName,
-        email,
-        phone: phone || "N/A",
-        companyName: companyName || "N/A",
-        service: projectType,
-        requirements: `Budget: ${budgetRange} | Timeline: ${timeline}\n\n${description}`,
-        submissionDate: new Date().toISOString()
-      })
-    });
+    // 1. Send internal notification (don't let failure block user confirmation)
+    try {
+      await sendEmail({
+        to: process.env.LEAD_NOTIFICATION_EMAIL || "contact@logicintelligencetechnologies.in",
+        subject: `New Lead: ${projectType} from ${fullName}`,
+        react: React.createElement(NewLeadNotificationEmail, {
+          fullName,
+          email,
+          phone: phone || "N/A",
+          companyName: companyName || "N/A",
+          service: projectType,
+          requirements: `Budget: ${budgetRange} | Timeline: ${timeline}\n\n${description}`,
+          submissionDate: new Date().toISOString()
+        })
+      });
+    } catch (emailErr) {
+      console.error("[Email Error] Internal notification failed:", emailErr);
+    }
 
     // 2. Send user confirmation
-    await sendEmail({
-      to: email,
-      subject: "We received your enquiry — Logic Intelligence Technologies",
-      react: React.createElement(LeadConfirmationEmail, { fullName, service: projectType })
-    });
+    try {
+      await sendEmail({
+        to: email,
+        subject: "We received your request! (Logic Intelligence Technologies)",
+        react: React.createElement(LeadConfirmationEmail, { fullName, service: projectType })
+      });
+    } catch (emailErr) {
+      console.error("[Email Error] User confirmation failed:", emailErr);
+    }
 
     return NextResponse.json({ success: true, message: "Message sent successfully" });
   } catch (error) {

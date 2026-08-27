@@ -37,48 +37,59 @@ export async function POST(req: Request) {
 
     // 1. Insert lead into Supabase first (Business logic prioritized)
     if (env.NEXT_PUBLIC_SUPABASE_URL) {
-      const { error: dbError } = await supabase
-        .from("demo_leads")
-        .insert([
-          { 
-            first_name: name.split(' ')[0] || name, 
-            last_name: name.split(' ').slice(1).join(' ') || '', 
-            email, 
-            phone: phone || '', 
-            company_name: business || '', 
-            job_title: '', 
-            interests: [service_type],
-            budget: budget || '',
-          }
-        ]);
-      
-      if (dbError) {
-        console.error("[DB Error] Failed to insert lead:", dbError);
-        // Continue to try sending email even if DB insert fails (fallback)
+      try {
+        const { error: dbError } = await supabase
+          .from("demo_leads")
+          .insert([
+            { 
+              first_name: name.split(' ')[0] || name, 
+              last_name: name.split(' ').slice(1).join(' ') || '', 
+              email, 
+              phone: phone || '', 
+              company_name: business || '', 
+              job_title: '', 
+              interests: [service_type],
+              budget: budget || '',
+            }
+          ]);
+        
+        if (dbError) {
+          console.error("[DB Error] Failed to insert lead:", dbError);
+        }
+      } catch (dbErr) {
+        console.error("[DB Error] Demo lead insert exception:", dbErr);
       }
     }
 
-    // 2. Send confirmation to User
-    await sendEmail({
-      to: email,
-      subject: "We received your enquiry — Logic Intelligence Technologies",
-      react: React.createElement(LeadConfirmationEmail, { fullName: name, service: service_type }),
-    });
+    // 2. Send confirmation to User (don't let internal notification failure block this)
+    try {
+      await sendEmail({
+        to: email,
+        subject: "We received your request! (Logic Intelligence Technologies)",
+        react: React.createElement(LeadConfirmationEmail, { fullName: name, service: service_type }),
+      });
+    } catch (emailErr) {
+      console.error("[Email Error] User confirmation failed:", emailErr);
+    }
     
     // 3. Send notification to Internal Team
-    await sendEmail({
-      to: env.LEAD_NOTIFICATION_EMAIL,
-      subject: `New website enquiry: ${name} — ${service_type}`,
-      react: React.createElement(NewLeadNotificationEmail, {
-        fullName: name, 
-        companyName: business || '', 
-        email: email, 
-        phone: phone || '', 
-        service: service_type, 
-        requirements: requirements || '', 
-        submissionDate: new Date().toISOString()
-      }),
-    });
+    try {
+      await sendEmail({
+        to: env.LEAD_NOTIFICATION_EMAIL,
+        subject: `New website enquiry: ${name} — ${service_type}`,
+        react: React.createElement(NewLeadNotificationEmail, {
+          fullName: name, 
+          companyName: business || '', 
+          email: email, 
+          phone: phone || '', 
+          service: service_type, 
+          requirements: requirements || '', 
+          submissionDate: new Date().toISOString()
+        }),
+      });
+    } catch (emailErr) {
+      console.error("[Email Error] Internal notification failed:", emailErr);
+    }
 
     return NextResponse.json({ success: true, message: "Request received" });
   } catch (error) {

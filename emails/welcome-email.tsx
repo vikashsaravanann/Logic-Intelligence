@@ -1,93 +1,182 @@
-import {
-  Body,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Link,
-  Preview,
-  Text,
-} from "@react-email/components";
-import * as React from "react";
-import { COMPANY } from "@/config/company";
+import { Text, Section, Link, Hr } from '@react-email/components';
+import * as React from 'react';
+import { EmailLayout } from './components/email-layout';
+import { EmailHeader } from './components/email-header';
+import { EmailFooter } from './components/email-footer';
+import { EmailButton } from './components/email-button';
 
 interface WelcomeEmailProps {
   email: string;
 }
 
-export const WelcomeEmail = ({
-  email,
-}: WelcomeEmailProps) => (
-  <Html>
-    <Head />
-    <Preview>Welcome to Logic Intelligence Technologies! 🚀</Preview>
-    <Body style={main}>
-      <Container style={container}>
-        <Heading style={h1}>Welcome to {COMPANY.displayName}! 🚀</Heading>
-        <Text style={text}>Hi {email},</Text>
-        <Text style={text}>
-          Welcome to Logic Intelligence Technologies! We are absolutely thrilled to have you onboard.
+export const WelcomeEmail = ({ email }: WelcomeEmailProps) => {
+  return (
+    <EmailLayout preview="Welcome to Logic Intelligence Technologies! 🚀">
+      <EmailHeader />
+      <Section style={content}>
+        <Text style={greeting}>Hi {email},</Text>
+
+        <Text style={heroText}>
+          Welcome to Logic Intelligence Technologies! 🚀
         </Text>
-        <Text style={text}>
-          As a premium digital engineering and web development studio, our goal is to help you build, scale, and transform your digital presence. Your account is now fully active.
+
+        <Text style={paragraph}>
+          We are absolutely thrilled to have you onboard. As a premium digital
+          engineering and web development studio, our goal is to help you
+          <strong> build, scale, and transform </strong>
+          your digital presence.
         </Text>
-        <Text style={text}>
-          <strong>What's next?</strong>
-          <br/>
-          • Access your dashboard: <Link href="https://www.logicintelligencetechnologies.in/login">https://www.logicintelligencetechnologies.in/login</Link>
-          <br/>
-          • Explore our latest digital solutions and services on our website.
+
+        <Text style={paragraph}>
+          Your account is now <strong>fully active</strong>.
         </Text>
-        <Text style={text}>
-          If you have any questions, ideas, or just want to say hi, simply reply to this email or reach out to our 24/7 support team. We are here to help you build something amazing.
+
+        <Hr style={divider} />
+
+        <Text style={sectionTitle}>What&apos;s next?</Text>
+
+        <Section style={bulletSection}>
+          <Text style={bulletItem}>
+            🔹 Access your personal dashboard and manage your account
+          </Text>
+          <Text style={bulletItem}>
+            🔹 Explore our latest digital solutions and services
+          </Text>
+          <Text style={bulletItem}>
+            🔹 Connect with our team for any questions or ideas
+          </Text>
+        </Section>
+
+        <Section style={buttonContainer}>
+          <EmailButton href="https://www.logicintelligencetechnologies.in/login">
+            Go to Your Dashboard →
+          </EmailButton>
+        </Section>
+
+        <Hr style={divider} />
+
+        <Text style={paragraph}>
+          If you have any questions, ideas, or just want to say hi, simply reply
+          to this email or reach out to our 24/7 support team. We are here to
+          help you build something amazing.
         </Text>
-        <Text style={text}>
+
+        <Text style={closingText}>
           Welcome to the future of digital engineering!
         </Text>
-        <Text style={text}>
-          Best regards,<br />
-          Vikash Saravanan<br />
-          Founder & CEO, Logic Intelligence Technologies<br />
-          <Link href="https://www.logicintelligencetechnologies.in">www.logicintelligencetechnologies.in</Link>
-        </Text>
-      </Container>
-    </Body>
-  </Html>
-);
+
+        <Section style={signatureBlock}>
+          <Text style={signatureName}>Vikash Saravanan</Text>
+          <Text style={signatureTitle}>Founder & CEO</Text>
+          <Text style={signatureCompany}>Logic Intelligence Technologies</Text>
+          <Link
+            href="https://www.logicintelligencetechnologies.in"
+            style={signatureLink}
+          >
+            www.logicintelligencetechnologies.in
+          </Link>
+        </Section>
+      </Section>
+      <EmailFooter />
+    </EmailLayout>
+  );
+};
 
 export default WelcomeEmail;
 
-const main = {
-  backgroundColor: "#f6f9fc",
-  fontFamily:
-    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+const content = {
+  padding: '36px 40px',
 };
 
-const container = {
-  backgroundColor: "#ffffff",
-  margin: "0 auto",
-  padding: "20px 0 48px",
-  marginBottom: "64px",
+const greeting = {
+  color: '#1a1a2e',
+  fontSize: '16px',
+  lineHeight: '24px',
+  margin: '0 0 8px 0',
 };
 
-const h1 = {
-  color: "#333",
-  fontSize: "24px",
-  fontWeight: "bold",
-  padding: "0 40px",
+const heroText = {
+  color: '#0a0d1a',
+  fontSize: '24px',
+  fontWeight: '700' as const,
+  lineHeight: '32px',
+  margin: '0 0 24px 0',
 };
 
-const text = {
-  color: "#333",
-  fontSize: "16px",
-  lineHeight: "24px",
-  padding: "0 40px",
+const paragraph = {
+  color: '#374151',
+  fontSize: '15px',
+  lineHeight: '26px',
+  margin: '0 0 16px 0',
 };
 
-const footer = {
-  color: "#898989",
-  fontSize: "12px",
-  lineHeight: "22px",
-  marginTop: "12px",
-  padding: "0 40px",
+const divider = {
+  borderTop: '1px solid #e5e7eb',
+  margin: '28px 0',
+};
+
+const sectionTitle = {
+  color: '#0a0d1a',
+  fontSize: '17px',
+  fontWeight: '700' as const,
+  margin: '0 0 16px 0',
+};
+
+const bulletSection = {
+  margin: '0 0 24px 0',
+};
+
+const bulletItem = {
+  color: '#374151',
+  fontSize: '14px',
+  lineHeight: '28px',
+  margin: '0',
+  paddingLeft: '4px',
+};
+
+const buttonContainer = {
+  textAlign: 'center' as const,
+  margin: '8px 0 0 0',
+};
+
+const closingText = {
+  color: '#0a0d1a',
+  fontSize: '16px',
+  fontWeight: '600' as const,
+  lineHeight: '26px',
+  margin: '0 0 28px 0',
+};
+
+const signatureBlock = {
+  borderLeft: '3px solid #00bfff',
+  paddingLeft: '16px',
+  margin: '0',
+};
+
+const signatureName = {
+  color: '#0a0d1a',
+  fontSize: '15px',
+  fontWeight: '700' as const,
+  margin: '0 0 2px 0',
+  lineHeight: '20px',
+};
+
+const signatureTitle = {
+  color: '#6b7280',
+  fontSize: '13px',
+  margin: '0 0 2px 0',
+  lineHeight: '18px',
+};
+
+const signatureCompany = {
+  color: '#6b7280',
+  fontSize: '13px',
+  margin: '0 0 4px 0',
+  lineHeight: '18px',
+};
+
+const signatureLink = {
+  color: '#00bfff',
+  fontSize: '13px',
+  textDecoration: 'none',
 };

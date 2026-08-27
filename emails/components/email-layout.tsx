@@ -1,17 +1,31 @@
-import { Html, Head, Body, Container } from '@react-email/components';
+import { Html, Head, Body, Container, Font } from '@react-email/components';
 import * as React from 'react';
 
 interface EmailLayoutProps {
   children: React.ReactNode;
+  preview?: string;
 }
 
-export const EmailLayout = ({ children }: EmailLayoutProps) => {
+export const EmailLayout = ({ children, preview }: EmailLayoutProps) => {
   return (
     <Html>
-      <Head />
+      <Head>
+        <Font
+          fontFamily="Inter"
+          fallbackFontFamily="Helvetica"
+          webFont={{
+            url: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+            format: 'woff2',
+          }}
+          fontWeight={400}
+          fontStyle="normal"
+        />
+      </Head>
       <Body style={main}>
-        <Container style={container}>
-          {children}
+        <Container style={wrapper}>
+          <Container style={container}>
+            {children}
+          </Container>
         </Container>
       </Body>
     </Html>
@@ -19,14 +33,20 @@ export const EmailLayout = ({ children }: EmailLayoutProps) => {
 };
 
 const main = {
-  backgroundColor: '#f6f9fc',
-  fontFamily:
-    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+  backgroundColor: '#0f1117',
+  fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
+  padding: '40px 0',
+};
+
+const wrapper = {
+  maxWidth: '600px',
+  margin: '0 auto',
 };
 
 const container = {
   backgroundColor: '#ffffff',
   margin: '0 auto',
-  padding: '20px 0 48px',
-  marginBottom: '64px',
+  borderRadius: '16px',
+  overflow: 'hidden' as const,
+  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
 };
