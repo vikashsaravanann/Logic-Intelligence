@@ -9,11 +9,13 @@ export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
   const cookieStore = cookies();
-  const supabase = createServerComponentClient({ 
-    cookies: () => cookieStore,
-    supabaseUrl: env.NEXT_PUBLIC_SUPABASE_URL,
-    supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  });
+  const supabase = createServerComponentClient(
+    { cookies: () => cookieStore },
+    {
+      supabaseUrl: env.NEXT_PUBLIC_SUPABASE_URL,
+      supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    }
+  );
   
   const { data: { session } } = await supabase.auth.getSession();
 

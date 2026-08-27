@@ -10,11 +10,13 @@ export async function GET(request: Request) {
 
   if (code) {
     const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({ 
-      cookies: () => cookieStore,
-      supabaseUrl: env.NEXT_PUBLIC_SUPABASE_URL,
-      supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    });
+    const supabase = createRouteHandlerClient(
+      { cookies: () => cookieStore },
+      {
+        supabaseUrl: env.NEXT_PUBLIC_SUPABASE_URL,
+        supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      }
+    );
     await supabase.auth.exchangeCodeForSession(code);
   }
 
