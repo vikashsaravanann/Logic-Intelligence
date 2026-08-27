@@ -20,24 +20,35 @@ export const WelcomeEmail = ({
 }: WelcomeEmailProps) => (
   <Html>
     <Head />
-    <Preview>Welcome to {COMPANY.displayName}</Preview>
+    <Preview>Welcome to Logic Intelligence Technologies! 🚀</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Welcome to {COMPANY.displayName}</Heading>
+        <Heading style={h1}>Welcome to {COMPANY.displayName}! 🚀</Heading>
         <Text style={text}>Hi {email},</Text>
         <Text style={text}>
-          Thank you for joining {COMPANY.displayName}. We are thrilled to have you!
+          Welcome to Logic Intelligence Technologies! We are absolutely thrilled to have you onboard.
         </Text>
         <Text style={text}>
-          You can now log in to your dashboard and manage your account.
+          As a premium digital engineering and web development studio, our goal is to help you build, scale, and transform your digital presence. Your account is now fully active.
+        </Text>
+        <Text style={text}>
+          <strong>What's next?</strong>
+          <br/>
+          • Access your dashboard: <Link href="https://www.logicintelligencetechnologies.in/login">https://www.logicintelligencetechnologies.in/login</Link>
+          <br/>
+          • Explore our latest digital solutions and services on our website.
+        </Text>
+        <Text style={text}>
+          If you have any questions, ideas, or just want to say hi, simply reply to this email or reach out to our 24/7 support team. We are here to help you build something amazing.
+        </Text>
+        <Text style={text}>
+          Welcome to the future of digital engineering!
         </Text>
         <Text style={text}>
           Best regards,<br />
-          The {COMPANY.displayName} Team
-        </Text>
-        <Text style={footer}>
-          {COMPANY.displayName} | {COMPANY.email} | {COMPANY.phone}<br />
-          {COMPANY.address}
+          Vikash Saravanan<br />
+          Founder & CEO, Logic Intelligence Technologies<br />
+          <Link href="https://www.logicintelligencetechnologies.in">www.logicintelligencetechnologies.in</Link>
         </Text>
       </Container>
     </Body>
