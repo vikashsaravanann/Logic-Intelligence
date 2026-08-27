@@ -17,7 +17,12 @@ export async function GET(request: Request) {
         supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       }
     );
-    await supabase.auth.exchangeCodeForSession(code);
+    try {
+      await supabase.auth.exchangeCodeForSession(code);
+    } catch (error: any) {
+      console.error('Auth callback error:', error);
+      return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(error.message || 'Authentication failed')}`, request.url));
+    }
   }
 
   // URL to redirect to after sign in process completes

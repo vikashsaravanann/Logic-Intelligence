@@ -53,8 +53,11 @@ function AuthContent() {
   useEffect(() => {
     // Check if there's an error from OAuth redirect
     const errorDescription = searchParams.get("error_description");
+    const errorParam = searchParams.get("error");
     if (errorDescription) {
       setServerError(decodeURIComponent(errorDescription));
+    } else if (errorParam) {
+      setServerError(decodeURIComponent(errorParam));
     }
   }, [searchParams]);
 
