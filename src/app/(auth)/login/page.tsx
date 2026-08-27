@@ -27,7 +27,10 @@ function validatePassword(password: string, isSignUp: boolean) {
 }
 
 function AuthContent() {
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient({
+    supabaseUrl: env.NEXT_PUBLIC_SUPABASE_URL,
+    supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  });
   const [isSignUp, setIsSignUp] = useState(false);
   const [authMode, setAuthMode] = useState<"email" | "phone">("email");
   
