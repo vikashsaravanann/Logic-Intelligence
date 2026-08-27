@@ -449,12 +449,10 @@ function AuthContent() {
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-[#0A0F1E]">
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,191,255,0.08)_0%,rgba(10,15,30,1)_70%)]" />
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik00MCAwSDBWNDBIMzkuNUYwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiIHN0cm9rZS13aWR0aD0iMSIvPgo8L3N2Zz4=')] opacity-60" />
-        <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-purple-500/10 rounded-full blur-[130px] mix-blend-screen" />
-        <div className="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-blue-500/10 rounded-full blur-[130px] mix-blend-screen" />
+    <main className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-background">
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-1/4 right-1/4 w-[40rem] h-[40rem] bg-primary/5 rounded-full blur-[130px] mix-blend-screen" />
+        <div className="absolute bottom-1/4 left-1/4 w-[40rem] h-[40rem] bg-accent/5 rounded-full blur-[130px] mix-blend-screen" />
       </div>
       <Suspense fallback={<div className="text-white z-10">Loading...</div>}>
         <AuthContent />
