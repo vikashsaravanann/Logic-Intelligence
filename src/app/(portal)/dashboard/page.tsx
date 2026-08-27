@@ -8,7 +8,7 @@ import { env } from "@/config/env";
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createServerComponentClient(
     { cookies: () => cookieStore },
     {

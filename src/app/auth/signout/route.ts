@@ -6,7 +6,7 @@ import { env } from "@/config/env";
 
 export async function POST(request: Request) {
   const requestUrl = new URL(request.url);
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createRouteHandlerClient(
     { cookies: () => cookieStore },
     {
