@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 export default async function DashboardPage() {
   const cookieStore = await cookies();
   const supabase = createServerComponentClient(
-    { cookies: () => cookieStore },
+    { cookies: () => cookieStore as any },
     {
       supabaseUrl: env.NEXT_PUBLIC_SUPABASE_URL,
       supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,

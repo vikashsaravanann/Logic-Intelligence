@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   if (code) {
     const cookieStore = await cookies();
     const supabase = createRouteHandlerClient(
-      { cookies: () => cookieStore },
+      { cookies: () => cookieStore as any },
       {
         supabaseUrl: env.NEXT_PUBLIC_SUPABASE_URL,
         supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,

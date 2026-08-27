@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   const requestUrl = new URL(request.url);
   const cookieStore = await cookies();
   const supabase = createRouteHandlerClient(
-    { cookies: () => cookieStore },
+    { cookies: () => cookieStore as any },
     {
       supabaseUrl: env.NEXT_PUBLIC_SUPABASE_URL,
       supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
