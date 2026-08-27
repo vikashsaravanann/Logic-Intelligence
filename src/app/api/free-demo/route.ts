@@ -76,6 +76,7 @@ export async function POST(req: Request) {
     try {
       await sendEmail({
         to: env.LEAD_NOTIFICATION_EMAIL,
+        replyTo: email,
         subject: `New website enquiry: ${name} — ${service_type}`,
         react: React.createElement(NewLeadNotificationEmail, {
           fullName: name, 

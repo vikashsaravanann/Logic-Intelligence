@@ -72,6 +72,7 @@ export async function POST(req: Request) {
     try {
       await sendEmail({
         to: env.LEAD_NOTIFICATION_EMAIL,
+        replyTo: email || undefined,
         subject: `New Client Discovery Checklist: ${email || 'Anonymous'}`,
         react: React.createElement(ChecklistSubmissionEmail, {
           email: email || 'Not provided', 

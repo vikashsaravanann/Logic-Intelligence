@@ -80,14 +80,14 @@ const content = {
 };
 
 const greeting = {
-  color: '#1a1a2e',
+  color: '#ffffff',
   fontSize: '16px',
   lineHeight: '24px',
   margin: '0 0 8px 0',
 };
 
 const heroText = {
-  color: '#0a0d1a',
+  color: '#ffffff',
   fontSize: '22px',
   fontWeight: '700' as const,
   lineHeight: '30px',
@@ -95,29 +95,29 @@ const heroText = {
 };
 
 const paragraph = {
-  color: '#374151',
+  color: '#d1d5db',
   fontSize: '15px',
   lineHeight: '26px',
   margin: '0 0 16px 0',
 };
 
 const highlightBox = {
-  backgroundColor: '#f0fdf4',
-  border: '1px solid #bbf7d0',
+  backgroundColor: '#1f2937',
+  border: '1px solid #374151',
   borderRadius: '12px',
   padding: '20px 24px',
   margin: '24px 0',
 };
 
 const highlightTitle = {
-  color: '#0a0d1a',
+  color: '#ffffff',
   fontSize: '16px',
   fontWeight: '700' as const,
   margin: '0 0 8px 0',
 };
 
 const highlightText = {
-  color: '#374151',
+  color: '#d1d5db',
   fontSize: '14px',
   lineHeight: '24px',
   margin: '0',
@@ -129,12 +129,12 @@ const buttonContainer = {
 };
 
 const divider = {
-  borderTop: '1px solid #e5e7eb',
+  borderTop: '1px solid #374151',
   margin: '28px 0',
 };
 
 const closingText = {
-  color: '#0a0d1a',
+  color: '#ffffff',
   fontSize: '16px',
   fontWeight: '600' as const,
   lineHeight: '26px',
@@ -148,7 +148,7 @@ const signatureBlock = {
 };
 
 const signatureName = {
-  color: '#0a0d1a',
+  color: '#ffffff',
   fontSize: '14px',
   fontWeight: '700' as const,
   margin: '0 0 4px 0',
@@ -156,7 +156,7 @@ const signatureName = {
 };
 
 const signatureContact = {
-  color: '#6b7280',
+  color: '#9ca3af',
   fontSize: '13px',
   margin: '0 0 2px 0',
   lineHeight: '18px',

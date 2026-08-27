@@ -97,16 +97,16 @@ const alertText = {
 };
 
 const subheading = {
-  color: '#0a0d1a',
+  color: '#ffffff',
   fontSize: '16px',
   fontWeight: '700' as const,
   margin: '28px 0 12px 0',
 };
 
 const detailsCard = {
-  backgroundColor: '#f8fafc',
+  backgroundColor: '#1f2937',
   borderRadius: '12px',
-  border: '1px solid #e5e7eb',
+  border: '1px solid #374151',
   padding: '4px 20px',
 };
 
@@ -115,12 +115,12 @@ const detailRow = {
 };
 
 const rowDivider = {
-  borderTop: '1px solid #e5e7eb',
+  borderTop: '1px solid #374151',
   margin: '0',
 };
 
 const detailLabel = {
-  color: '#6b7280',
+  color: '#9ca3af',
   fontSize: '12px',
   fontWeight: '600' as const,
   textTransform: 'uppercase' as const,
@@ -130,7 +130,7 @@ const detailLabel = {
 };
 
 const detailValue = {
-  color: '#1a1a2e',
+  color: '#ffffff',
   fontSize: '15px',
   fontWeight: '500' as const,
   margin: '0',
@@ -138,7 +138,7 @@ const detailValue = {
 };
 
 const detailValueHighlight = {
-  color: '#00bfff',
+  color: '#10b981',
   fontSize: '15px',
   fontWeight: '600' as const,
   margin: '0',
@@ -146,16 +146,15 @@ const detailValueHighlight = {
 };
 
 const userAgentBox = {
-  backgroundColor: '#f8fafc',
+  backgroundColor: '#111827',
   padding: '16px 20px',
   borderRadius: '12px',
   borderLeft: '4px solid #10b981',
-  border: '1px solid #e5e7eb',
 };
 
 const userAgentText = {
   margin: '0',
-  color: '#6b7280',
+  color: '#9ca3af',
   fontSize: '11px',
   fontFamily: '"SF Mono", Monaco, "Cascadia Code", monospace',
   lineHeight: '18px',

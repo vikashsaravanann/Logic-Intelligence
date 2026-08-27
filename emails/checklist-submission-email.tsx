@@ -62,10 +62,66 @@ const content = {
 };
 
 const alertBanner = {
-  backgroundColor: '#8b5cf6',
+  backgroundColor: '#ffffff',
   padding: '12px 24px',
   margin: '0 -40px 28px -40px',
   textAlign: 'center' as const,
+};
+
+const title = {
+  color: '#ffffff',
+  fontSize: '22px',
+  fontWeight: '700' as const,
+  margin: '0 0 16px 0',
+  lineHeight: '28px',
+};
+
+const paragraph = {
+  color: '#d1d5db',
+  fontSize: '15px',
+  lineHeight: '24px',
+  margin: '0 0 24px 0',
+};
+
+const detailsContainer = {
+  backgroundColor: '#1f2937',
+  borderRadius: '8px',
+  padding: '24px',
+  margin: '0 0 24px 0',
+  border: '1px solid #374151',
+};
+
+const qnaBlock = {
+  margin: '0 0 20px 0',
+};
+
+const question = {
+  color: '#9ca3af',
+  fontSize: '13px',
+  fontWeight: '600' as const,
+  textTransform: 'uppercase' as const,
+  letterSpacing: '1px',
+  margin: '0 0 6px 0',
+  lineHeight: '18px',
+};
+
+const answer = {
+  color: '#ffffff',
+  fontSize: '15px',
+  lineHeight: '24px',
+  margin: '0',
+  backgroundColor: '#111827',
+  padding: '12px 16px',
+  borderRadius: '6px',
+  borderLeft: '4px solid #8b5cf6',
+};
+
+const footer = {
+  color: '#9ca3af',
+  fontSize: '13px',
+  margin: '32px 0 0 0',
+  borderTop: '1px solid #374151',
+  paddingTop: '16px',
 };
 
 const alertText = {
@@ -77,16 +133,16 @@ const alertText = {
 };
 
 const subheading = {
-  color: '#0a0d1a',
+  color: '#ffffff',
   fontSize: '16px',
   fontWeight: '700' as const,
   margin: '28px 0 12px 0',
 };
 
 const detailsCard = {
-  backgroundColor: '#f8fafc',
+  backgroundColor: '#1f2937',
   borderRadius: '12px',
-  border: '1px solid #e5e7eb',
+  border: '1px solid #374151',
   padding: '4px 20px',
 };
 
@@ -95,12 +151,12 @@ const detailRow = {
 };
 
 const rowDivider = {
-  borderTop: '1px solid #e5e7eb',
+  borderTop: '1px solid #374151',
   margin: '0',
 };
 
 const detailLabel = {
-  color: '#6b7280',
+  color: '#9ca3af',
   fontSize: '12px',
   fontWeight: '600' as const,
   textTransform: 'uppercase' as const,
@@ -110,7 +166,7 @@ const detailLabel = {
 };
 
 const detailValue = {
-  color: '#1a1a2e',
+  color: '#ffffff',
   fontSize: '15px',
   fontWeight: '500' as const,
   margin: '0',
@@ -118,7 +174,7 @@ const detailValue = {
 };
 
 const detailValueHighlight = {
-  color: '#00bfff',
+  color: '#8b5cf6',
   fontSize: '15px',
   fontWeight: '600' as const,
   margin: '0',
@@ -126,9 +182,6 @@ const detailValueHighlight = {
 };
 
 const answersCard = {
-  backgroundColor: '#f8fafc',
-  borderRadius: '12px',
-  border: '1px solid #e5e7eb',
   padding: '4px 20px',
   borderLeft: '4px solid #8b5cf6',
 };
@@ -148,7 +201,7 @@ const questionNumber = {
 };
 
 const answerText = {
-  color: '#1a1a2e',
+  color: '#ffffff',
   fontSize: '14px',
   margin: '0',
   lineHeight: '22px',

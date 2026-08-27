@@ -89,34 +89,34 @@ const content = {
 };
 
 const greeting = {
-  color: '#1a1a2e',
+  color: '#ffffff',
   fontSize: '16px',
   lineHeight: '24px',
   margin: '0 0 8px 0',
 };
 
 const heroText = {
-  color: '#0a0d1a',
-  fontSize: '24px',
+  color: '#ffffff',
+  fontSize: '22px',
   fontWeight: '700' as const,
-  lineHeight: '32px',
+  lineHeight: '30px',
   margin: '0 0 24px 0',
 };
 
 const paragraph = {
-  color: '#374151',
+  color: '#d1d5db',
   fontSize: '15px',
   lineHeight: '26px',
   margin: '0 0 16px 0',
 };
 
 const divider = {
-  borderTop: '1px solid #e5e7eb',
+  borderTop: '1px solid #374151',
   margin: '28px 0',
 };
 
 const sectionTitle = {
-  color: '#0a0d1a',
+  color: '#ffffff',
   fontSize: '17px',
   fontWeight: '700' as const,
   margin: '0 0 16px 0',
@@ -127,11 +127,10 @@ const bulletSection = {
 };
 
 const bulletItem = {
-  color: '#374151',
-  fontSize: '14px',
-  lineHeight: '28px',
-  margin: '0',
-  paddingLeft: '4px',
+  color: '#d1d5db',
+  fontSize: '15px',
+  lineHeight: '26px',
+  margin: '0 0 12px 0',
 };
 
 const buttonContainer = {
@@ -140,11 +139,11 @@ const buttonContainer = {
 };
 
 const closingText = {
-  color: '#0a0d1a',
+  color: '#ffffff',
   fontSize: '16px',
   fontWeight: '600' as const,
   lineHeight: '26px',
-  margin: '0 0 28px 0',
+  margin: '0 0 20px 0',
 };
 
 const signatureBlock = {
@@ -154,24 +153,31 @@ const signatureBlock = {
 };
 
 const signatureName = {
-  color: '#0a0d1a',
-  fontSize: '15px',
+  color: '#ffffff',
+  fontSize: '14px',
   fontWeight: '700' as const,
-  margin: '0 0 2px 0',
-  lineHeight: '20px',
+  margin: '0 0 4px 0',
+  lineHeight: '18px',
 };
 
 const signatureTitle = {
-  color: '#6b7280',
+  color: '#9ca3af',
   fontSize: '13px',
   margin: '0 0 2px 0',
   lineHeight: '18px',
 };
 
 const signatureCompany = {
-  color: '#6b7280',
+  color: '#9ca3af',
   fontSize: '13px',
   margin: '0 0 4px 0',
+  lineHeight: '18px',
+};
+
+const signatureContact = {
+  color: '#9ca3af',
+  fontSize: '13px',
+  margin: '0 0 2px 0',
   lineHeight: '18px',
 };
 

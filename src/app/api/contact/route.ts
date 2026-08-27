@@ -39,6 +39,7 @@ export async function POST(req: Request) {
     try {
       await sendEmail({
         to: process.env.LEAD_NOTIFICATION_EMAIL || "contact@logicintelligencetechnologies.in",
+        replyTo: email,
         subject: `New Lead: ${projectType} from ${fullName}`,
         react: React.createElement(NewLeadNotificationEmail, {
           fullName,

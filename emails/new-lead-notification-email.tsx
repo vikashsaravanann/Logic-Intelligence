@@ -97,74 +97,79 @@ const alertText = {
 };
 
 const heading = {
-  color: '#0a0d1a',
-  fontSize: '20px',
+  color: '#ffffff',
+  fontSize: '22px',
   fontWeight: '700' as const,
   margin: '0 0 16px 0',
+  lineHeight: '28px',
 };
 
 const subheading = {
-  color: '#0a0d1a',
+  color: '#ffffff',
   fontSize: '16px',
   fontWeight: '700' as const,
   margin: '28px 0 12px 0',
 };
 
 const detailsCard = {
-  backgroundColor: '#f8fafc',
-  borderRadius: '12px',
-  border: '1px solid #e5e7eb',
-  padding: '4px 20px',
-  overflow: 'hidden' as const,
+  backgroundColor: '#1f2937',
+  borderRadius: '8px',
+  padding: '24px',
+  margin: '0 0 24px 0',
+  border: '1px solid #374151',
 };
 
 const detailRow = {
-  padding: '4px 0',
+  margin: '0 0 16px 0',
 };
 
 const rowDivider = {
-  borderTop: '1px solid #e5e7eb',
-  margin: '0',
+  borderTop: '1px solid #374151',
+  margin: '0 0 16px 0',
 };
 
 const detailLabel = {
-  color: '#6b7280',
+  color: '#9ca3af',
   fontSize: '12px',
   fontWeight: '600' as const,
   textTransform: 'uppercase' as const,
-  letterSpacing: '0.5px',
-  margin: '0 0 2px 0',
-  lineHeight: '16px',
+  letterSpacing: '1px',
+  margin: '0 0 4px 0',
 };
 
 const detailValue = {
-  color: '#1a1a2e',
-  fontSize: '15px',
+  color: '#ffffff',
+  fontSize: '16px',
   fontWeight: '500' as const,
   margin: '0',
-  lineHeight: '22px',
 };
 
 const detailValueHighlight = {
   color: '#00bfff',
-  fontSize: '15px',
+  fontSize: '16px',
   fontWeight: '600' as const,
   margin: '0',
-  lineHeight: '22px',
 };
 
 const requirementsBox = {
-  backgroundColor: '#f8fafc',
-  padding: '20px',
-  borderRadius: '12px',
+  backgroundColor: '#111827',
   borderLeft: '4px solid #00bfff',
-  border: '1px solid #e5e7eb',
+  padding: '16px',
+  borderRadius: '4px',
+  margin: '8px 0 0 0',
 };
 
 const requirementsText = {
-  margin: '0',
-  color: '#374151',
+  color: '#d1d5db',
   fontSize: '14px',
   lineHeight: '24px',
   whiteSpace: 'pre-wrap' as const,
+};
+
+const footer = {
+  color: '#9ca3af',
+  fontSize: '13px',
+  margin: '32px 0 0 0',
+  borderTop: '1px solid #374151',
+  paddingTop: '16px',
 };
