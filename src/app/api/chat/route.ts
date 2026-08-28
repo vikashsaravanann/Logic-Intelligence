@@ -191,6 +191,7 @@ export async function POST(req: Request) {
         {
           role: "tool",
           tool_call_id: toolCall.id,
+          name: toolCall.function.name,
           content: JSON.stringify(toolResult),
         },
       ];
