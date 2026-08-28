@@ -8,9 +8,9 @@ import { z } from "zod";
 
 // --- Config ---------------------------------------------------------------
 
-const XAI_API_KEY = process.env.XAI_API_KEY;
-const XAI_API_URL = process.env.XAI_API_URL || "https://api.groq.com/openai/v1/chat/completions";
-const XAI_MODEL = process.env.XAI_MODEL || "qwen/qwen3.8-27b";
+const GROQ_API_KEY = process.env.GROK_API_KEY || process.env.XAI_API_KEY || process.env.GROQ_API_KEY;
+const GROQ_API_URL = process.env.GROQ_API_URL || process.env.XAI_API_URL || "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_MODEL = process.env.GROQ_MODEL || process.env.XAI_MODEL || "llama-3.3-70b-versatile";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
 const supabaseServiceKey =
@@ -121,7 +121,7 @@ async function lookupLeadStatus(email: string) {
 // --- Route -------------------------------------------------------------
 
 export async function POST(req: Request) {
-  if (!XAI_API_KEY) {
+  if (!GROQ_API_KEY) {
     return NextResponse.json(
       { success: false, message: "Chat is not configured." },
       { status: 503 }
@@ -144,15 +144,15 @@ export async function POST(req: Request) {
       ...parsed.data.messages,
     ];
 
-    // First call — Grok may respond directly, or request a tool call
-    let response = await fetch(XAI_API_URL, {
+    // First call — Groq may respond directly, or request a tool call
+    let response = await fetch(GROQ_API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${XAI_API_KEY}`,
+        Authorization: `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: XAI_MODEL,
+        model: GROQ_MODEL,
         messages: conversation,
         tools,
         tool_choice: "auto",
@@ -196,14 +196,14 @@ export async function POST(req: Request) {
         },
       ];
 
-      response = await fetch(XAI_API_URL, {
+      response = await fetch(GROQ_API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${XAI_API_KEY}`,
+          Authorization: `Bearer ${GROQ_API_KEY}`,
         },
         body: JSON.stringify({
-          model: XAI_MODEL,
+          model: GROQ_MODEL,
           messages: followUpConversation,
           temperature: 0.4,
         }),
