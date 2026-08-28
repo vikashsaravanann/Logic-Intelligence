@@ -10,7 +10,7 @@ import { z } from "zod";
 
 const XAI_API_KEY = process.env.XAI_API_KEY;
 const XAI_API_URL = process.env.XAI_API_URL || "https://api.groq.com/openai/v1/chat/completions";
-const XAI_MODEL = process.env.XAI_MODEL || "llama-3.1-8b-instant";
+const XAI_MODEL = process.env.XAI_MODEL || "groq/compound-mini";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
 const supabaseServiceKey =
