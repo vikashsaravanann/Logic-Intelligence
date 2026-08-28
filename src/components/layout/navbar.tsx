@@ -74,7 +74,7 @@ export default function Navbar() {
       />
       
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-[rgba(10,15,30,0.85)] backdrop-blur-[20px] saturate-180 border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.3)] py-4" : "bg-transparent py-6"}`}>
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-4 lg:px-8">
           <div className="flex items-center justify-between">
             
             {/* Logo Animation */}
@@ -88,14 +88,14 @@ export default function Navbar() {
                 <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </motion.div>
               <div className="flex items-center">
-                <span className="text-[11px] sm:text-[13px] md:text-[14px] font-bold text-white tracking-widest leading-none whitespace-nowrap">
+                <span className="text-[11px] sm:text-[12px] lg:text-[13px] font-bold text-white tracking-wider leading-none whitespace-nowrap">
                   {COMPANY.displayName.toUpperCase()}
                 </span>
               </div>
             </Link>
 
             {/* Desktop Links */}
-            <div className="hidden xl:flex items-center gap-7">
+            <div className="hidden xl:flex items-center gap-4 2xl:gap-7">
               <NavLink href="/">HOME</NavLink>
               <NavLink href="/#services">SERVICES</NavLink>
               <NavLink href="/work">WORK</NavLink>
@@ -126,7 +126,7 @@ export default function Navbar() {
             </div>
 
             {/* CTA & Mobile Toggle */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 xl:gap-5">
               
               {session ? (
                 <div className="hidden lg:flex relative group" onMouseEnter={() => handleMouseEnter('user')} onMouseLeave={handleMouseLeave}>
