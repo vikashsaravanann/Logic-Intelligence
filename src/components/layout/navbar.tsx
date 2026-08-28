@@ -14,7 +14,7 @@ const NavLink = ({ href, children, onHover }: { href: string; children: React.Re
   return (
     <Link 
       href={href} 
-      className={`text-sm font-medium transition-colors relative py-4 flex items-center gap-1 ${isActive(href) ? "text-primary" : "text-zinc-300 hover:text-primary"}`}
+      className={`text-[12px] font-semibold tracking-widest transition-colors relative py-4 flex items-center gap-1 ${isActive(href) ? "text-primary" : "text-zinc-300 hover:text-primary"}`}
       onMouseEnter={onHover}
     >
       {children}
@@ -88,14 +88,14 @@ export default function Navbar() {
                 <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </motion.div>
               <div className="flex items-center">
-                <span className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-white tracking-wider leading-none">
+                <span className="text-[11px] sm:text-[13px] md:text-[14px] font-bold text-white tracking-widest leading-none whitespace-nowrap">
                   {COMPANY.displayName.toUpperCase()}
                 </span>
               </div>
             </Link>
 
             {/* Desktop Links */}
-            <div className="hidden xl:flex items-center gap-4">
+            <div className="hidden xl:flex items-center gap-7">
               <NavLink href="/">HOME</NavLink>
               <NavLink href="/#services">SERVICES</NavLink>
               <NavLink href="/work">WORK</NavLink>
@@ -111,9 +111,9 @@ export default function Navbar() {
                       initial={{ opacity: 0, scaleY: 0 }} animate={{ opacity: 1, scaleY: 1 }} exit={{ opacity: 0, scaleY: 0 }} style={{ transformOrigin: "top center" }}
                       className="absolute top-[100%] left-1/2 -translate-x-1/2 w-[250px] bg-[rgba(10,15,30,0.98)] backdrop-blur-[30px] border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(0,191,255,0.1)] p-4 flex flex-col space-y-2"
                     >
-                      <Link href="/contact?package=digital-launch-pack" className="flex justify-between items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Digital Launch Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
-                      <Link href="/contact?package=business-pro-pack" className="flex justify-between items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Business Pro Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
-                      <Link href="/contact?package=enterprise-pack" className="flex justify-between items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Enterprise Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
+                      <Link href="/contact?package=digital-launch-pack" className="flex justify-between items-center text-[13px] font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Digital Launch Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
+                      <Link href="/contact?package=business-pro-pack" className="flex justify-between items-center text-[13px] font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Business Pro Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
+                      <Link href="/contact?package=enterprise-pack" className="flex justify-between items-center text-[13px] font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Enterprise Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -126,7 +126,7 @@ export default function Navbar() {
             </div>
 
             {/* CTA & Mobile Toggle */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
               
               {session ? (
                 <div className="hidden lg:flex relative group" onMouseEnter={() => handleMouseEnter('user')} onMouseLeave={handleMouseLeave}>
@@ -162,11 +162,11 @@ export default function Navbar() {
                   </AnimatePresence>
                 </div>
               ) : (
-                <Link href="/login" className="hidden lg:flex px-4 py-2 rounded-full text-xs font-bold text-white border border-white/20 hover:bg-white/10 transition-colors whitespace-nowrap">
+                <Link href="/login" className="hidden lg:flex px-4 py-1.5 rounded-full text-xs font-bold text-white border border-white/20 hover:bg-white/10 transition-colors whitespace-nowrap">
                   Login
                 </Link>
               )}
-              <Link href="/contact" className="hidden lg:flex px-4 py-2 rounded-full text-xs font-bold text-white neon-btn whitespace-nowrap">
+              <Link href="/contact" className="hidden lg:flex px-4 py-1.5 rounded-full text-xs font-bold text-white neon-btn whitespace-nowrap">
                 Start Project
               </Link>
               
