@@ -1,0 +1,6 @@
+@@ -42,3 +43,3 @@
+               email: email || "unknown@example.com", 
+-              company: answers[1] || "",
+-              role: answers[2] || "",
++              company: isLeadMagnet ? "Lead Magnet" : (answers[1] || ""),
++              role: isLeadMagnet ? "Downloaded Checklist" : (answers[2] || ""),

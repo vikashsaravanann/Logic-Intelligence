@@ -7,6 +7,13 @@ export type PortfolioProject = {
   image: string;
   externalUrl?: string;
   results?: string;
+  // Optional deeper case-study fields — when present, the /work/[slug] page
+  // renders a full problem/solution/outcome case study instead of just a summary.
+  client?: string; // e.g. "FreshBite Restaurants Pvt. Ltd."
+  problem?: string; // what the client's situation/pain point was before
+  solution?: string; // what was built and why, in plain terms
+  metrics?: { label: string; value: string }[]; // e.g. { label: "Booking time", value: "2hrs → 5min" }
+  testimonialId?: string; // optional link to a matching entry in testimonialsData.ts
 };
 
 export const portfolioProjects: PortfolioProject[] = [

@@ -120,7 +120,9 @@ export default function Navbar() {
               </div>
 
               <NavLink href="/about">ABOUT</NavLink>
+              <NavLink href="/blog">BLOG</NavLink>
               <NavLink href="/checklist">CHECKLIST</NavLink>
+              <NavLink href="/discovery">DISCOVERY</NavLink>
             </div>
 
             {/* CTA & Mobile Toggle */}
@@ -186,7 +188,9 @@ export default function Navbar() {
                 <Link href="/work" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">WORK</Link>
                 <Link href="/packages" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">PACKAGES</Link>
                 <Link href="/about" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">ABOUT</Link>
+                <Link href="/blog" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">BLOG</Link>
                 <Link href="/checklist" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">CHECKLIST</Link>
+                <Link href="/discovery" onClick={() => setIsOpen(false)} className="text-lg font-bold text-zinc-300">DISCOVERY</Link>
                 
                 <div className="mt-auto pt-8 flex flex-col space-y-4">
                   {session ? (

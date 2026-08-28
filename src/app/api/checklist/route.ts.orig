@@ -28,8 +28,7 @@ export async function POST(req: Request) {
       );
     }
     
-    const { answers = [], email, type } = parsed.data as any;
-    const isLeadMagnet = type === "lead_magnet";
+    const { answers, email } = parsed.data;
 
     // 1. Insert into Supabase
     if (env.NEXT_PUBLIC_SUPABASE_URL) {
@@ -40,8 +39,8 @@ export async function POST(req: Request) {
             { 
               name: "Anonymous",
               email: email || "unknown@example.com", 
-              company: isLeadMagnet ? "Lead Magnet" : (answers[1] || ""),
-              role: isLeadMagnet ? "Downloaded Checklist" : (answers[2] || ""),
+              company: answers[1] || "",
+              role: answers[2] || "",
             }
           ]);
         
@@ -58,10 +57,10 @@ export async function POST(req: Request) {
       try {
         await sendEmail({
           to: email,
-          subject: isLeadMagnet ? "Your Website Launch Checklist" : "We received your request! (Logic Intelligence Technologies)",
+          subject: "We received your request! (Logic Intelligence Technologies)",
           react: React.createElement(LeadConfirmationEmail, {
             fullName: "there",
-            service: isLeadMagnet ? "Website Launch Checklist" : "Client Discovery Form",
+            service: "Client Discovery Checklist",
           }),
         });
       } catch (emailErr) {
@@ -74,14 +73,12 @@ export async function POST(req: Request) {
       await sendEmail({
         to: env.LEAD_NOTIFICATION_EMAIL,
         replyTo: email || undefined,
-        subject: isLeadMagnet ? `New Lead Magnet Download: ${email}` : `New Client Discovery Form: ${email || 'Anonymous'}`,
-        react: isLeadMagnet 
-          ? React.createElement("div", null, `Lead Magnet downloaded by ${email}`)
-          : React.createElement(ChecklistSubmissionEmail, {
-            email: email || 'Not provided', 
-            answers: answers, 
-            submissionDate: new Date().toISOString()
-          }),
+        subject: `New Client Discovery Checklist: ${email || 'Anonymous'}`,
+        react: React.createElement(ChecklistSubmissionEmail, {
+          email: email || 'Not provided', 
+          answers: answers, 
+          submissionDate: new Date().toISOString()
+        }),
       });
     } catch (emailErr) {
       console.error("[Email Error] Checklist internal notification failed:", emailErr);
