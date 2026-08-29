@@ -44,3 +44,25 @@ next-env.d.ts
 # security and secrets
 *.key
 *.secret
+
+# test artifacts and development scratch files
+*.log
+*.txt
+*.py
+*.yaml
+available_models.*
+models.json
+test_*
+debug_*
+proxy_*
+*_output.*
+*_response.*
+scripts/
+
+# Large stray media files at root
+*.PNG
+*.jpeg
+*.jpg
+!public/**/*.jpg
+!public/**/*.jpeg
+.ipynb_checkpoints/
