@@ -149,9 +149,14 @@ export default function Navbar() {
                         initial={{ opacity: 0, scaleY: 0 }} animate={{ opacity: 1, scaleY: 1 }} exit={{ opacity: 0, scaleY: 0 }} style={{ transformOrigin: "top right" }}
                         className="absolute top-[100%] right-0 mt-2 w-[200px] bg-[rgba(10,15,30,0.98)] backdrop-blur-[30px] border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(0,191,255,0.1)] p-2 flex flex-col space-y-1"
                       >
-                        <Link href="/dashboard" className="flex items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">
-                          Dashboard
+                        <Link href="/profile" className="flex items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">
+                          My Profile
                         </Link>
+                        {session.user?.email?.endsWith('@logicintelligencetechnologies.in') && (
+                          <Link href="/dashboard" className="flex items-center text-sm font-medium text-red-400 hover:text-red-300 p-2 hover:bg-red-500/10 rounded-lg transition-colors">
+                            Admin Dashboard
+                          </Link>
+                        )}
                         <form action="/auth/signout" method="post">
                           <button type="submit" className="w-full flex items-center text-sm font-medium text-red-400 hover:text-red-300 p-2 hover:bg-red-500/10 rounded-lg transition-colors">
                             Sign Out
@@ -178,6 +183,25 @@ export default function Navbar() {
           </div>
         </div>
 
+        {/* Small AI Sub-Header */}
+        <div className="w-full bg-gradient-to-r from-[rgba(5,10,20,0.95)] to-[rgba(10,20,40,0.95)] border-t border-white/5 py-2.5 shadow-[0_4px_20px_rgba(0,191,255,0.15)]">
+          <div className="mx-auto max-w-[1400px] px-4 lg:px-8 flex justify-center sm:justify-end lg:justify-center">
+            <Link 
+              href="/ai" 
+              className="group flex items-center gap-3 bg-blue-950/30 hover:bg-blue-900/50 border border-blue-500/30 hover:border-blue-400/60 px-5 sm:px-8 py-1.5 rounded-full transition-all duration-300 shadow-[0_0_15px_rgba(0,191,255,0.1)] hover:shadow-[0_0_25px_rgba(0,191,255,0.3)]"
+            >
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500 shadow-[0_0_8px_rgba(0,255,255,0.8)]"></span>
+              </span>
+              <span className="text-[11px] sm:text-xs lg:text-sm font-semibold tracking-wider text-blue-100 group-hover:text-white transition-colors">
+                ACCESS LOGIC INTELLIGENCE ENTERPRISE AI ASSISTANT & KNOWLEDGE DATABASE
+              </span>
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        </div>
+
         {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen && (
@@ -194,12 +218,19 @@ export default function Navbar() {
                 
                 <div className="mt-auto pt-8 flex flex-col space-y-4">
                   {session ? (
-                    <Link href="/dashboard" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white border border-primary/50 bg-primary/10 hover:bg-primary/20 w-full transition-colors flex items-center justify-center gap-2">
-                      {session.user?.user_metadata?.avatar_url && (
-                        <img src={session.user.user_metadata.avatar_url} alt="Profile" className="w-6 h-6 rounded-full" />
+                    <div className="flex flex-col gap-2">
+                      <Link href="/profile" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white border border-primary/50 bg-primary/10 hover:bg-primary/20 w-full transition-colors flex items-center justify-center gap-2">
+                        {session.user?.user_metadata?.avatar_url && (
+                          <img src={session.user.user_metadata.avatar_url} alt="Profile" className="w-6 h-6 rounded-full" />
+                        )}
+                        Go to Profile
+                      </Link>
+                      {session.user?.email?.endsWith('@logicintelligencetechnologies.in') && (
+                        <Link href="/dashboard" onClick={() => setIsOpen(false)} className="px-6 py-3 text-center rounded-xl text-sm font-bold text-white border border-red-500/50 bg-red-500/20 hover:bg-red-500/30 w-full transition-colors flex items-center justify-center gap-2">
+                          Admin Dashboard
+                        </Link>
                       )}
-                      Go to Dashboard
-                    </Link>
+                    </div>
                   ) : (
                     <Link href="/login" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white border border-white/20 hover:bg-white/10 w-full transition-colors">
                       Login

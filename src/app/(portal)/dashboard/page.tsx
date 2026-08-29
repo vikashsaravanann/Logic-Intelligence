@@ -23,6 +23,12 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
+  // Admin Check
+  const isAdmin = session.user.email?.endsWith('@logicintelligencetechnologies.in') || session.user.email?.endsWith('admin.com'); // fallback if they haven't set up the domain email yet, but let's stick to the domain logic.
+  if (!session.user.email?.endsWith('@logicintelligencetechnologies.in')) {
+    redirect("/profile");
+  }
+
   // Fetching data from Supabase
   const { data: leads = [] } = await supabase.from("contact_leads").select("*").order("created_at", { ascending: false }).limit(5);
   const { data: projects = [] } = await supabase.from("projects").select("*").order("created_at", { ascending: false }).limit(5);
