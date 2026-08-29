@@ -1,7 +1,7 @@
 import { packagesData } from "@/data/packagesData";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import FloatingElements from "@/components/FloatingElements";
+import FloatingElements from "@/components/motion/floating-elements";
 import BackToHome from "@/components/ui/back-to-home";
 import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";

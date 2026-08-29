@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import FloatingElements from "@/components/FloatingElements";
+import FloatingElements from "@/components/motion/floating-elements";
 import BackToHome from "@/components/ui/back-to-home";
 import { COMPANY } from "@/config/company";
 import { CheckCircle2, ExternalLink, Mail, Phone } from "lucide-react";

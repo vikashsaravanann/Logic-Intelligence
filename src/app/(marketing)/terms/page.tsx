@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import FloatingElements from "@/components/FloatingElements";
+import FloatingElements from "@/components/motion/floating-elements";
 import BackToHome from "@/components/ui/back-to-home";
 import { companyConfig, LEGAL_LAST_UPDATED } from "@/config/company";
 

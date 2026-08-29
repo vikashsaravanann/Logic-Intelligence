@@ -1,5 +1,5 @@
 "use client";
-import FloatingElements from "@/components/FloatingElements";
+import FloatingElements from "@/components/motion/floating-elements";
 import BackToHome from "@/components/ui/back-to-home";
 import { useState } from "react";
 import { Send, CheckCircle2, MessageSquare, Download } from "lucide-react";

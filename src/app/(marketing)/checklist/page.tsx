@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Download, CheckCircle2, ArrowRight } from "lucide-react";
 import BackToHome from "@/components/ui/back-to-home";
-import FloatingElements from "@/components/FloatingElements";
+import FloatingElements from "@/components/motion/floating-elements";
 
 export default function ChecklistLeadMagnet() {
   const [email, setEmail] = useState("");

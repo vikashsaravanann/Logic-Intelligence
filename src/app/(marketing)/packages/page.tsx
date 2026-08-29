@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import FloatingElements from "@/components/FloatingElements";
+import FloatingElements from "@/components/motion/floating-elements";
 import PackagesSection from "@/features/home/components/packages-section";
 
 export const metadata: Metadata = {
