@@ -85,118 +85,12 @@ KNOWLEDGE_BASE = [
     {
         "keywords": ["hr documents", "offer letter", "employment agreement", "payroll"],
         "context": "Fact: HR documentation includes an Employee Handbook, standard Offer Letters and Employment Agreements, NDA/IP Assignment agreements, and payroll documentation including payroll registers, salary slips, and ESOP grant letters."
-    }
+    },
 ]
 
-import subprocess
-import re
-from duckduckgo_search import DDGS
-import chromadb
-
-# Initialize Vector Database
-try:
-    print("Initializing ChromaDB Vector Database...")
-    chroma_client = chromadb.Client()
-    collection = chroma_client.create_collection(name="company_knowledge")
-    
-    # Add company knowledge to Vector DB
-    documents = [item["context"] for item in KNOWLEDGE_BASE]
-    ids = [str(i) for i in range(len(KNOWLEDGE_BASE))]
-    collection.add(documents=documents, ids=ids)
-    print(f"Successfully loaded {len(documents)} documents into Vector DB.")
-except Exception as e:
-    print("Failed to initialize ChromaDB:", e)
-    collection = None
-
-def retrieve_web_search(user_query: str) -> str:
-    # Trigger if user explicitly says "search" or "look up" (except chembl stuff handled below)
-    if "search the web" in user_query.lower() or "search internet" in user_query.lower() or "news" in user_query.lower():
-        try:
-            print(f"Triggering Web Search for: {user_query}")
-            search_query = user_query.lower().replace("search the web for", "").replace("search internet for", "").strip()
-            if not search_query:
-                search_query = user_query
-            
-            results = DDGS().text(search_query, max_results=3)
-            if results:
-                web_facts = "\n".join([f"- {r['title']}: {r['body']}" for r in results])
-                return f"Live Web Search Results:\n{web_facts}"
-        except Exception as e:
-            print("Web search error:", e)
-    return ""
-
-def retrieve_chembl_context(user_query: str) -> str:
-    # Look for "chembl for X" or "molecule X" or "drug X"
-    match = re.search(r'(chembl for|molecule|drug)\s+([a-zA-Z0-9_-]+)', user_query.lower())
-    if not match:
-        return ""
-    
-    search_term = match.group(2)
-    print(f"Detected ChEMBL lookup for: {search_term}")
-    
-    try:
-        script_path = "/Users/vikash/.gemini/config/plugins/science/skills/chembl_database/scripts/chembl_api.py"
-        if not os.path.exists(script_path):
-            return ""
-            
-        output_file = f"/tmp/chembl_search_{search_term}.json"
-        
-        subprocess.run([
-            "uv", "run", script_path, "molecule", 
-            "--search", search_term, 
-            "--limit", "1", 
-            "--output", output_file
-        ], capture_output=True, text=True)
-        
-        if os.path.exists(output_file):
-            import json
-            import os
-            with open(output_file, 'r') as f:
-                data = json.load(f)
-            
-            if data and "molecules" in data and len(data["molecules"]) > 0:
-                mol = data["molecules"][0]
-                pref_name = mol.get("pref_name", "Unknown")
-                chembl_id = mol.get("molecule_chembl_id", "Unknown")
-                max_phase = mol.get("max_phase", "Unknown")
-                props = mol.get("molecule_properties", {})
-                formula = props.get("full_mwt", "Unknown") if props else "Unknown"
-                
-                context = (f"ChEMBL Database Fact: {search_term.capitalize()} matches {pref_name} "
-                           f"(ID: {chembl_id}). Max clinical phase: {max_phase}. "
-                           f"Molecular Weight: {formula}.")
-                return context
-    except Exception as e:
-        print("ChEMBL lookup error:", e)
-    return ""
-
 def retrieve_rag_context(user_query: str) -> str:
-    matched = []
-    
-    # Use Vector DB if available
-    if collection is not None:
-        try:
-            results = collection.query(query_texts=[user_query], n_results=2)
-            if results and results['documents'] and len(results['documents'][0]) > 0:
-                matched.extend(results['documents'][0])
-        except Exception as e:
-            print("Vector DB search error:", e)
-    else:
-        # Fallback to simple keyword search
-        query_lower = user_query.lower()
-        fallback = [item["context"] for item in KNOWLEDGE_BASE if any(k in query_lower for k in item["keywords"])]
-        matched.extend(fallback)
-    
-    # 1. Fetch from ChEMBL
-    chembl_context = retrieve_chembl_context(user_query)
-    if chembl_context:
-        matched.append(chembl_context)
-        
-    # 2. Fetch from Web Search
-    web_context = retrieve_web_search(user_query)
-    if web_context:
-        matched.append(web_context)
-        
+    query_lower = user_query.lower()
+    matched = [item["context"] for item in KNOWLEDGE_BASE if any(k in query_lower for k in item["keywords"])]
     return "\n".join(matched) if matched else ""
 
 # --- 2. LOAD MODEL ---
