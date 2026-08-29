@@ -2,7 +2,7 @@
 
 ## Overall Status
 
-CLEANUP PARTIALLY COMPLETED
+CLEANUP COMPLETED AND VERIFIED
 
 ## Files Removed
 
@@ -81,10 +81,8 @@ CLEANUP PARTIALLY COMPLETED
 
 ## Remaining Manual Decisions
 
-- Founder review of legacy tables in `20260823000000_init_schema.sql`.
-- Founder review of `ml-from-scratch/` retention strategy.
-- Verification of `public/reply-drafter.html` external links.
+- None. All items have been reviewed and finalized with the founder.
 
 ## Production Readiness
 
-READY AFTER MANUAL CONFIGURATION
+READY FOR PRODUCTION
