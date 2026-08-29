@@ -1,32 +1,49 @@
 import { NextResponse } from 'next/server';
+import { client } from "@gradio/client";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    const userMessage = body.text || body.message;
     
-    // Connect to the Python backend
-    const pythonBackendUrl = process.env.PYTHON_AI_BACKEND_URL || 'http://127.0.0.1:8000/generate-stream';
-    
-    // Map the incoming 'message' to 'text' for the python backend
-    const payload = {
-      text: body.text || body.message,
-      max_tokens: 500
-    };
-
-    const response = await fetch(pythonBackendUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
+    // We create a ReadableStream to stream the SSE chunks back to the client
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          // Connect to the Hugging Face Gradio API
+          // You might need to supply a HF token if the space is private, but it's public.
+          const app = await client("vikashsaravanan/logic-intelligence-api");
+          
+          // Connect to the ChatInterface prediction
+          // Gradio ChatInterface expects message (string) and history (array)
+          const result = app.submit("/chat", [userMessage, []]);
+          
+          let lastData = "";
+          
+          for await (const msg of result) {
+            if (msg.type === "data") {
+              const currentText = msg.data[0];
+              
+              // Extract the delta
+              const delta = currentText.substring(lastData.length);
+              lastData = currentText;
+              
+              if (delta) {
+                  // Send the delta in the expected format: data: {"text": "chunk"}
+                  const chunkData = JSON.stringify({ text: delta });
+                  controller.enqueue(new TextEncoder().encode(`data: ${chunkData}\n\n`));
+              }
+            }
+          }
+          controller.close();
+        } catch (err: any) {
+          console.error("Gradio stream error:", err);
+          controller.error(err);
+        }
+      }
     });
 
-    if (!response.ok) {
-      throw new Error(`Python backend responded with status: ${response.status}`);
-    }
-
-    // Proxy the stream back to the client
-    return new Response(response.body, {
+    return new Response(stream, {
       headers: {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
