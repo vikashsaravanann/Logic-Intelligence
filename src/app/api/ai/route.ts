@@ -11,18 +11,16 @@ export async function POST(request: Request) {
       async start(controller) {
         try {
           // Connect to the Hugging Face Gradio API
-          // You might need to supply a HF token if the space is private, but it's public.
           const app = await client("vikashsaravanan/logic-intelligence-api");
           
           // Connect to the ChatInterface prediction
-          // Gradio ChatInterface expects message (string) and history (array)
           const result = app.submit("/chat", [userMessage, []]);
           
           let lastData = "";
           
           for await (const msg of result) {
-            if (msg.type === "data") {
-              const currentText = msg.data[0];
+            if (msg.type === "data" && Array.isArray(msg.data) && msg.data.length > 0) {
+              const currentText = msg.data[0] as string;
               
               // Extract the delta
               const delta = currentText.substring(lastData.length);
