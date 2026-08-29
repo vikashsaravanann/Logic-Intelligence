@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     
     // Map the incoming 'message' to 'text' for the python backend
     const payload = {
-      text: body.message,
+      text: body.text || body.message,
       max_tokens: 500
     };
 
