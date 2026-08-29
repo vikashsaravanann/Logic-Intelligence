@@ -12,14 +12,14 @@ export const COMPANY = {
   linkedinUrl: 'https://www.linkedin.com/company/logic-intelligence-technologies/',
   facebookUrl: 'https://www.facebook.com/share/166anMT53Cj/?mibextid=wwXIfr',
   websiteUrl: 'https://www.logicintelligencetechnologies.in',
-  logoIconPath: '/logo.jpg',
-  logoFullPath: '/logo.jpg',
-  bannerPath: '/banner.jpg',
+  logoIconPath: '/assets/logo.jpg',
+  logoFullPath: '/assets/logo.jpg',
+  bannerPath: '/assets/banner.jpg',
   tagline: 'Where Logic Meets Innovation',
   founder: {
     name: 'Vikash Saravanan',
     title: 'Founder & Director',
-    photoPath: '/founder.jpg',
+    photoPath: '/assets/founder.jpg',
     bio: 'First-year B.Tech student in AI & Data Science, Vikash founded Logic Intelligence Technologies to bring modern, AI-integrated web and software development to businesses in Coimbatore and beyond — with transparent pricing and a free demo before you pay.',
   },
 } as const;

@@ -1,14 +1,10 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email/send-email";
 import WelcomeEmail from "@/emails/welcome-email";
 import crypto from "crypto";
 import * as React from "react";
 
-// Initialize Supabase client with Service Role to bypass RLS for updating the profile
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder_key";
-const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
 export async function POST(req: Request) {
   try {

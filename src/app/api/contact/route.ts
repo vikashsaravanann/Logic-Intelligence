@@ -1,14 +1,9 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email/send-email";
 import NewLeadNotificationEmail from "@/emails/new-lead-notification-email";
 import LeadConfirmationEmail from "@/emails/lead-confirmation-email";
 import * as React from "react";
-
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder_key";
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function POST(req: Request) {
   try {
@@ -17,7 +12,7 @@ export async function POST(req: Request) {
 
     // Save lead to Supabase
     try {
-      const { error: dbError } = await supabase
+      const { error: dbError } = await supabaseAdmin
         .from("contact_leads")
         .insert([
           { 

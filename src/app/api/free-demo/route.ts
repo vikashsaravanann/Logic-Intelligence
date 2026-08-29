@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email/send-email";
 import LeadConfirmationEmail from "@/emails/lead-confirmation-email";
 import NewLeadNotificationEmail from "@/emails/new-lead-notification-email";
@@ -7,9 +7,6 @@ import { env } from "@/config/env";
 import { z } from "zod";
 import * as React from "react";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder_key";
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),

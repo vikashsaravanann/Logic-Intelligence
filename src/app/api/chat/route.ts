@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 import { COMPANY } from "@/config/company";
 import { packagesData } from "@/data/packagesData";
 import { servicesData } from "@/data/servicesData";
@@ -11,11 +11,6 @@ import { z } from "zod";
 const GROQ_API_KEY = process.env.GROK_API_KEY || process.env.XAI_API_KEY || process.env.GROQ_API_KEY;
 const GROQ_API_URL = process.env.GROQ_API_URL || process.env.XAI_API_URL || "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "qwen/qwen3.8-27b";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
-const supabaseServiceKey =
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder_key";
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 // --- Request validation -----------------------------------------------------
 
@@ -96,9 +91,9 @@ async function lookupLeadStatus(email: string) {
   const normalizedEmail = email.trim().toLowerCase();
 
   const [contact, demo, checklist] = await Promise.all([
-    supabase.from("contact_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
-    supabase.from("demo_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
-    supabase.from("checklist_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
+    supabaseAdmin.from("contact_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
+    supabaseAdmin.from("demo_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
+    supabaseAdmin.from("checklist_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
   ]);
 
   const findings: Record<string, string | null> = {

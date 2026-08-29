@@ -19,15 +19,8 @@ export default async function DashboardPage() {
   
   const { data: { session } } = await supabase.auth.getSession();
 
-  if (!session) {
-    redirect("/login");
-  }
-
-  // Admin Check
-  const isAdmin = session.user.email?.endsWith('@logicintelligencetechnologies.in') || session.user.email?.endsWith('admin.com'); // fallback if they haven't set up the domain email yet, but let's stick to the domain logic.
-  if (!session.user.email?.endsWith('@logicintelligencetechnologies.in')) {
-    redirect("/profile");
-  }
+  // Auth and Admin checks are now handled by middleware.ts
+  const isAdmin = session?.user?.email?.endsWith('@logicintelligencetechnologies.in');
 
   // Fetching data from Supabase
   const { data: leads = [] } = await supabase.from("contact_leads").select("*").order("created_at", { ascending: false }).limit(5);

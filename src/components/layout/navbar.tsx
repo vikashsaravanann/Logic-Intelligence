@@ -85,7 +85,7 @@ export default function Navbar() {
                 transition={{ type: "spring", stiffness: 100, damping: 10 }}
                 className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_15px_rgba(0,191,255,0.4)] animate-neon-pulse bg-gradient-to-tr from-primary to-accent"
               >
-                <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
+                <img src="/assets/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </motion.div>
               <div className="flex items-center">
                 <span className="text-[11px] sm:text-[12px] lg:text-[13px] font-bold text-white tracking-wider leading-none whitespace-nowrap">
