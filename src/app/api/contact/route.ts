@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { sendEmail } from "@/lib/email/send-email";
-import NewLeadNotificationEmail from "../../../../emails/new-lead-notification-email";
-import LeadConfirmationEmail from "../../../../emails/lead-confirmation-email";
+import NewLeadNotificationEmail from "@/emails/new-lead-notification-email";
+import LeadConfirmationEmail from "@/emails/lead-confirmation-email";
 import * as React from "react";
 
 // Initialize Supabase client

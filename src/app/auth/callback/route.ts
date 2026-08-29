@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { sendEmail } from "@/lib/email/send-email";
-import WelcomeEmail from "../../../../emails/welcome-email";
+import WelcomeEmail from "@/emails/welcome-email";
 import * as React from "react";
 
 import { env } from "@/config/env";

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { sendEmail } from "@/lib/email/send-email";
-import WelcomeEmail from "../../../../../emails/welcome-email";
+import WelcomeEmail from "@/emails/welcome-email";
 import crypto from "crypto";
 import * as React from "react";
 
