@@ -88,7 +88,7 @@ export default function Navbar() {
                 <img src="/assets/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </motion.div>
               <div className="flex items-center min-w-0">
-                <span className="text-[11px] sm:text-[12px] lg:text-[13px] font-bold text-white tracking-wider leading-none whitespace-nowrap hidden sm:block truncate max-w-[120px] xl:max-w-[250px] 2xl:max-w-none">
+                <span className="text-[11px] sm:text-[12px] lg:text-[13px] font-bold text-white tracking-wider leading-none whitespace-nowrap hidden sm:block">
                   {COMPANY.displayName.toUpperCase()}
                 </span>
               </div>

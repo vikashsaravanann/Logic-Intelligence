@@ -9,7 +9,7 @@ export default function HeroSection() {
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0F1E] pt-24 pb-12">
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0F1E] pt-32 md:pt-48 pb-12">
       
       {/* Background - Tech Forward Abstract */}
       <div className="absolute inset-0 z-0">
