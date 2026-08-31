@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 
 export async function updateProfile(formData: FormData) {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const supabase = createServerActionClient(
       { cookies: () => cookieStore as any },
       {
@@ -26,8 +26,8 @@ export async function updateProfile(formData: FormData) {
     const companyName = formData.get("companyName") as string;
     const phoneNumber = formData.get("phoneNumber") as string;
 
-    // We assume these columns exist or will be added to the profiles table
-    const { error } = await supabase
+    const { supabaseAdmin } = await import("@/lib/supabase/admin");
+    const { error } = await supabaseAdmin
       .from("profiles")
       .update({
         full_name: fullName,
