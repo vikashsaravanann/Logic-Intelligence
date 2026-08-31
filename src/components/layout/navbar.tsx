@@ -187,9 +187,9 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Floating AI Pill */}
+        {/* Floating AI Pill (Home Page Only) */}
         <AnimatePresence>
-          {!scrolled && (
+          {pathname === "/" && !scrolled && (
             <motion.div 
               initial={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20, pointerEvents: "none" }}
