@@ -74,7 +74,7 @@ export default function Navbar() {
       />
       
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-[rgba(10,15,30,0.85)] backdrop-blur-[20px] saturate-180 border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.3)] py-4" : "bg-transparent py-6"}`}>
-        <div className="mx-auto max-w-[1400px] px-4 lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-4 lg:px-8 relative z-50">
           <div className="flex items-center justify-between">
             
             {/* Logo Animation */}
@@ -88,7 +88,7 @@ export default function Navbar() {
                 <img src="/assets/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </motion.div>
               <div className="flex items-center">
-                <span className="text-[11px] sm:text-[12px] lg:text-[13px] font-bold text-white tracking-wider leading-none whitespace-nowrap">
+                <span className="text-[11px] sm:text-[12px] lg:text-[13px] font-bold text-white tracking-wider leading-none whitespace-nowrap hidden sm:block truncate max-w-[120px] xl:max-w-[250px] 2xl:max-w-none">
                   {COMPANY.displayName.toUpperCase()}
                 </span>
               </div>
@@ -126,7 +126,7 @@ export default function Navbar() {
             </div>
 
             {/* CTA & Mobile Toggle */}
-            <div className="flex items-center gap-3 xl:gap-5">
+            <div className="flex items-center gap-4 xl:gap-6 ml-2">
               
               {session ? (
                 <div className="hidden lg:flex relative group" onMouseEnter={() => handleMouseEnter('user')} onMouseLeave={handleMouseLeave}>
@@ -147,7 +147,7 @@ export default function Navbar() {
                     {activeDropdown === 'user' && (
                       <motion.div 
                         initial={{ opacity: 0, scaleY: 0 }} animate={{ opacity: 1, scaleY: 1 }} exit={{ opacity: 0, scaleY: 0 }} style={{ transformOrigin: "top right" }}
-                        className="absolute top-[100%] right-0 mt-2 w-[200px] bg-[rgba(10,15,30,0.98)] backdrop-blur-[30px] border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(0,191,255,0.1)] p-2 flex flex-col space-y-1"
+                        className="absolute top-[100%] right-0 mt-2 w-[200px] bg-[rgba(10,15,30,0.98)] backdrop-blur-[30px] border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(0,191,255,0.1)] p-2 flex flex-col space-y-1 z-[100]"
                       >
                         <Link href="/profile" className="flex items-center text-sm font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors">
                           My Profile
@@ -188,24 +188,33 @@ export default function Navbar() {
         </div>
 
         {/* Small AI Sub-Header */}
-        <div className="w-full bg-[#050A10]/90 backdrop-blur-md border-t border-b border-white/5 py-2.5 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/10 via-cyan-900/10 to-blue-900/10 pointer-events-none"></div>
-          <div className="mx-auto max-w-[1400px] px-4 lg:px-8 flex justify-center relative z-10">
-            <Link 
-              href="/ai" 
-              className="group flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/40 px-6 sm:px-8 py-1.5 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,191,255,0.15)]"
+        <AnimatePresence>
+          {!scrolled && (
+            <motion.div 
+              initial={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0, overflow: "hidden" }}
+              transition={{ duration: 0.3 }}
+              className="w-full bg-[#050A10]/90 backdrop-blur-md border-t border-b border-white/5 py-2.5 relative z-40 overflow-hidden origin-top"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-80"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400 shadow-[0_0_8px_rgba(0,255,255,0.8)]"></span>
-              </span>
-              <span className="text-[10px] sm:text-xs font-medium tracking-[0.2em] text-zinc-300 group-hover:text-white transition-colors">
-                EXPLORE OUR ENTERPRISE AI ASSISTANT
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-        </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-900/10 via-cyan-900/10 to-blue-900/10 pointer-events-none"></div>
+              <div className="mx-auto max-w-[1400px] px-4 lg:px-8 flex justify-center relative z-10">
+                <Link 
+                  href="/ai" 
+                  className="group flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/40 px-6 sm:px-8 py-1.5 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,191,255,0.15)]"
+                >
+                  <span className="relative flex h-2 w-2 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-80"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400 shadow-[0_0_8px_rgba(0,255,255,0.8)]"></span>
+                  </span>
+                  <span className="text-[10px] sm:text-xs font-medium tracking-[0.2em] text-zinc-300 group-hover:text-white transition-colors whitespace-nowrap">
+                    EXPLORE OUR ENTERPRISE AI ASSISTANT
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 group-hover:translate-x-1 transition-transform shrink-0" />
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Mobile Menu */}
         <AnimatePresence>
