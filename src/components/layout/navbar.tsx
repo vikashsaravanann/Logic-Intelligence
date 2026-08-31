@@ -171,10 +171,10 @@ export default function Navbar() {
                   Login
                 </Link>
               )}
-              <Link href="/contact" className="hidden lg:flex relative group px-6 py-2 rounded-full overflow-hidden items-center justify-center shadow-[0_0_20px_rgba(0,191,255,0.3)] transition-transform hover:scale-105 active:scale-95">
+              <Link href="/contact" className="hidden lg:flex shrink-0 relative group px-6 py-2 rounded-full overflow-hidden items-center justify-center shadow-[0_0_20px_rgba(0,191,255,0.3)] transition-transform hover:scale-105 active:scale-95">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700 opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></div>
-                <span className="relative z-10 text-[11px] font-bold text-white tracking-widest uppercase">
+                <span className="relative z-10 text-[11px] font-bold text-white tracking-widest uppercase whitespace-nowrap">
                   Start Project
                 </span>
               </Link>
