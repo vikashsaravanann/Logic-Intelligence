@@ -78,7 +78,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             
             {/* Logo Animation */}
-            <Link href="/" className="flex items-center gap-3 group relative z-50 overflow-hidden">
+            <Link href="/" className="flex items-center gap-3 group relative z-50 overflow-hidden min-w-0">
               <motion.div 
                 initial={{ x: -50, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -87,7 +87,7 @@ export default function Navbar() {
               >
                 <img src="/assets/logo.jpg" alt="Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-lg text-white">LIT</span>'; }} />
               </motion.div>
-              <div className="flex items-center">
+              <div className="flex items-center min-w-0">
                 <span className="text-[11px] sm:text-[12px] lg:text-[13px] font-bold text-white tracking-wider leading-none whitespace-nowrap hidden sm:block truncate max-w-[120px] xl:max-w-[250px] 2xl:max-w-none">
                   {COMPANY.displayName.toUpperCase()}
                 </span>
