@@ -4,7 +4,8 @@ import { redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { env } from "@/config/env";
-import ProfileForm from "./profile-form";
+import { getUserPortalData } from "./actions/portal";
+import { PortalTabs } from "./components/portal-tabs";
 
 export const dynamic = 'force-dynamic';
 
@@ -31,10 +32,20 @@ export default async function ProfilePage() {
     .eq("id", session.user.id)
     .single();
 
+  // Fetch portal data
+  const portalData = await getUserPortalData();
+
   // Extract user details
   const user = session.user;
   const avatarUrl = user.user_metadata?.avatar_url;
   const fullName = profile?.full_name || user.user_metadata?.full_name || '';
+
+  const profileDetails = {
+    fullName,
+    email: user.email || '',
+    companyName: profile?.company_name || '',
+    phoneNumber: profile?.phone_number || ''
+  };
 
   return (
     <div className="min-h-screen bg-[#050B14] text-white font-sans flex flex-col items-center py-12 px-4 relative">
@@ -42,7 +53,7 @@ export default async function ProfilePage() {
         <ArrowLeft size={16} /> Back to Home
       </Link>
 
-      <div className="w-full max-w-2xl mt-12">
+      <div className="w-full mt-12">
         <div className="text-center mb-10">
           <div className="w-24 h-24 mx-auto rounded-full bg-blue-900/40 border-4 border-blue-500/30 flex items-center justify-center text-4xl font-bold text-blue-400 mb-4 overflow-hidden shadow-[0_0_30px_rgba(0,191,255,0.2)]">
             {avatarUrl ? (
@@ -51,16 +62,11 @@ export default async function ProfilePage() {
               user.email?.charAt(0).toUpperCase()
             )}
           </div>
-          <h1 className="text-3xl font-black text-white tracking-tight">Client Profile</h1>
-          <p className="text-zinc-400 mt-2 text-sm">Manage your Logic Intelligence Technologies account details.</p>
+          <h1 className="text-3xl font-black text-white tracking-tight">Client Portal</h1>
+          <p className="text-zinc-400 mt-2 text-sm">Manage your Logic Intelligence Technologies projects and account.</p>
         </div>
 
-        <ProfileForm 
-          initialFullName={fullName}
-          email={user.email || ''}
-          initialCompanyName={profile?.company_name || ''}
-          initialPhoneNumber={profile?.phone_number || ''}
-        />
+        <PortalTabs portalData={portalData} profileDetails={profileDetails} />
       </div>
     </div>
   );

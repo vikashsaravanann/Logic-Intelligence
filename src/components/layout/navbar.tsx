@@ -187,31 +187,28 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Small AI Sub-Header */}
+        {/* Floating AI Pill */}
         <AnimatePresence>
           {!scrolled && (
             <motion.div 
-              initial={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0, overflow: "hidden" }}
+              initial={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20, pointerEvents: "none" }}
               transition={{ duration: 0.3 }}
-              className="w-full bg-[#050A10]/90 backdrop-blur-md border-t border-b border-white/5 py-2.5 relative z-40 overflow-hidden origin-top"
+              className="absolute left-1/2 -translate-x-1/2 top-full mt-2 md:mt-4 z-40"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-900/10 via-cyan-900/10 to-blue-900/10 pointer-events-none"></div>
-              <div className="mx-auto max-w-[1400px] px-4 lg:px-8 flex justify-center relative z-10">
-                <Link 
-                  href="/ai" 
-                  className="group flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/40 px-6 sm:px-8 py-1.5 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,191,255,0.15)]"
-                >
-                  <span className="relative flex h-2 w-2 shrink-0">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-80"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400 shadow-[0_0_8px_rgba(0,255,255,0.8)]"></span>
-                  </span>
-                  <span className="text-[10px] sm:text-xs font-medium tracking-[0.2em] text-zinc-300 group-hover:text-white transition-colors whitespace-nowrap">
-                    EXPLORE OUR ENTERPRISE AI ASSISTANT
-                  </span>
-                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 group-hover:translate-x-1 transition-transform shrink-0" />
-                </Link>
-              </div>
+              <Link 
+                href="/ai" 
+                className="group flex items-center gap-3 bg-[rgba(10,15,30,0.8)] backdrop-blur-md border border-white/10 hover:border-cyan-500/40 px-6 py-2 rounded-full transition-all duration-300 shadow-xl hover:shadow-[0_0_20px_rgba(0,191,255,0.15)]"
+              >
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-80"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400 shadow-[0_0_8px_rgba(0,255,255,0.8)]"></span>
+                </span>
+                <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-zinc-300 group-hover:text-white transition-colors whitespace-nowrap">
+                  EXPLORE OUR ENTERPRISE AI ASSISTANT
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 group-hover:translate-x-1 transition-transform shrink-0" />
+              </Link>
             </motion.div>
           )}
         </AnimatePresence>

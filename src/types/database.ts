@@ -12,31 +12,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       checklist_leads: {
@@ -63,6 +38,33 @@ export type Database = {
           id?: string
           name?: string
           role?: string | null
+        }
+        Relationships: []
+      }
+      client_files: {
+        Row: {
+          created_at: string | null
+          file_name: string
+          file_path: string
+          id: string
+          size: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          file_name: string
+          file_path: string
+          id?: string
+          size?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          file_name?: string
+          file_path?: string
+          id?: string
+          size?: number
+          user_id?: string
         }
         Relationships: []
       }
@@ -142,6 +144,7 @@ export type Database = {
           invoice_code: string
           project_id: string | null
           status: string
+          user_id: string | null
         }
         Insert: {
           amount?: number
@@ -152,6 +155,7 @@ export type Database = {
           invoice_code: string
           project_id?: string | null
           status?: string
+          user_id?: string | null
         }
         Update: {
           amount?: number
@@ -162,6 +166,7 @@ export type Database = {
           invoice_code?: string
           project_id?: string | null
           status?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -269,11 +274,36 @@ export type Database = {
         }
         Relationships: []
       }
+      onboarding_submissions: {
+        Row: {
+          answers_json: Json
+          created_at: string | null
+          id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          answers_json?: Json
+          created_at?: string | null
+          id?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          answers_json?: Json
+          created_at?: string | null
+          id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
           full_name: string | null
           id: string
+          phone_number: string | null
           role: string | null
           welcome_email_sent_at: string | null
         }
@@ -281,6 +311,7 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id: string
+          phone_number?: string | null
           role?: string | null
           welcome_email_sent_at?: string | null
         }
@@ -288,6 +319,7 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          phone_number?: string | null
           role?: string | null
           welcome_email_sent_at?: string | null
         }
@@ -303,6 +335,7 @@ export type Database = {
           progress: number
           project_code: string
           status: string
+          user_id: string | null
           value: number
         }
         Insert: {
@@ -314,6 +347,7 @@ export type Database = {
           progress?: number
           project_code: string
           status?: string
+          user_id?: string | null
           value?: number
         }
         Update: {
@@ -325,7 +359,35 @@ export type Database = {
           progress?: number
           project_code?: string
           status?: string
+          user_id?: string | null
           value?: number
+        }
+        Relationships: []
+      }
+      support_tickets: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string
+          status: string
+          subject: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message: string
+          status?: string
+          subject: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string
+          status?: string
+          subject?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -463,9 +525,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {},
   },
