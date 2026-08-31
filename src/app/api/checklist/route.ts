@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     // 1. Insert into Supabase
     if (env.NEXT_PUBLIC_SUPABASE_URL) {
       try {
-        const { error: dbError } = await supabase
+        const { error: dbError } = await supabaseAdmin
           .from("checklist_leads")
           .insert([
             { 

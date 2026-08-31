@@ -3,10 +3,10 @@ import SuggestionCard from './SuggestionCard';
 import BrandLogo from './BrandLogo';
 
 const SUGGESTIONS = [
-  { icon: '💼', title: 'What services', subtitle: 'does Logic Intelligence Technologies offer?' },
-  { icon: '💰', title: 'Business Pro Pack', subtitle: 'pricing and features' },
-  { icon: '⚛️', title: 'React optimization', subtitle: 'tips for reducing re-renders' },
-  { icon: '🛠️', title: 'Tech stack', subtitle: 'used in our live products' },
+  { icon: '💻', title: 'React Server Components', subtitle: 'How to implement them efficiently?' },
+  { icon: '🚀', title: 'Optimize Next.js', subtitle: 'Best practices for App Router' },
+  { icon: '🔒', title: 'Auth flow in Supabase', subtitle: 'Show me a secure implementation' },
+  { icon: '🎨', title: 'Tailwind animations', subtitle: 'Create a smooth loading spinner' },
 ];
 
 export default function WelcomeScreen({ onSelectSuggestion }) {

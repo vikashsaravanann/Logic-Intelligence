@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     // 1. Insert lead into Supabase first (Business logic prioritized)
     if (env.NEXT_PUBLIC_SUPABASE_URL) {
       try {
-        const { error: dbError } = await supabase
+        const { error: dbError } = await supabaseAdmin
           .from("demo_leads")
           .insert([
             { 

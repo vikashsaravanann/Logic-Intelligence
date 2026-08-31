@@ -56,10 +56,10 @@ export default async function DashboardPage() {
         <div className="p-4 mt-auto border-t border-white/5">
           <div className="flex items-center gap-3 mb-4 px-2">
             <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">
-              {session.user.email?.charAt(0).toUpperCase()}
+              {session?.user?.email?.charAt(0).toUpperCase()}
             </div>
             <div className="overflow-hidden">
-              <p className="text-xs font-bold text-white truncate">{session.user.email}</p>
+              <p className="text-xs font-bold text-white truncate">{session?.user?.email}</p>
               <p className="text-[10px] text-zinc-500">Administrator</p>
             </div>
           </div>

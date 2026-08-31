@@ -171,8 +171,12 @@ export default function Navbar() {
                   Login
                 </Link>
               )}
-              <Link href="/contact" className="hidden lg:flex px-4 py-1.5 rounded-full text-xs font-bold text-white neon-btn whitespace-nowrap">
-                Start Project
+              <Link href="/contact" className="hidden lg:flex relative group px-6 py-2 rounded-full overflow-hidden items-center justify-center shadow-[0_0_20px_rgba(0,191,255,0.3)] transition-transform hover:scale-105 active:scale-95">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700 opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></div>
+                <span className="relative z-10 text-[11px] font-bold text-white tracking-widest uppercase">
+                  Start Project
+                </span>
               </Link>
               
               <button className="lg:hidden text-white relative z-50 p-2" onClick={() => setIsOpen(!isOpen)}>
@@ -184,18 +188,19 @@ export default function Navbar() {
         </div>
 
         {/* Small AI Sub-Header */}
-        <div className="w-full bg-gradient-to-r from-[rgba(5,10,20,0.95)] to-[rgba(10,20,40,0.95)] border-t border-white/5 py-2.5 shadow-[0_4px_20px_rgba(0,191,255,0.15)]">
-          <div className="mx-auto max-w-[1400px] px-4 lg:px-8 flex justify-center sm:justify-end lg:justify-center">
+        <div className="w-full bg-[#050A10]/90 backdrop-blur-md border-t border-b border-white/5 py-2.5 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/10 via-cyan-900/10 to-blue-900/10 pointer-events-none"></div>
+          <div className="mx-auto max-w-[1400px] px-4 lg:px-8 flex justify-center relative z-10">
             <Link 
               href="/ai" 
-              className="group flex items-center gap-3 bg-blue-950/30 hover:bg-blue-900/50 border border-blue-500/30 hover:border-blue-400/60 px-5 sm:px-8 py-1.5 rounded-full transition-all duration-300 shadow-[0_0_15px_rgba(0,191,255,0.1)] hover:shadow-[0_0_25px_rgba(0,191,255,0.3)]"
+              className="group flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/40 px-6 sm:px-8 py-1.5 rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,191,255,0.15)]"
             >
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500 shadow-[0_0_8px_rgba(0,255,255,0.8)]"></span>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-80"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400 shadow-[0_0_8px_rgba(0,255,255,0.8)]"></span>
               </span>
-              <span className="text-[11px] sm:text-xs lg:text-sm font-semibold tracking-wider text-blue-100 group-hover:text-white transition-colors">
-                ACCESS LOGIC INTELLIGENCE ENTERPRISE AI ASSISTANT & KNOWLEDGE DATABASE
+              <span className="text-[10px] sm:text-xs font-medium tracking-[0.2em] text-zinc-300 group-hover:text-white transition-colors">
+                EXPLORE OUR ENTERPRISE AI ASSISTANT
               </span>
               <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 group-hover:translate-x-1 transition-transform" />
             </Link>
@@ -236,8 +241,11 @@ export default function Navbar() {
                       Login
                     </Link>
                   )}
-                  <Link href="/contact" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white neon-btn w-full">
-                    Start Project
+                  <Link href="/contact" onClick={() => setIsOpen(false)} className="relative group px-6 py-4 text-center rounded-xl overflow-hidden w-full flex items-center justify-center shadow-[0_0_20px_rgba(0,191,255,0.3)]">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700 opacity-90 transition-opacity duration-300"></div>
+                    <span className="relative z-10 text-base font-bold text-white tracking-widest uppercase">
+                      Start Project
+                    </span>
                   </Link>
                   <a href="https://wa.me/919342877474" className="px-6 py-4 text-center rounded-xl text-base font-bold text-white bg-gradient-to-r from-[#25D366] to-[#128C7E] w-full flex items-center justify-center gap-2">
                     WhatsApp Us

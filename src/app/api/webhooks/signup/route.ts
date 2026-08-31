@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     const userEmail = record.email;
 
     // 3. Idempotency Check: Did we already send the welcome email?
-    const { data: profile, error: profileError } = await supabase
+    const { data: profile, error: profileError } = await supabaseAdmin
       .from("profiles")
       .select("welcome_email_sent")
       .eq("id", userId)
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
     }
 
     // 5. Update Profile to mark welcome email as sent
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseAdmin
       .from("profiles")
       .update({ welcome_email_sent: true })
       .eq("id", userId);

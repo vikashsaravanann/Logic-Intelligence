@@ -1,47 +1,37 @@
 import { NextResponse } from 'next/server';
-import { client } from "@gradio/client";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const userMessage = body.text || body.message;
+    const maxTokens = body.max_tokens || 250;
     
-    // We create a ReadableStream to stream the SSE chunks back to the client
-    const stream = new ReadableStream({
-      async start(controller) {
-        try {
-          // Connect to the Hugging Face Gradio API
-          const app = await client("vikashsaravanan/logic-intelligence-api");
-          
-          // Connect to the ChatInterface prediction
-          const result = app.submit("/chat", [userMessage, []]);
-          
-          let lastData = "";
-          
-          for await (const msg of result) {
-            if (msg.type === "data" && Array.isArray(msg.data) && msg.data.length > 0) {
-              const currentText = msg.data[0] as string;
-              
-              // Extract the delta
-              const delta = currentText.substring(lastData.length);
-              lastData = currentText;
-              
-              if (delta) {
-                  // Send the delta in the expected format: data: {"text": "chunk"}
-                  const chunkData = JSON.stringify({ text: delta });
-                  controller.enqueue(new TextEncoder().encode(`data: ${chunkData}\n\n`));
-              }
-            }
-          }
-          controller.close();
-        } catch (err: any) {
-          console.error("Gradio stream error:", err);
-          controller.error(err);
-        }
-      }
+    // Connect directly to the local Python FastAPI backend
+    const backendUrl = process.env.NEXT_PUBLIC_AI_BACKEND_URL || 'http://localhost:8000';
+    
+    const response = await fetch(`${backendUrl}/generate-stream`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text: userMessage,
+        max_tokens: maxTokens
+      }),
     });
 
-    return new Response(stream, {
+    if (!response.ok) {
+      throw new Error(`Backend responded with status: ${response.status}`);
+    }
+
+    if (!response.body) {
+      throw new Error('No response body from backend');
+    }
+
+    // We can simply pipe the ReadableStream directly to the client
+    // since the FastAPI backend is already emitting SSE events
+    // in the exact format the client expects (data: {"token": "..."}\n\n)
+    return new Response(response.body, {
       headers: {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',

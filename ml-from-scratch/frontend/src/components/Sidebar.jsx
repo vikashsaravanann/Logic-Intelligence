@@ -55,24 +55,40 @@ export default function Sidebar({
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-      <div className="sidebar-header">
-        <button 
-          className="new-chat-btn" 
-          onClick={onNewChat}
-          aria-label="Create new chat"
-        >
-          <Plus size={16} />
-          <span>New chat</span>
-        </button>
+      <div className="sidebar-header" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        <div className="company-profile" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <img 
+            src="/logo-nobg.png" 
+            alt="Logic Intelligence Logo" 
+            style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '50%' }} 
+            onError={(e) => { e.target.src = '/logo-nobg.png'; e.target.style.display = 'none'; }}
+          />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ fontSize: '14px', fontWeight: 'bold', lineHeight: '1.2' }}>Logic Intelligence</span>
+            <span style={{ fontSize: '10px', color: '#888' }}>Technologies version 1</span>
+          </div>
+        </div>
         
-        <button 
-          className="close-sidebar-btn" 
-          onClick={onClose}
-          aria-label="Close sidebar"
-          aria-expanded={isOpen}
-        >
-          <X size={20} />
-        </button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+          <button 
+            className="new-chat-btn" 
+            onClick={onNewChat}
+            aria-label="Create new chat"
+            style={{ flex: 1, marginRight: '10px' }}
+          >
+            <Plus size={16} />
+            <span>New chat</span>
+          </button>
+          
+          <button 
+            className="close-sidebar-btn" 
+            onClick={onClose}
+            aria-label="Close sidebar"
+            aria-expanded={isOpen}
+          >
+            <X size={20} />
+          </button>
+        </div>
       </div>
 
       <div className="sidebar-content">
