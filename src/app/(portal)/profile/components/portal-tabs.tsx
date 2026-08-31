@@ -59,11 +59,11 @@ export function PortalTabs({ portalData, profileDetails }: PortalTabsProps) {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 w-full max-w-6xl mx-auto mt-8">
-      {/* Sidebar Navigation */}
-      <div className="lg:w-64 shrink-0">
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-2 sticky top-24">
-          <nav className="flex flex-row lg:flex-col gap-1 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 custom-scrollbar">
+    <div className="flex flex-col items-center gap-10 w-full max-w-4xl mx-auto mt-6">
+      {/* Horizontal Navigation */}
+      <div className="w-full">
+        <div className="bg-[rgba(10,15,30,0.6)] border border-white/[0.08] rounded-2xl p-2 backdrop-blur-2xl shadow-xl">
+          <nav className="flex flex-row gap-2 overflow-x-auto justify-start sm:justify-center custom-scrollbar pb-2 sm:pb-0">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -71,14 +71,14 @@ export function PortalTabs({ portalData, profileDetails }: PortalTabsProps) {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all whitespace-nowrap lg:whitespace-normal ${
+                  className={`flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
                     isActive 
-                      ? "bg-blue-600/20 text-blue-400 border border-blue-500/20" 
-                      : "text-white/60 hover:bg-white/5 hover:text-white border border-transparent"
+                      ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-[0_0_15px_rgba(0,191,255,0.4)]" 
+                      : "text-zinc-400 hover:bg-white/5 hover:text-white border border-transparent"
                   }`}
                 >
-                  <Icon className="w-5 h-5 shrink-0" />
-                  {tab.label}
+                  <Icon className="w-4 h-4 shrink-0" />
+                  <span className="hidden sm:inline">{tab.label}</span>
                 </button>
               );
             })}
@@ -86,15 +86,15 @@ export function PortalTabs({ portalData, profileDetails }: PortalTabsProps) {
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 min-w-0">
+      {/* Centered Main Content Area */}
+      <div className="w-full min-w-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, y: 15, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -15, scale: 0.98 }}
+            transition={{ duration: 0.3, type: "spring", stiffness: 200, damping: 20 }}
           >
             {renderTabContent()}
           </motion.div>

@@ -7,6 +7,22 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { saveClientFileMetadata } from "../actions/portal";
 import { toast } from "sonner";
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1, y: 0,
+    transition: { type: "spring", stiffness: 100, damping: 15 } as any
+  }
+};
+
 export function VaultTab({ files, user }: { files: any[], user: any }) {
   const [isUploading, setIsUploading] = useState(false);
   const supabase = createClientComponentClient();
@@ -46,47 +62,81 @@ export function VaultTab({ files, user }: { files: any[], user: any }) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="p-8 border-2 border-dashed border-white/20 rounded-2xl bg-white/5 text-center relative hover:bg-white/10 transition-colors">
+    <div className="space-y-8">
+      {/* Upload Area */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="relative group p-10 border-2 border-dashed border-white/20 rounded-3xl bg-[rgba(10,15,30,0.6)] backdrop-blur-2xl text-center hover:bg-[rgba(20,30,50,0.6)] hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(0,191,255,0.2)] transition-all duration-300 overflow-hidden"
+      >
         <input 
           type="file" 
           onChange={handleFileUpload} 
           disabled={isUploading}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-20"
         />
-        <UploadCloud className="w-10 h-10 mx-auto mb-4 text-white/40" />
-        <h3 className="text-lg font-medium text-white mb-1">Upload Document</h3>
-        <p className="text-sm text-white/60">Drag and drop or click to upload assets, logos, or requirements</p>
+        
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+        <div className="relative z-10">
+          <div className="w-20 h-20 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner group-hover:scale-110 group-hover:bg-blue-500/20 transition-transform duration-300">
+            <UploadCloud className="w-10 h-10 text-cyan-400 group-hover:text-white transition-colors" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2 tracking-tight">Upload Document</h3>
+          <p className="text-sm text-zinc-400 max-w-sm mx-auto leading-relaxed">
+            Drag and drop or click to upload assets, logos, requirements, or completed signed documents.
+          </p>
+        </div>
+
         {isUploading && (
-          <div className="absolute inset-0 bg-black/50 rounded-2xl flex items-center justify-center">
-            <Loader2 className="w-8 h-8 text-white animate-spin" />
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm z-30 flex flex-col items-center justify-center">
+            <Loader2 className="w-10 h-10 text-cyan-400 animate-spin mb-4" />
+            <p className="text-white font-medium tracking-widest text-sm uppercase">Uploading securely...</p>
           </div>
         )}
-      </div>
+      </motion.div>
 
-      <div className="space-y-3">
-        <h3 className="text-lg font-medium text-white">Your Files</h3>
+      {/* Files List */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+        className="p-8 rounded-3xl border border-white/[0.08] bg-[rgba(10,15,30,0.6)] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_0_80px_rgba(255,255,255,0.02)]"
+      >
+        <h3 className="text-2xl font-bold text-white mb-6 tracking-tight">Your Files</h3>
+        
         {files.length === 0 ? (
-          <p className="text-white/40 text-sm">No files uploaded yet.</p>
+          <div className="flex flex-col items-center justify-center py-10 border border-white/5 bg-white/[0.02] rounded-2xl text-center">
+            <File className="w-10 h-10 text-white/10 mb-3" />
+            <p className="text-zinc-500 text-sm">No files uploaded yet.</p>
+          </div>
         ) : (
-          files.map((file) => (
-            <div key={file.id} className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/5">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-500/20 text-blue-400 rounded-lg">
-                  <File className="w-5 h-5" />
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-3"
+          >
+            {files.map((file) => (
+              <motion.div 
+                key={file.id} 
+                variants={itemVariants}
+                className="flex items-center justify-between p-5 rounded-2xl border border-white/[0.05] bg-black/20 hover:bg-black/40 hover:border-white/10 transition-all group"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-blue-500/10 text-cyan-400 rounded-xl shadow-inner group-hover:bg-blue-500/20 group-hover:text-white transition-colors">
+                    <File className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="text-base font-bold text-white tracking-tight mb-1">{file.file_name}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">{formatSize(file.size)}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-white">{file.file_name}</p>
-                  <p className="text-xs text-white/40">{formatSize(file.size)}</p>
-                </div>
-              </div>
-              <button className="p-2 text-white/40 hover:text-red-400 hover:bg-white/10 rounded-lg transition-colors">
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </div>
-          ))
+                <button className="p-3 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all border border-transparent hover:border-red-500/20">
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              </motion.div>
+            ))}
+          </motion.div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }
