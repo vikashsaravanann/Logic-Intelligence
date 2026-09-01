@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@gradio/client": "^2.5.1",
+    "@hello-pangea/dnd": "^16.6.0",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-slot": "^1.2.4",
     "@react-email/components": "^1.0.12",
@@ -27,6 +28,7 @@
     "react-email": "^6.9.2",
     "react-hook-form": "^7.75.0",
     "react-markdown": "^10.1.0",
+    "recharts": "^2.12.7",
     "sonner": "^2.0.8",
     "tailwind-merge": "^3.5.0",
     "zod": "^4.4.2"
