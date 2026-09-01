@@ -73,12 +73,9 @@ export default function Footer() {
                   />
                 </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-black text-white tracking-wide leading-none">
-                  LOGIC INTELLIGENCE
-                </span>
-                <span className="text-xs font-semibold text-primary tracking-[0.2em] uppercase mt-1">
-                  Technologies
+              <div className="flex items-center">
+                <span className="text-sm md:text-base font-black text-white tracking-widest leading-none uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+                  LOGIC INTELLIGENCE TECHNOLOGIES
                 </span>
               </div>
             </Link>
