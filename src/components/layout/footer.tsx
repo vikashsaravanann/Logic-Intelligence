@@ -57,8 +57,9 @@ export default function Footer() {
           {/* Column 1: Brand */}
           <div className="flex flex-col gap-8 overflow-hidden">
             <Link href="/" className="flex items-center gap-3 group w-full">
-              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl flex items-center justify-center overflow-hidden bg-gradient-to-tr from-primary to-accent p-0.5 shadow-[0_0_20px_rgba(0,191,255,0.2)] shrink-0">
-                <div className="w-full h-full bg-[#060B18] rounded-[10px] flex items-center justify-center overflow-hidden">
+              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full flex items-center justify-center overflow-hidden bg-gradient-to-tr from-primary to-accent p-0.5 shadow-[0_0_20px_rgba(0,191,255,0.2)] shrink-0">
+                <div className="w-full h-full bg-[#060B18] rounded-full flex items-center justify-center overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={COMPANY.logoIconPath}
                     alt="Logo"
@@ -71,7 +72,7 @@ export default function Footer() {
                 </div>
               </div>
               <div className="flex items-center min-w-0">
-                <span className="text-[11px] sm:text-[12px] lg:text-[13px] xl:text-[14px] font-black text-white tracking-[0.15em] leading-tight uppercase whitespace-nowrap">
+                <span className="text-[10px] lg:text-[11px] xl:text-xs font-black text-white tracking-widest leading-tight uppercase">
                   LOGIC INTELLIGENCE TECHNOLOGIES
                 </span>
               </div>
@@ -142,7 +143,7 @@ export default function Footer() {
               />
               <button 
                 type="submit" 
-                className="absolute right-2 top-2 bottom-2 aspect-square bg-gradient-to-tr from-primary to-accent rounded-lg flex items-center justify-center text-white hover:scale-105 transition-transform"
+                className="absolute right-2 top-2 bottom-2 px-4 bg-gradient-to-tr from-primary to-accent rounded flex items-center justify-center text-white hover:scale-105 transition-transform"
                 title="Subscribe"
               >
                 <Send className="w-5 h-5 ml-0.5" />
