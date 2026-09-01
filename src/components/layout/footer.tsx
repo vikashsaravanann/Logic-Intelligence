@@ -52,9 +52,9 @@ export default function Footer() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-8 relative z-10">
         
         {/* Main Grid: 4 EQUAL Columns with generous gaps */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 xl:gap-16 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 xl:gap-16 mb-16">
           
-          {/* Column 1: Brand & Contact */}
+          {/* Column 1: Brand */}
           <div className="flex flex-col gap-8 overflow-hidden">
             <Link href="/" className="flex items-center gap-3 group w-full">
               <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl flex items-center justify-center overflow-hidden bg-gradient-to-tr from-primary to-accent p-0.5 shadow-[0_0_20px_rgba(0,191,255,0.2)] shrink-0">
@@ -71,8 +71,8 @@ export default function Footer() {
                 </div>
               </div>
               <div className="flex items-center min-w-0">
-                <span className="text-[10px] sm:text-xs lg:text-[11px] xl:text-sm font-black text-white tracking-widest leading-tight uppercase truncate">
-                  LOGIC INTELLIGENCE<br/>TECHNOLOGIES
+                <span className="text-[11px] sm:text-[12px] lg:text-[13px] xl:text-[14px] font-black text-white tracking-[0.15em] leading-tight uppercase whitespace-nowrap">
+                  LOGIC INTELLIGENCE TECHNOLOGIES
                 </span>
               </div>
             </Link>
@@ -80,25 +80,6 @@ export default function Footer() {
             <p className="text-xs xl:text-sm text-zinc-400 leading-relaxed font-medium uppercase tracking-wider">
               COIMBATORE&apos;S PREMIER AI-INTEGRATED DEVELOPMENT STUDIO. WE BUILD INTELLIGENT SOFTWARE TO DRIVE YOUR BUSINESS FORWARD.
             </p>
-
-            <ul className="flex flex-col gap-4">
-              <li>
-                <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-4 text-xs xl:text-sm text-zinc-400 hover:text-white transition-colors group uppercase tracking-widest truncate">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors shrink-0">
-                    <Mail className="w-4 h-4" />
-                  </div>
-                  <span className="truncate">{COMPANY.email}</span>
-                </a>
-              </li>
-              <li>
-                <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-4 text-xs xl:text-sm text-zinc-400 hover:text-white transition-colors group uppercase tracking-widest truncate">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors shrink-0">
-                    <Phone className="w-4 h-4" />
-                  </div>
-                  <span className="truncate">{COMPANY.phone}</span>
-                </a>
-              </li>
-            </ul>
           </div>
 
           {/* Column 2: Solutions */}
@@ -188,6 +169,22 @@ export default function Footer() {
             </div>
           </div>
 
+        </div>
+
+        {/* Contact Info Row Centered under Solutions & Company */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-16 pt-8 border-t border-white/5 w-full">
+          <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-3 text-sm xl:text-base text-zinc-400 hover:text-white transition-colors group tracking-widest">
+            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors shrink-0">
+              <Mail className="w-4 h-4" />
+            </div>
+            <span className="lowercase">{COMPANY.email}</span>
+          </a>
+          <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-3 text-sm xl:text-base text-zinc-400 hover:text-white transition-colors group tracking-widest">
+            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors shrink-0">
+              <Phone className="w-4 h-4" />
+            </div>
+            <span>{COMPANY.phone}</span>
+          </a>
         </div>
 
         {/* Bottom Banner */}
