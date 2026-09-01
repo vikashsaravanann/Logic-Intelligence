@@ -1,0 +1,10 @@
+export default function FinancesPage() {
+  return (
+    <div className="p-10 max-w-7xl mx-auto">
+      <h2 className="text-2xl font-bold text-white mb-6">Financial Dashboard</h2>
+      <div className="bg-white/5 border border-white/10 p-12 rounded-3xl text-center">
+        <p className="text-zinc-400">Invoicing and revenue streams are loading.</p>
+      </div>
+    </div>
+  );
+}

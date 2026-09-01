@@ -78,9 +78,20 @@ export default function Footer() {
               </div>
             </Link>
             
-            <p className="text-xs xl:text-sm text-zinc-400 leading-relaxed font-medium uppercase tracking-wider">
-              COIMBATORE&apos;S PREMIER AI-INTEGRATED DEVELOPMENT STUDIO. WE BUILD INTELLIGENT SOFTWARE TO DRIVE YOUR BUSINESS FORWARD.
-            </p>
+            <ul className="flex flex-col gap-3 mt-2">
+              {[
+                "PREMIER AI-INTEGRATED DEVELOPMENT",
+                "CUSTOM ENTERPRISE SOFTWARE",
+                "MODERN WEB & MOBILE APPS",
+                "STRATEGIC UI/UX DESIGN",
+                "SCALABLE CLOUD SOLUTIONS"
+              ].map((point, idx) => (
+                <li key={idx} className="flex items-start gap-3 text-xs xl:text-sm text-zinc-400 leading-relaxed font-medium uppercase tracking-wider">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Column 2: Solutions */}
