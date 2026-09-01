@@ -169,9 +169,11 @@ export default function DashboardClient({
                       </div>
                     </td>
                     <td className="px-6 py-5 text-right">
-                      <button className="opacity-0 group-hover:opacity-100 p-2 bg-white/5 hover:bg-white/10 rounded-lg text-white transition-all transform hover:scale-105">
-                        <ArrowUpRight className="w-4 h-4" />
-                      </button>
+                      <Link href={`/dashboard/projects`}>
+                        <button className="opacity-0 group-hover:opacity-100 p-2 bg-white/5 hover:bg-white/10 rounded-lg text-white transition-all transform hover:scale-105">
+                          <ArrowUpRight className="w-4 h-4" />
+                        </button>
+                      </Link>
                     </td>
                   </tr>
                 )) : (
@@ -198,9 +200,11 @@ export default function DashboardClient({
               </h3>
               <p className="text-xs text-zinc-500 mt-1">Real-time team activity</p>
             </div>
-            <button className="text-xs font-bold text-indigo-400 hover:text-indigo-300 bg-indigo-500/10 px-3 py-1.5 rounded-full transition-colors">
-              Full Log
-            </button>
+            <Link href="/dashboard/analytics">
+              <button className="text-xs font-bold text-indigo-400 hover:text-indigo-300 bg-indigo-500/10 px-3 py-1.5 rounded-full transition-colors">
+                Full Log
+              </button>
+            </Link>
           </div>
           
           <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 shadow-xl">

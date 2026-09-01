@@ -17,6 +17,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [showNotifications, setShowNotifications] = useState(false);
   const pathname = usePathname();
 
   return (
@@ -124,10 +125,48 @@ export default function DashboardLayout({
                 className="bg-white/[0.02] border border-white/10 rounded-full pl-11 pr-4 py-2 text-sm focus:outline-none focus:border-indigo-500/50 focus:bg-indigo-500/5 w-72 transition-all placeholder:text-zinc-600 text-zinc-300 shadow-inner" 
               />
             </div>
-            <button className="relative p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors border border-white/5">
-              <Bell className="w-5 h-5 text-zinc-400" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-indigo-500 border-2 border-[#030712]"></span>
-            </button>
+            <div className="relative">
+              <button 
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="relative p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors border border-white/5"
+              >
+                <Bell className="w-5 h-5 text-zinc-400" />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-indigo-500 border-2 border-[#030712]"></span>
+              </button>
+              
+              {showNotifications && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  className="absolute right-0 mt-2 w-80 bg-[#0a0f1c] border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden"
+                >
+                  <div className="p-4 border-b border-white/5 flex items-center justify-between">
+                    <h4 className="font-bold text-white">Notifications</h4>
+                    <span className="text-xs text-indigo-400 cursor-pointer hover:underline">Mark all read</span>
+                  </div>
+                  <div className="max-h-80 overflow-y-auto">
+                    {[
+                      { id: 1, title: 'New lead received', time: '5 mins ago', read: false },
+                      { id: 2, title: 'Invoice #2026-08 paid', time: '2 hours ago', read: false },
+                      { id: 3, title: 'Project "Acme" updated', time: '1 day ago', read: true },
+                    ].map(notif => (
+                      <div key={notif.id} className={`p-4 border-b border-white/5 hover:bg-white/[0.02] cursor-pointer transition-colors flex gap-3 ${!notif.read ? 'bg-indigo-500/[0.02]' : ''}`}>
+                        <div className={`w-2 h-2 mt-1.5 rounded-full ${notif.read ? 'bg-transparent' : 'bg-indigo-500'}`}></div>
+                        <div>
+                          <p className={`text-sm ${notif.read ? 'text-zinc-400' : 'text-white font-medium'}`}>{notif.title}</p>
+                          <p className="text-xs text-zinc-500 mt-1">{notif.time}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="p-3 border-t border-white/5 text-center">
+                    <Link href="/dashboard/analytics" onClick={() => setShowNotifications(false)} className="text-xs text-zinc-400 hover:text-white transition-colors">
+                      View all notifications
+                    </Link>
+                  </div>
+                </motion.div>
+              )}
+            </div>
           </div>
         </header>
 

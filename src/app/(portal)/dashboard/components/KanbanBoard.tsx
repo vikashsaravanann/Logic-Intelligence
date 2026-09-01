@@ -141,12 +141,18 @@ export default function KanbanBoard({ leads = [] }: { leads: any[] }) {
                                       {item.created_at ? new Date(item.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'Today'}
                                     </span>
                                     <div className="flex items-center gap-2">
-                                      <button className="p-1.5 rounded bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-colors">
+                                      <a href={`mailto:${item.email}`} className="p-1.5 rounded bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-colors">
                                         <Mail className="w-3 h-3" />
-                                      </button>
-                                      <button className="p-1.5 rounded bg-white/5 text-zinc-400 hover:bg-white/10 transition-colors">
-                                        <Phone className="w-3 h-3" />
-                                      </button>
+                                      </a>
+                                      {item.phone ? (
+                                        <a href={`tel:${item.phone}`} className="p-1.5 rounded bg-white/5 text-zinc-400 hover:bg-white/10 transition-colors">
+                                          <Phone className="w-3 h-3" />
+                                        </a>
+                                      ) : (
+                                        <button disabled className="p-1.5 rounded bg-white/5 text-zinc-600 cursor-not-allowed">
+                                          <Phone className="w-3 h-3" />
+                                        </button>
+                                      )}
                                     </div>
                                   </div>
                                 </div>
