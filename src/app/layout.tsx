@@ -1,10 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/layout/navbar';
-import Footer from '@/components/layout/footer';
-import SupportChatWidget from '@/components/shared/support-chat-widget';
-import FloatingWhatsApp from '@/components/shared/floating-whatsapp';
 import { COMPANY } from '@/config/company';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -40,7 +36,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function MarketingLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -48,11 +44,7 @@ export default function MarketingLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <SupportChatWidget />
-        <FloatingWhatsApp />
+        {children}
       </body>
     </html>
   );
