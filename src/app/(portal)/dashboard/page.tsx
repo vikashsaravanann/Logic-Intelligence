@@ -24,7 +24,6 @@ export default async function DashboardPage() {
 
   return (
     <DashboardClient 
-      session={session} 
       leads={leads || []} 
       projects={projects || []} 
       invoices={invoices || []} 

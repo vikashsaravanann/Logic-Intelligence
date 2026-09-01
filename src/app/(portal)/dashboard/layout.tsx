@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import {
   LogOut, Home, Users, Briefcase, FileText,
-  Search, Bell, Activity
+  Search, Bell, Activity, Globe
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -47,6 +47,7 @@ export default function DashboardLayout({
 
         <nav className="flex-1 px-4 space-y-2 mt-4 overflow-y-auto">
           {[
+            { icon: Globe, label: 'Back to Website', href: '/' },
             { icon: Home, label: 'Overview', href: '/dashboard' },
             { icon: Users, label: 'Leads Pipeline', href: '/dashboard/leads' },
             { icon: Briefcase, label: 'Active Projects', href: '/dashboard/projects' },
