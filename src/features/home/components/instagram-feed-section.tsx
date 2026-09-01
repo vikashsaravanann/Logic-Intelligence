@@ -87,13 +87,13 @@ export default function InstagramFeedSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.12 }}
-              className="group relative aspect-[3/5] rounded-2xl border border-white/10 overflow-hidden bg-black shadow-[0_4px_24px_rgba(0,0,0,0.3)] hover:border-pink-500/30 transition-all duration-300"
+              className="group relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-black shadow-[0_4px_24px_rgba(0,0,0,0.3)] hover:border-pink-500/30 transition-all duration-300"
             >
               {/* Post image */}
               <img
                 src={post.image}
                 alt={post.caption}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                 onError={(e) => {
                   // Fallback if image fails to load
                   e.currentTarget.style.display = "none";

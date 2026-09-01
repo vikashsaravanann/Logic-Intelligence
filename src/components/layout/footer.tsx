@@ -1,8 +1,8 @@
 "use client";
-import { Mail, Phone, MapPin, MessageCircle, Heart, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, ArrowRight, Heart } from "lucide-react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { COMPANY } from "@/config/company";
+import { useState } from "react";
 
 const InstagramIcon = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
@@ -21,66 +21,157 @@ const WhatsappIcon = ({ className }: { className?: string }) => (
 );
 
 const socialLinks = [
-  { icon: InstagramIcon, label: "Instagram", href: COMPANY.instagramUrl,    hoverColor: "hover:text-[#e1306c] hover:border-[#e1306c]/30 hover:bg-[#e1306c]/10" },
-  { icon: LinkedinIcon,  label: "LinkedIn",  href: COMPANY.linkedinUrl,     hoverColor: "hover:text-[#0a66c2] hover:border-[#0a66c2]/30 hover:bg-[#0a66c2]/10" },
-  { icon: FacebookIcon,  label: "Facebook",  href: COMPANY.facebookUrl,     hoverColor: "hover:text-[#1877f2] hover:border-[#1877f2]/30 hover:bg-[#1877f2]/10" },
-  { icon: WhatsappIcon, label: "WhatsApp",  href: COMPANY.whatsappGroupUrl, hoverColor: "hover:text-[#25d366] hover:border-[#25d366]/30 hover:bg-[#25d366]/10" },
-  { icon: Send,          label: "Telegram",  href: COMPANY.telegramBotUrl,  hoverColor: "hover:text-[#2aabee] hover:border-[#2aabee]/30 hover:bg-[#2aabee]/10" },
-];
-
-const legalLinks = [
-  { label: "Terms of Service",      href: "/terms" },
-  { label: "Privacy Policy",        href: "/privacy" },
-  { label: "Refund & Cancellation", href: "/refund-policy" },
+  { icon: InstagramIcon, label: "Instagram", href: COMPANY.instagramUrl, hoverColor: "group-hover:text-[#e1306c]" },
+  { icon: LinkedinIcon,  label: "LinkedIn",  href: COMPANY.linkedinUrl,  hoverColor: "group-hover:text-[#0a66c2]" },
+  { icon: FacebookIcon,  label: "Facebook",  href: COMPANY.facebookUrl,  hoverColor: "group-hover:text-[#1877f2]" },
+  { icon: WhatsappIcon,  label: "WhatsApp",  href: COMPANY.whatsappGroupUrl, hoverColor: "group-hover:text-[#25d366]" },
 ];
 
 export default function Footer() {
-  return (
-    <footer className="bg-[#060B18] pt-20 pb-10 border-t border-white/5 relative overflow-hidden">
-      {/* Top gradient edge */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
 
-      {/* Decorative Background Elements */}
-      <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      setSubscribed(true);
+      setTimeout(() => setSubscribed(false), 3000);
+      setEmail("");
+    }
+  };
+
+  return (
+    <footer className="bg-[#060B18] pt-24 pb-12 border-t border-white/5 relative overflow-hidden">
+      
+      {/* --- Premium Background Effects --- */}
+      {/* Top glowing line */}
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/80 to-transparent" />
+      {/* Subtle Grid overlay */}
+      <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dzvy8s93j/image/upload/v1727781033/grid_q4w49h.svg')] bg-center opacity-[0.03] pointer-events-none" />
+      {/* Glow Orbs */}
+      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-primary/10 blur-[120px] pointer-events-none mix-blend-screen" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[400px] h-[400px] rounded-full bg-accent/10 blur-[120px] pointer-events-none mix-blend-screen" />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
         
-        {/* Main Footer Widgets Grid (4 Columns) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        {/* Main Grid: 4 Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
           
-          {/* Column 1: Brand & Identity */}
-          <div className="flex flex-col gap-6">
-            <Link href="/" className="flex items-center gap-3 group inline-flex">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden shrink-0 bg-gradient-to-tr from-primary to-accent shadow-[0_0_15px_rgba(0,191,255,0.3)] animate-neon-pulse">
-                <img
-                  src={COMPANY.logoIconPath}
-                  alt={`${COMPANY.displayName} logo`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                    e.currentTarget.parentElement!.innerHTML =
-                      '<span class="font-bold text-lg text-white">LIT</span>';
-                  }}
-                />
+          {/* Column 1: Brand & Contact (Takes up 4 cols on lg) */}
+          <div className="lg:col-span-4 flex flex-col gap-6">
+            <Link href="/" className="flex items-center gap-3 group w-max">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden bg-gradient-to-tr from-primary to-accent p-0.5 shadow-[0_0_20px_rgba(0,191,255,0.2)]">
+                <div className="w-full h-full bg-[#060B18] rounded-[10px] flex items-center justify-center overflow-hidden">
+                  <img
+                    src={COMPANY.logoIconPath}
+                    alt="Logo"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                      e.currentTarget.parentElement!.innerHTML = '<span class="font-bold text-white">LIT</span>';
+                    }}
+                  />
+                </div>
               </div>
-              <div className="flex flex-col justify-center">
-                <span className="text-sm lg:text-base font-bold text-white tracking-wider leading-tight">
+              <div className="flex flex-col">
+                <span className="text-lg font-black text-white tracking-wide leading-none">
                   LOGIC INTELLIGENCE
                 </span>
-                <span className="text-xs text-primary font-semibold tracking-widest uppercase">
+                <span className="text-xs font-semibold text-primary tracking-[0.2em] uppercase mt-1">
                   Technologies
                 </span>
               </div>
             </Link>
             
-            <p className="text-sm text-zinc-400 leading-relaxed font-medium">
-              &quot;{COMPANY.tagline}&quot; — Coimbatore&apos;s AI-integrated development studio.
-              Delivering transparent pricing and modern solutions.
+            <p className="text-sm text-zinc-400 leading-relaxed max-w-sm mt-2">
+              Coimbatore&apos;s premier AI-integrated development studio. We build intelligent software, modern websites, and scalable apps to drive your business forward.
             </p>
 
-            {/* Social Buttons under Brand */}
-            <div className="flex flex-wrap items-center gap-2 mt-2">
+            <ul className="flex flex-col gap-3 mt-2">
+              <li>
+                <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-3 text-sm text-zinc-400 hover:text-white transition-colors group w-max">
+                  <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors">
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  {COMPANY.email}
+                </a>
+              </li>
+              <li>
+                <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-3 text-sm text-zinc-400 hover:text-white transition-colors group w-max">
+                  <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors">
+                    <Phone className="w-4 h-4" />
+                  </div>
+                  {COMPANY.phone}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 2: Solutions (Takes up 2 cols on lg) */}
+          <div className="lg:col-span-2 flex flex-col gap-6">
+            <h3 className="text-white font-bold text-sm uppercase tracking-widest">Solutions</h3>
+            <ul className="flex flex-col gap-4">
+              {['AI Integration', 'Web Development', 'Mobile Apps', 'UI/UX Design', 'Custom Software'].map((item) => (
+                <li key={item}>
+                  <Link href="/#services" className="text-zinc-400 hover:text-primary text-sm flex items-center gap-2 group transition-colors">
+                    <ArrowRight className="w-3 h-3 opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">{item}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3: Company (Takes up 2 cols on lg) */}
+          <div className="lg:col-span-2 flex flex-col gap-6">
+            <h3 className="text-white font-bold text-sm uppercase tracking-widest">Company</h3>
+            <ul className="flex flex-col gap-4">
+              {[
+                { label: 'About Us', href: '/#about' },
+                { label: 'Our Work', href: '/#portfolio' },
+                { label: 'Terms of Service', href: '/terms' },
+                { label: 'Privacy Policy', href: '/privacy' },
+                { label: 'Refund Policy', href: '/refund-policy' },
+              ].map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-zinc-400 hover:text-white text-sm flex items-center gap-2 group transition-colors">
+                    <ArrowRight className="w-3 h-3 opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-white" />
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">{item.label}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 4: Stay Connected & Newsletter (Takes up 4 cols on lg) */}
+          <div className="lg:col-span-4 flex flex-col gap-6">
+            <h3 className="text-white font-bold text-sm uppercase tracking-widest">Stay Connected</h3>
+            <p className="text-sm text-zinc-400 leading-relaxed">
+              Subscribe to our newsletter for the latest updates on AI, development trends, and company news.
+            </p>
+
+            <form onSubmit={handleSubscribe} className="relative mt-2">
+              <input 
+                type="email" 
+                placeholder="Enter your email address" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all pr-12"
+              />
+              <button 
+                type="submit" 
+                className="absolute right-1.5 top-1.5 bottom-1.5 aspect-square bg-gradient-to-tr from-primary to-accent rounded-lg flex items-center justify-center text-white hover:scale-105 transition-transform"
+                title="Subscribe"
+              >
+                <Send className="w-4 h-4 ml-0.5" />
+              </button>
+            </form>
+            {subscribed && (
+              <p className="text-xs text-primary font-medium animate-pulse">Thank you for subscribing!</p>
+            )}
+
+            <div className="flex items-center gap-3 mt-4">
               {socialLinks.map(({ icon: Icon, label, href, hoverColor }) => (
                 <a
                   key={label}
@@ -88,129 +179,27 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className={`flex items-center justify-center w-10 h-10 rounded-lg border border-white/10 bg-white/[0.03] text-zinc-400 transition-all duration-300 hover:scale-110 ${hoverColor}`}
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 transition-all hover:bg-white/10 hover:border-white/20 hover:scale-110 group"
                   title={label}
                 >
-                  <Icon className="w-5 h-5 shrink-0" />
+                  <Icon className={`w-4 h-4 transition-colors ${hoverColor}`} />
                 </a>
               ))}
-            </div>
-          </div>
-
-          {/* Column 2: Quick Links */}
-          <div className="flex flex-col gap-6">
-            <h3 className="text-white font-bold text-lg border-b border-white/10 pb-2 inline-block w-max">
-              Quick Links
-            </h3>
-            <ul className="flex flex-col gap-3">
-              {[
-                { label: "Home", href: "/" },
-                { label: "About Us", href: "/#about" },
-                { label: "AI Solutions", href: "/#services" },
-                { label: "Web Development", href: "/#services" },
-                { label: "Our Work", href: "/#portfolio" },
-              ].map((link) => (
-                <li key={link.label}>
-                  <Link 
-                    href={link.href}
-                    className="text-sm text-zinc-400 hover:text-primary hover:translate-x-1 transition-all duration-200 flex items-center gap-2"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary/50" />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 3: Legal & Support */}
-          <div className="flex flex-col gap-6">
-            <h3 className="text-white font-bold text-lg border-b border-white/10 pb-2 inline-block w-max">
-              Legal & Support
-            </h3>
-            <ul className="flex flex-col gap-3">
-              {legalLinks.map((link) => (
-                <li key={link.label}>
-                  <Link 
-                    href={link.href}
-                    className="text-sm text-zinc-400 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-2"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-600" />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link 
-                  href="/contact"
-                  className="text-sm text-zinc-400 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-2"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-600" />
-                  Contact Support
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4: Contact Us */}
-          <div className="flex flex-col gap-6">
-             <h3 className="text-white font-bold text-lg border-b border-white/10 pb-2 inline-block w-max">
-              Get in Touch
-            </h3>
-            <ul className="space-y-4">
-              <li>
-                <a
-                  href={`mailto:${COMPANY.email}`}
-                  className="group flex items-start gap-3 w-max max-w-full"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 group-hover:border-primary/30 transition-all">
-                    <Mail className="h-4 w-4 text-zinc-400 group-hover:text-primary transition-colors" />
-                  </div>
-                  <span className="text-sm text-zinc-400 group-hover:text-white transition-colors break-all leading-8">
-                    {COMPANY.email}
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`tel:${COMPANY.phone}`}
-                  className="group flex items-start gap-3 w-max"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 group-hover:border-primary/30 transition-all">
-                    <Phone className="h-4 w-4 text-zinc-400 group-hover:text-primary transition-colors" />
-                  </div>
-                  <span className="text-sm text-zinc-400 group-hover:text-white transition-colors leading-8">
-                    {COMPANY.phone}
-                  </span>
-                </a>
-              </li>
-              <li className="flex items-start gap-3">
-                 <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                    <MapPin className="h-4 w-4 text-zinc-400" />
-                 </div>
-                <span className="text-sm text-zinc-400 leading-snug pt-1.5">{COMPANY.address}</span>
-              </li>
-            </ul>
-
-            <div className="mt-2">
-              <a
-                href={`https://wa.me/${COMPANY.whatsappNumber}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Chat with us on WhatsApp"
-                className="inline-flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-bold text-white bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:scale-105 transition-transform shadow-[0_0_15px_rgba(37,211,102,0.3)] w-full sm:w-auto"
-              >
-                <WhatsappIcon className="w-5 h-5" /> WhatsApp Us
-              </a>
             </div>
           </div>
 
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col items-center justify-center gap-4 text-center">
-          <p className="text-xs text-zinc-500 max-w-2xl">
-            © {new Date().getFullYear()} {COMPANY.legalName}. All Rights Reserved. | CIN: {COMPANY.cin}
+        {/* Bottom Banner */}
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
+             <p className="text-xs font-medium text-zinc-400">All systems operational</p>
+          </div>
+          
+          <p className="text-xs text-zinc-500 text-center md:text-right">
+            © {new Date().getFullYear()} {COMPANY.legalName}. All Rights Reserved.<br className="md:hidden" /> 
+            <span className="hidden md:inline"> | </span>CIN: {COMPANY.cin}
           </p>
         </div>
 
