@@ -21,10 +21,10 @@ const WhatsappIcon = ({ className }: { className?: string }) => (
 );
 
 const socialLinks = [
-  { icon: InstagramIcon, label: "Instagram", href: COMPANY.instagramUrl, hoverColor: "group-hover:text-[#e1306c]" },
-  { icon: LinkedinIcon,  label: "LinkedIn",  href: COMPANY.linkedinUrl,  hoverColor: "group-hover:text-[#0a66c2]" },
-  { icon: FacebookIcon,  label: "Facebook",  href: COMPANY.facebookUrl,  hoverColor: "group-hover:text-[#1877f2]" },
-  { icon: WhatsappIcon,  label: "WhatsApp",  href: COMPANY.whatsappGroupUrl, hoverColor: "group-hover:text-[#25d366]" },
+  { icon: InstagramIcon, label: "INSTAGRAM", href: COMPANY.instagramUrl, hoverColor: "group-hover:text-[#e1306c]" },
+  { icon: LinkedinIcon,  label: "LINKEDIN",  href: COMPANY.linkedinUrl,  hoverColor: "group-hover:text-[#0a66c2]" },
+  { icon: FacebookIcon,  label: "FACEBOOK",  href: COMPANY.facebookUrl,  hoverColor: "group-hover:text-[#1877f2]" },
+  { icon: WhatsappIcon,  label: "WHATSAPP",  href: COMPANY.whatsappGroupUrl, hoverColor: "group-hover:text-[#25d366]" },
 ];
 
 export default function Footer() {
@@ -44,23 +44,20 @@ export default function Footer() {
     <footer className="bg-[#060B18] pt-24 pb-12 border-t border-white/5 relative overflow-hidden">
       
       {/* --- Premium Background Effects --- */}
-      {/* Top glowing line */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/80 to-transparent" />
-      {/* Subtle Grid overlay */}
       <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dzvy8s93j/image/upload/v1727781033/grid_q4w49h.svg')] bg-center opacity-[0.03] pointer-events-none" />
-      {/* Glow Orbs */}
       <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-primary/10 blur-[120px] pointer-events-none mix-blend-screen" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[400px] h-[400px] rounded-full bg-accent/10 blur-[120px] pointer-events-none mix-blend-screen" />
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-8 relative z-10">
         
-        {/* Main Grid: 4 Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
+        {/* Main Grid: 4 EQUAL Columns with generous gaps */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 xl:gap-16 mb-20">
           
-          {/* Column 1: Brand & Contact (Takes up 4 cols on lg) */}
-          <div className="lg:col-span-4 flex flex-col gap-6">
-            <Link href="/" className="flex items-center gap-3 group w-max">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden bg-gradient-to-tr from-primary to-accent p-0.5 shadow-[0_0_20px_rgba(0,191,255,0.2)]">
+          {/* Column 1: Brand & Contact */}
+          <div className="flex flex-col gap-8 overflow-hidden">
+            <Link href="/" className="flex items-center gap-3 group w-full">
+              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl flex items-center justify-center overflow-hidden bg-gradient-to-tr from-primary to-accent p-0.5 shadow-[0_0_20px_rgba(0,191,255,0.2)] shrink-0">
                 <div className="w-full h-full bg-[#060B18] rounded-[10px] flex items-center justify-center overflow-hidden">
                   <img
                     src={COMPANY.logoIconPath}
@@ -73,102 +70,108 @@ export default function Footer() {
                   />
                 </div>
               </div>
-              <div className="flex items-center">
-                <span className="text-sm md:text-base font-black text-white tracking-widest leading-none uppercase whitespace-nowrap overflow-hidden text-ellipsis">
-                  LOGIC INTELLIGENCE TECHNOLOGIES
+              <div className="flex items-center min-w-0">
+                <span className="text-[10px] sm:text-xs lg:text-[11px] xl:text-sm font-black text-white tracking-widest leading-tight uppercase truncate">
+                  LOGIC INTELLIGENCE<br/>TECHNOLOGIES
                 </span>
               </div>
             </Link>
             
-            <p className="text-sm text-zinc-400 leading-relaxed max-w-sm mt-2">
-              Coimbatore&apos;s premier AI-integrated development studio. We build intelligent software, modern websites, and scalable apps to drive your business forward.
+            <p className="text-xs xl:text-sm text-zinc-400 leading-relaxed font-medium uppercase tracking-wider">
+              COIMBATORE&apos;S PREMIER AI-INTEGRATED DEVELOPMENT STUDIO. WE BUILD INTELLIGENT SOFTWARE TO DRIVE YOUR BUSINESS FORWARD.
             </p>
 
-            <ul className="flex flex-col gap-3 mt-2">
+            <ul className="flex flex-col gap-4">
               <li>
-                <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-3 text-sm text-zinc-400 hover:text-white transition-colors group w-max">
-                  <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors">
+                <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-4 text-xs xl:text-sm text-zinc-400 hover:text-white transition-colors group uppercase tracking-widest truncate">
+                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors shrink-0">
                     <Mail className="w-4 h-4" />
                   </div>
-                  {COMPANY.email}
+                  <span className="truncate">{COMPANY.email}</span>
                 </a>
               </li>
               <li>
-                <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-3 text-sm text-zinc-400 hover:text-white transition-colors group w-max">
-                  <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors">
+                <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-4 text-xs xl:text-sm text-zinc-400 hover:text-white transition-colors group uppercase tracking-widest truncate">
+                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors shrink-0">
                     <Phone className="w-4 h-4" />
                   </div>
-                  {COMPANY.phone}
+                  <span className="truncate">{COMPANY.phone}</span>
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Column 2: Solutions (Takes up 2 cols on lg) */}
-          <div className="lg:col-span-2 flex flex-col gap-6">
-            <h3 className="text-white font-bold text-sm uppercase tracking-widest">Solutions</h3>
-            <ul className="flex flex-col gap-4">
-              {['AI Integration', 'Web Development', 'Mobile Apps', 'UI/UX Design', 'Custom Software'].map((item) => (
+          {/* Column 2: Solutions */}
+          <div className="flex flex-col gap-8">
+            <h3 className="text-white font-bold text-sm xl:text-base uppercase tracking-[0.2em] border-b border-white/10 pb-3 inline-block w-max">
+              SOLUTIONS
+            </h3>
+            <ul className="flex flex-col gap-5">
+              {['AI INTEGRATION', 'WEB DEVELOPMENT', 'MOBILE APPS', 'UI/UX DESIGN', 'CUSTOM SOFTWARE'].map((item) => (
                 <li key={item}>
-                  <Link href="/#services" className="text-zinc-400 hover:text-primary text-sm flex items-center gap-2 group transition-colors">
-                    <ArrowRight className="w-3 h-3 opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">{item}</span>
+                  <Link href="/#services" className="text-zinc-400 hover:text-primary text-xs xl:text-sm uppercase tracking-widest font-semibold flex items-center gap-3 group transition-colors truncate">
+                    <ArrowRight className="w-4 h-4 opacity-0 -ml-7 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0" />
+                    <span className="group-hover:translate-x-1 transition-transform duration-300 truncate">{item}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Column 3: Company (Takes up 2 cols on lg) */}
-          <div className="lg:col-span-2 flex flex-col gap-6">
-            <h3 className="text-white font-bold text-sm uppercase tracking-widest">Company</h3>
-            <ul className="flex flex-col gap-4">
+          {/* Column 3: Company */}
+          <div className="flex flex-col gap-8">
+            <h3 className="text-white font-bold text-sm xl:text-base uppercase tracking-[0.2em] border-b border-white/10 pb-3 inline-block w-max">
+              COMPANY
+            </h3>
+            <ul className="flex flex-col gap-5">
               {[
-                { label: 'About Us', href: '/#about' },
-                { label: 'Our Work', href: '/#portfolio' },
-                { label: 'Terms of Service', href: '/terms' },
-                { label: 'Privacy Policy', href: '/privacy' },
-                { label: 'Refund Policy', href: '/refund-policy' },
+                { label: 'ABOUT US', href: '/#about' },
+                { label: 'OUR WORK', href: '/#portfolio' },
+                { label: 'TERMS OF SERVICE', href: '/terms' },
+                { label: 'PRIVACY POLICY', href: '/privacy' },
+                { label: 'REFUND POLICY', href: '/refund-policy' },
               ].map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="text-zinc-400 hover:text-white text-sm flex items-center gap-2 group transition-colors">
-                    <ArrowRight className="w-3 h-3 opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-white" />
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">{item.label}</span>
+                  <Link href={item.href} className="text-zinc-400 hover:text-white text-xs xl:text-sm uppercase tracking-widest font-semibold flex items-center gap-3 group transition-colors truncate">
+                    <ArrowRight className="w-4 h-4 opacity-0 -ml-7 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-white shrink-0" />
+                    <span className="group-hover:translate-x-1 transition-transform duration-300 truncate">{item.label}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Column 4: Stay Connected & Newsletter (Takes up 4 cols on lg) */}
-          <div className="lg:col-span-4 flex flex-col gap-6">
-            <h3 className="text-white font-bold text-sm uppercase tracking-widest">Stay Connected</h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Subscribe to our newsletter for the latest updates on AI, development trends, and company news.
+          {/* Column 4: Stay Connected & Newsletter */}
+          <div className="flex flex-col gap-8 overflow-hidden">
+            <h3 className="text-white font-bold text-sm xl:text-base uppercase tracking-[0.2em] border-b border-white/10 pb-3 inline-block w-max">
+              STAY CONNECTED
+            </h3>
+            <p className="text-xs xl:text-sm text-zinc-400 leading-relaxed uppercase tracking-wider">
+              SUBSCRIBE TO OUR NEWSLETTER FOR THE LATEST UPDATES ON AI AND DEVELOPMENT.
             </p>
 
-            <form onSubmit={handleSubscribe} className="relative mt-2">
+            <form onSubmit={handleSubscribe} className="relative mt-2 w-full">
               <input 
                 type="email" 
-                placeholder="Enter your email address" 
+                placeholder="ENTER YOUR EMAIL ADDRESS" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all pr-12"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-xs xl:text-sm text-white placeholder:text-zinc-500 placeholder:uppercase placeholder:tracking-widest focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all pr-14"
               />
               <button 
                 type="submit" 
-                className="absolute right-1.5 top-1.5 bottom-1.5 aspect-square bg-gradient-to-tr from-primary to-accent rounded-lg flex items-center justify-center text-white hover:scale-105 transition-transform"
+                className="absolute right-2 top-2 bottom-2 aspect-square bg-gradient-to-tr from-primary to-accent rounded-lg flex items-center justify-center text-white hover:scale-105 transition-transform"
                 title="Subscribe"
               >
-                <Send className="w-4 h-4 ml-0.5" />
+                <Send className="w-5 h-5 ml-0.5" />
               </button>
             </form>
             {subscribed && (
-              <p className="text-xs text-primary font-medium animate-pulse">Thank you for subscribing!</p>
+              <p className="text-xs text-primary font-bold uppercase tracking-widest animate-pulse">THANK YOU FOR SUBSCRIBING!</p>
             )}
 
-            <div className="flex items-center gap-3 mt-4">
+            <div className="flex items-center gap-4 mt-2">
               {socialLinks.map(({ icon: Icon, label, href, hoverColor }) => (
                 <a
                   key={label}
@@ -176,10 +179,10 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 transition-all hover:bg-white/10 hover:border-white/20 hover:scale-110 group"
+                  className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 transition-all hover:bg-white/10 hover:border-white/20 hover:scale-110 group shrink-0"
                   title={label}
                 >
-                  <Icon className={`w-4 h-4 transition-colors ${hoverColor}`} />
+                  <Icon className={`w-5 h-5 transition-colors ${hoverColor}`} />
                 </a>
               ))}
             </div>
@@ -188,14 +191,14 @@ export default function Footer() {
         </div>
 
         {/* Bottom Banner */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
-             <p className="text-xs font-medium text-zinc-400">All systems operational</p>
+             <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest">ALL SYSTEMS OPERATIONAL</p>
           </div>
           
-          <p className="text-xs text-zinc-500 text-center md:text-right">
-            © {new Date().getFullYear()} {COMPANY.legalName}. All Rights Reserved.<br className="md:hidden" /> 
+          <p className="text-[10px] sm:text-xs text-zinc-500 text-center md:text-right uppercase tracking-widest leading-relaxed">
+            © {new Date().getFullYear()} {COMPANY.legalName}. ALL RIGHTS RESERVED.<br className="md:hidden" /> 
             <span className="hidden md:inline"> | </span>CIN: {COMPANY.cin}
           </p>
         </div>
