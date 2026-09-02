@@ -32,50 +32,6 @@ export default function FloatingElements() {
 
   return (
     <>
-      {/* WhatsApp Floating Button */}
-      <div 
-        className="fixed bottom-6 right-6 z-50 flex items-center"
-        onMouseEnter={() => setShowWaTooltip(true)}
-        onMouseLeave={() => setShowWaTooltip(false)}
-      >
-        <AnimatePresence>
-          {showWaTooltip && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 10 }}
-              className="absolute right-full mr-4 whitespace-nowrap bg-[rgba(10,15,30,0.9)] backdrop-blur-md border border-white/10 px-4 py-2 rounded-xl shadow-lg text-sm font-medium text-white flex items-center"
-            >
-              Chat with us! 👋
-              <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-[rgba(10,15,30,0.9)] border-t border-r border-white/10 rotate-45" />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <a
-          href="https://wa.me/919342877474"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#25D366] to-[#128C7E] text-white rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform group"
-        >
-          <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-            className="flex items-center justify-center w-full h-full"
-          >
-            <MessageCircle className="w-8 h-8 relative z-10" />
-            
-            {/* Pulse Rings */}
-            <div className="absolute inset-0 rounded-full border border-[#25D366] animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite] opacity-75" />
-            <div className="absolute inset-0 rounded-full border border-[#25D366] animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite] opacity-50" style={{ animationDelay: '1s' }} />
-            
-            {/* Notification Badge */}
-            <div className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full border-2 border-[#0A0F1E] flex items-center justify-center animate-pulse">
-              <span className="text-[8px] font-bold">1</span>
-            </div>
-          </motion.div>
-        </a>
-      </div>
 
       {/* Back to Top */}
       <AnimatePresence>
