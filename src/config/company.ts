@@ -8,7 +8,7 @@ export const COMPANY = {
   whatsappNumber: '919342877474',
   whatsappGroupUrl: 'https://chat.whatsapp.com/IHHqqbi0t3P8pC9Dyou53k?mode=gi_t',
   telegramBotUrl: 'https://t.me/LogicIntelligenceTechnologiesbot',
-  instagramUrl: 'https://www.instagram.com/logicintelligencetechnologies',
+  instagramUrl: 'https://www.instagram.com/logicintelligencetechnologies?igsi=MXVmbGU3M3JiOTNmdw%3D%3D&utm_source=qr',
   linkedinUrl: 'https://www.linkedin.com/company/logic-intelligence-technologies/',
   facebookUrl: 'https://www.facebook.com/share/166anMT53Cj/?mibextid=wwXIfr',
   websiteUrl: 'https://www.logicintelligencetechnologies.in',
