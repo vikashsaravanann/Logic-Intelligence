@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import FloatingElements from "@/components/motion/floating-elements";
 import BackToHome from "@/components/ui/back-to-home";
@@ -8,26 +9,35 @@ import { portfolioProjects } from "@/data/portfolioData";
 import { COMPANY } from "@/config/company";
 
 export const metadata: Metadata = {
-  title: "Our Work",
+  title: "Featured Projects | Portfolio",
   description:
-    "Selected web apps, e-commerce builds, and custom software projects from Logic Intelligence Technologies — Coimbatore's AI-integrated development studio.",
+    "Explore our curated selection of high-performance web applications, scalable enterprise platforms, and bespoke digital solutions designed to drive business growth.",
   openGraph: {
-    title: "Our Work",
-    description: "See the kind of projects we build — full-stack apps, stores, and custom software.",
+    title: "Featured Projects | Logic Intelligence Technologies",
+    description: "Explore our curated selection of high-performance web applications, scalable enterprise platforms, and bespoke digital solutions.",
     images: [{ url: COMPANY.bannerPath, width: 1200, height: 630, alt: "Logic Intelligence Technologies" }],
   },
 };
 
-function ProjectCardImage({ title, category }: { title: string; category: string }) {
+function ProjectCardImage({ title, category, image }: { title: string; category: string; image: string }) {
   return (
-    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-[#12172B] to-accent/20 flex items-end p-6">
-      <div>
-        <span className="text-[10px] font-bold uppercase tracking-widest text-primary mb-2 block">
-          {category}
-        </span>
-        <span className="text-sm font-semibold text-white/80 line-clamp-2">{title}</span>
+    <>
+      <Image
+        src={image}
+        alt={title}
+        fill
+        className="object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1E] via-transparent to-transparent flex items-end p-6">
+        <div className="relative z-10">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary mb-2 block drop-shadow-md">
+            {category}
+          </span>
+          <span className="text-sm font-semibold text-white/90 line-clamp-2 drop-shadow-md">{title}</span>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1E] via-[#0A0F1E]/40 to-transparent" />
       </div>
-    </div>
+    </>
   );
 }
 
@@ -38,12 +48,11 @@ export default function WorkPage() {
       <section className="py-16 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">
-            Portfolio
+            Our Portfolio
           </span>
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">Our Work</h1>
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">Featured Projects</h1>
           <p className="text-lg text-zinc-400 leading-relaxed">
-            Sample projects showcasing the kind of web apps, stores, and software we build for
-            Coimbatore businesses and clients beyond. Swap in your real case studies anytime.
+            Explore our curated selection of high-performance web applications, scalable enterprise platforms, and bespoke digital solutions designed to drive business growth and operational excellence.
           </p>
         </div>
 
@@ -54,7 +63,7 @@ export default function WorkPage() {
               className="group rounded-3xl border border-white/10 bg-zinc-900/40 overflow-hidden hover:border-primary/30 hover:-translate-y-1 transition-all duration-300 flex flex-col"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
-                <ProjectCardImage title={project.title} category={project.category} />
+                <ProjectCardImage title={project.title} category={project.category} image={project.image} />
               </div>
 
               <div className="p-6 flex flex-col flex-1">

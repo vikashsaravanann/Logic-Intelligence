@@ -51,11 +51,11 @@ export default function Footer() {
 
       <div className="mx-auto max-w-[1400px] px-6 lg:px-8 relative z-10">
         
-        {/* Main Grid: 4 EQUAL Columns with generous gaps */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 xl:gap-16 mb-16">
+        {/* Main Grid: Custom column widths for better proportion */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 xl:gap-16 mb-16">
           
           {/* Column 1: Brand */}
-          <div className="flex flex-col gap-8 overflow-hidden">
+          <div className="flex flex-col gap-8 overflow-hidden lg:col-span-4">
             <Link href="/" className="flex items-center gap-3 group w-full">
               <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full flex items-center justify-center overflow-hidden bg-gradient-to-tr from-primary to-accent p-0.5 shadow-[0_0_20px_rgba(0,191,255,0.2)] shrink-0">
                 <div className="w-full h-full bg-[#060B18] rounded-full flex items-center justify-center overflow-hidden">
@@ -95,7 +95,7 @@ export default function Footer() {
           </div>
 
           {/* Column 2: Solutions */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-8 lg:col-span-2">
             <h3 className="text-white font-bold text-sm xl:text-base uppercase tracking-[0.2em] border-b border-white/10 pb-3 inline-block w-max">
               SOLUTIONS
             </h3>
@@ -112,7 +112,7 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Company */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-8 lg:col-span-2">
             <h3 className="text-white font-bold text-sm xl:text-base uppercase tracking-[0.2em] border-b border-white/10 pb-3 inline-block w-max">
               COMPANY
             </h3>
@@ -135,7 +135,7 @@ export default function Footer() {
           </div>
 
           {/* Column 4: Stay Connected & Newsletter */}
-          <div className="flex flex-col gap-8 overflow-hidden">
+          <div className="flex flex-col gap-8 overflow-hidden lg:col-span-4">
             <h3 className="text-white font-bold text-sm xl:text-base uppercase tracking-[0.2em] border-b border-white/10 pb-3 inline-block w-max">
               STAY CONNECTED
             </h3>
@@ -150,14 +150,14 @@ export default function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-xs xl:text-sm text-white placeholder:text-zinc-500 placeholder:uppercase placeholder:tracking-widest focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all pr-14"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs xl:text-sm text-white placeholder:text-zinc-500 placeholder:uppercase placeholder:tracking-widest focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all pr-12"
               />
               <button 
                 type="submit" 
-                className="absolute right-2 top-2 bottom-2 px-4 bg-gradient-to-tr from-primary to-accent rounded flex items-center justify-center text-white hover:scale-105 transition-transform"
+                className="absolute right-1 top-1 bottom-1 w-10 bg-gradient-to-tr from-primary to-accent rounded-md flex items-center justify-center text-white hover:scale-105 transition-transform"
                 title="Subscribe"
               >
-                <Send className="w-5 h-5 ml-0.5" />
+                <Send className="w-4 h-4 ml-0.5" />
               </button>
             </form>
             {subscribed && (
