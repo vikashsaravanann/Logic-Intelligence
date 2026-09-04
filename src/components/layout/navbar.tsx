@@ -167,8 +167,8 @@ export default function Navbar() {
                   </AnimatePresence>
                 </div>
               ) : (
-                <Link href="/login" className="hidden lg:flex px-4 py-1.5 rounded-full text-xs font-bold text-white border border-white/20 hover:bg-white/10 transition-colors whitespace-nowrap">
-                  Login
+                <Link href="/login" className="hidden lg:flex px-6 py-2 rounded-full text-[11px] font-black text-black uppercase tracking-[0.2em] bg-white hover:bg-gray-200 transition-all shadow-lg hover:shadow-xl whitespace-nowrap">
+                  Sign In
                 </Link>
               )}
               <Link href="/contact" className="hidden lg:flex shrink-0 relative group px-6 py-2 rounded-full overflow-hidden items-center justify-center shadow-[0_0_20px_rgba(0,191,255,0.3)] transition-transform hover:scale-105 active:scale-95">
@@ -243,8 +243,8 @@ export default function Navbar() {
                       )}
                     </div>
                   ) : (
-                    <Link href="/login" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-bold text-white border border-white/20 hover:bg-white/10 w-full transition-colors">
-                      Login
+                    <Link href="/login" onClick={() => setIsOpen(false)} className="px-6 py-4 text-center rounded-xl text-base font-black text-black bg-white hover:bg-gray-200 w-full transition-all shadow-lg">
+                      Sign In
                     </Link>
                   )}
                   <Link href="/contact" onClick={() => setIsOpen(false)} className="relative group px-6 py-4 text-center rounded-xl overflow-hidden w-full flex items-center justify-center shadow-[0_0_20px_rgba(0,191,255,0.3)]">

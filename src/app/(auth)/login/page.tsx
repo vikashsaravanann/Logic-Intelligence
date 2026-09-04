@@ -125,7 +125,7 @@ function AuthContent() {
         <motion.div variants={itemVariants} className="mb-10">
           <Link href="/" className="inline-block mb-8 group">
             <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-full overflow-hidden bg-white flex items-center justify-center shadow-[0_8px_16px_rgba(0,191,255,0.15)] ring-2 ring-primary/20 group-hover:shadow-[0_8px_24px_rgba(0,191,255,0.3)] transition-all">
+              <div className="w-14 h-14 rounded-full overflow-hidden bg-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
                 <img
                   src={COMPANY.logoIconPath}
                   alt={`${COMPANY.displayName} logo`}
@@ -263,7 +263,7 @@ function AuthContent() {
             whileTap={{ y: 1 }}
             type="submit"
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-[14px] text-white bg-gradient-to-r from-primary to-[#0088ff] transition-all shadow-[0_4px_14px_0_rgba(0,191,255,0.39)] hover:shadow-[0_6px_20px_rgba(0,191,255,0.23)] disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-[14px] text-white bg-gray-900 hover:bg-black transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed mt-4"
           >
             {isLoading ? (
               <>
@@ -313,66 +313,94 @@ export default function LoginPage() {
       </div>
 
       {/* Right Column - Brand Showcase */}
-      <div className="hidden lg:flex flex-1 bg-[#0A0F1E] relative overflow-hidden flex-col justify-center p-20 border-l border-white/10 shadow-[-20px_0_40px_rgba(0,0,0,0.1)]">
-        {/* Dynamic Background */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] mix-blend-overlay"></div>
-        <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-gradient-to-tr from-[#7B2FBE]/15 to-transparent rounded-full blur-[80px] translate-y-1/4 -translate-x-1/4" />
+      <div className="hidden lg:flex flex-1 bg-zinc-950 relative overflow-hidden flex-col justify-center p-20 border-l border-zinc-800">
         
-        {/* Decorative Grid */}
-        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        {/* Subtle, highly professional dot grid background without messy colors */}
+        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
 
-        <div className="relative z-10 max-w-xl">
+        <div className="relative z-10 max-w-2xl">
+          
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8"
           >
-            <span className="w-2 h-2 rounded-full bg-[#00FF88] shadow-[0_0_8px_#00FF88] animate-pulse" />
-            <span className="text-xs font-bold text-gray-300 uppercase tracking-widest">{COMPANY.tagline}</span>
+            <span className="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)] animate-pulse" />
+            <span className="text-[11px] font-bold text-zinc-300 uppercase tracking-[0.2em]">Enterprise Grade Infrastructure</span>
           </motion.div>
 
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-5xl font-black text-white leading-[1.1] tracking-tight mb-8"
+            className="text-[44px] leading-[1.1] font-black text-white tracking-tight mb-8"
           >
-            Empowering Modern <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#00FF88] to-primary bg-[length:200%_auto] animate-gradientShift">
-              Digital Enterprises.
-            </span>
+            Engineering software that scales.<br/>
+            <span className="text-zinc-400 font-medium">Delivering logic that innovates.</span>
           </motion.h2>
 
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-xl text-gray-400 leading-relaxed font-light mb-12 max-w-md"
+            className="text-[17px] text-zinc-400 leading-relaxed mb-12 max-w-xl"
           >
-            Automate workflows, deploy robust full-stack solutions, and scale your business with engineered precision.
+            At Logic Intelligence Technologies, we build custom full-stack solutions, highly scalable SaaS platforms, and enterprise business applications. Step into your client portal to manage your digital transformation journey in real-time.
           </motion.p>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="grid grid-cols-2 gap-8 border-t border-white/10 pt-10"
+            className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 border-t border-white/10 pt-10"
           >
             <div>
-              <div className="flex items-center gap-3 mb-2 text-white">
-                <Code className="w-5 h-5 text-primary" />
-                <h4 className="font-bold text-lg">Custom Software</h4>
+              <div className="flex items-center gap-3 mb-3 text-white">
+                <div className="p-2 bg-white/10 rounded-lg">
+                  <Code className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="font-bold text-[17px] tracking-tight">Full-Stack Development</h4>
               </div>
-              <p className="text-sm text-gray-500">Enterprise CRM, ERP, and bespoke web applications.</p>
+              <p className="text-[14px] text-zinc-500 leading-relaxed">
+                Custom React, Next.js, and Node.js architectures engineered for maximum performance, security, and scalability.
+              </p>
             </div>
+            
             <div>
-              <div className="flex items-center gap-3 mb-2 text-white">
-                <Zap className="w-5 h-5 text-[#00FF88]" />
-                <h4 className="font-bold text-lg">AI Integration</h4>
+              <div className="flex items-center gap-3 mb-3 text-white">
+                <div className="p-2 bg-white/10 rounded-lg">
+                  <Zap className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="font-bold text-[17px] tracking-tight">AI & Machine Learning</h4>
               </div>
-              <p className="text-sm text-gray-500">Intelligent automation powered by modern machine learning.</p>
+              <p className="text-[14px] text-zinc-500 leading-relaxed">
+                Intelligent LLM integrations and automated workflows designed to massively reduce overhead and increase margins.
+              </p>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-3 mb-3 text-white">
+                <div className="p-2 bg-white/10 rounded-lg">
+                  <ShieldCheck className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="font-bold text-[17px] tracking-tight">Enterprise Security</h4>
+              </div>
+              <p className="text-[14px] text-zinc-500 leading-relaxed">
+                Bank-grade encryption, rigorous compliance standards, and highly resilient cloud databases via PostgreSQL.
+              </p>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-3 mb-3 text-white">
+                <div className="p-2 bg-white/10 rounded-lg">
+                  <ArrowRight className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="font-bold text-[17px] tracking-tight">Dedicated Client Portal</h4>
+              </div>
+              <p className="text-[14px] text-zinc-500 leading-relaxed">
+                Access your real-time analytics, track project milestones, download invoices, and message our engineering team directly.
+              </p>
             </div>
           </motion.div>
         </div>
