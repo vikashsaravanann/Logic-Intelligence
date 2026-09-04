@@ -317,98 +317,92 @@ export default function LoginPage() {
       </div>
 
       {/* Right Column - Brand Showcase */}
-      <div className="hidden lg:flex flex-1 bg-zinc-950 relative overflow-hidden flex-col justify-center p-20 border-l border-zinc-800">
+      <div className="hidden lg:flex flex-1 bg-zinc-950 relative overflow-hidden flex-col items-center justify-center p-12 xl:p-24 border-l border-zinc-800">
         
-        {/* Subtle, highly professional dot grid background without messy colors */}
-        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        {/* Subtle, highly professional grid background */}
+        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-        <div className="relative z-10 max-w-2xl">
+        <div className="relative z-10 w-full max-w-3xl flex flex-col items-center text-center my-auto">
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8"
+            className="inline-flex items-center justify-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-10"
           >
-            <span className="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)] animate-pulse" />
-            <span className="text-[11px] font-bold text-zinc-300 uppercase tracking-[0.2em]">Enterprise Grade Infrastructure</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] animate-pulse" />
+            <span className="text-xs font-bold text-zinc-300 uppercase tracking-[0.25em] font-sans">Client Portal Network</span>
           </motion.div>
 
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-[44px] leading-[1.1] font-black text-white tracking-tight mb-8"
+            className="text-4xl xl:text-5xl leading-[1.2] font-serif text-white tracking-wide mb-8"
           >
-            Engineering software that scales.<br/>
-            <span className="text-zinc-400 font-medium">Delivering logic that innovates.</span>
+            Precision engineering for<br/>
+            <span className="text-zinc-400 font-light italic">enterprise scale.</span>
           </motion.h2>
 
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-[17px] text-zinc-400 leading-relaxed mb-12 max-w-xl"
+            className="text-[17px] xl:text-[19px] text-zinc-400 leading-relaxed mb-16 max-w-2xl font-light tracking-wide"
           >
-            At Logic Intelligence Technologies, we build custom full-stack solutions, highly scalable SaaS platforms, and enterprise business applications. Step into your client portal to manage your digital transformation journey in real-time.
+            Logic Intelligence Technologies builds high-performance SaaS platforms, custom enterprise software, and scalable web applications. Log in to track milestones, view analytics, and collaborate with your dedicated engineering team.
           </motion.p>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 border-t border-white/10 pt-10"
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 xl:gap-12 w-full pt-10 border-t border-white/10"
           >
-            <div>
-              <div className="flex items-center gap-3 mb-3 text-white">
-                <div className="p-2 bg-white/10 rounded-lg">
-                  <Code className="w-5 h-5 text-white" />
-                </div>
-                <h4 className="font-bold text-[17px] tracking-tight">Full-Stack Development</h4>
+            <div className="flex flex-col items-center text-center group">
+              <div className="p-3 bg-white/5 border border-white/10 rounded-xl mb-4 group-hover:bg-white/10 transition-colors">
+                <Code className="w-6 h-6 text-white" />
               </div>
-              <p className="text-[14px] text-zinc-500 leading-relaxed">
-                Custom React, Next.js, and Node.js architectures engineered for maximum performance, security, and scalability.
+              <h4 className="font-bold text-[18px] text-white tracking-wide mb-2 font-serif">Custom Software</h4>
+              <p className="text-[14px] text-zinc-500 leading-relaxed max-w-[280px]">
+                Bespoke CRM, ERP, and highly scalable web applications built from scratch for your business logic.
               </p>
             </div>
             
-            <div>
-              <div className="flex items-center gap-3 mb-3 text-white">
-                <div className="p-2 bg-white/10 rounded-lg">
-                  <Zap className="w-5 h-5 text-white" />
-                </div>
-                <h4 className="font-bold text-[17px] tracking-tight">AI & Machine Learning</h4>
+            <div className="flex flex-col items-center text-center group">
+              <div className="p-3 bg-white/5 border border-white/10 rounded-xl mb-4 group-hover:bg-white/10 transition-colors">
+                <Zap className="w-6 h-6 text-white" />
               </div>
-              <p className="text-[14px] text-zinc-500 leading-relaxed">
-                Intelligent LLM integrations and automated workflows designed to massively reduce overhead and increase margins.
+              <h4 className="font-bold text-[18px] text-white tracking-wide mb-2 font-serif">AI & Automation</h4>
+              <p className="text-[14px] text-zinc-500 leading-relaxed max-w-[280px]">
+                Intelligent machine learning models and automated workflows to reduce overhead and accelerate growth.
               </p>
             </div>
 
-            <div>
-              <div className="flex items-center gap-3 mb-3 text-white">
-                <div className="p-2 bg-white/10 rounded-lg">
-                  <ShieldCheck className="w-5 h-5 text-white" />
-                </div>
-                <h4 className="font-bold text-[17px] tracking-tight">Enterprise Security</h4>
+            <div className="flex flex-col items-center text-center group">
+              <div className="p-3 bg-white/5 border border-white/10 rounded-xl mb-4 group-hover:bg-white/10 transition-colors">
+                <ShieldCheck className="w-6 h-6 text-white" />
               </div>
-              <p className="text-[14px] text-zinc-500 leading-relaxed">
-                Bank-grade encryption, rigorous compliance standards, and highly resilient cloud databases via PostgreSQL.
+              <h4 className="font-bold text-[18px] text-white tracking-wide mb-2 font-serif">Cloud Architecture</h4>
+              <p className="text-[14px] text-zinc-500 leading-relaxed max-w-[280px]">
+                Bank-grade encryption, seamless API integrations, and robust database infrastructures.
               </p>
             </div>
 
-            <div>
-              <div className="flex items-center gap-3 mb-3 text-white">
-                <div className="p-2 bg-white/10 rounded-lg">
-                  <ArrowRight className="w-5 h-5 text-white" />
-                </div>
-                <h4 className="font-bold text-[17px] tracking-tight">Dedicated Client Portal</h4>
+            <div className="flex flex-col items-center text-center group">
+              <div className="p-3 bg-white/5 border border-white/10 rounded-xl mb-4 group-hover:bg-white/10 transition-colors">
+                <ArrowRight className="w-6 h-6 text-white" />
               </div>
-              <p className="text-[14px] text-zinc-500 leading-relaxed">
-                Access your real-time analytics, track project milestones, download invoices, and message our engineering team directly.
+              <h4 className="font-bold text-[18px] text-white tracking-wide mb-2 font-serif">Real-Time Portal</h4>
+              <p className="text-[14px] text-zinc-500 leading-relaxed max-w-[280px]">
+                Direct access to project progress, real-time lead analytics, and direct communication with our developers.
               </p>
             </div>
           </motion.div>
         </div>
       </div>
     </main>
+  );
+}
   );
 }
