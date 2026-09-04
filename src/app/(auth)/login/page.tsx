@@ -122,31 +122,35 @@ function AuthContent() {
         animate="visible"
         transition={{ staggerChildren: 0.1 }}
       >
-        <motion.div variants={itemVariants} className="mb-10">
-          <Link href="/" className="inline-block mb-8 group">
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-full overflow-hidden bg-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
+        <motion.div variants={itemVariants} className="mb-10 flex flex-col items-center text-center">
+          <Link href="/" className="inline-block mb-10 group">
+            <div className="flex flex-col items-center gap-5">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-white flex items-center justify-center border-2 border-gray-100 shadow-lg group-hover:shadow-xl transition-all group-hover:scale-105">
                 <img
                   src={COMPANY.logoIconPath}
                   alt={`${COMPANY.displayName} logo`}
                   className="w-full h-full object-cover rounded-full"
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
-                    e.currentTarget.parentElement!.innerHTML = '<span class="text-xl font-black text-primary">LI</span>';
+                    e.currentTarget.parentElement!.innerHTML = '<span class="text-4xl font-black text-gray-900">LI</span>';
                   }}
                 />
               </div>
-              <div>
-                <span className="block text-[17px] sm:text-[19px] font-extrabold text-gray-900 tracking-tight leading-tight whitespace-nowrap">{COMPANY.displayName}</span>
-                <span className="block text-[11px] font-semibold text-primary uppercase tracking-widest">{COMPANY.tagline}</span>
+              <div className="flex flex-col items-center">
+                <span className="block text-2xl sm:text-[28px] font-black text-gray-900 tracking-wider leading-tight uppercase">
+                  LOGIC INTELLIGENCE TECHNOLOGIES
+                </span>
+                <span className="block text-sm sm:text-base font-bold text-gray-500 uppercase tracking-[0.2em] mt-2">
+                  WHERE LOGIC MEETS INNOVATION
+                </span>
               </div>
             </div>
           </Link>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-2">
-            {isSignUp ? "Create Account" : "Welcome Back"}
+            {isSignUp ? "CREATE ACCOUNT" : "WELCOME BACK"}
           </h1>
           <p className="text-gray-500 text-[15px]">
-            {isSignUp ? "Join the future of enterprise software." : "Sign in to your client dashboard."}
+            {isSignUp ? "Join the future of enterprise software." : "Sign in to your secure client dashboard."}
           </p>
         </motion.div>
 
