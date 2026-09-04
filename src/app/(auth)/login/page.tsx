@@ -116,7 +116,7 @@ function AuthContent() {
   const inputBase = "w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-[14px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all shadow-sm";
   
   return (
-    <div className="w-full max-w-[420px] mx-auto z-10 px-6 sm:px-0 py-12">
+    <div className="w-full max-w-[460px] mx-auto z-10 px-6 sm:px-0 py-12">
       <motion.div
         initial="hidden"
         animate="visible"
@@ -137,7 +137,7 @@ function AuthContent() {
                 />
               </div>
               <div>
-                <span className="block text-xl font-extrabold text-gray-900 tracking-tight leading-tight">Logic Intelligence</span>
+                <span className="block text-[17px] sm:text-[19px] font-extrabold text-gray-900 tracking-tight leading-tight whitespace-nowrap">{COMPANY.displayName}</span>
                 <span className="block text-[11px] font-semibold text-primary uppercase tracking-widest">{COMPANY.tagline}</span>
               </div>
             </div>
