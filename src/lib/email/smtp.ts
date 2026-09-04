@@ -24,12 +24,18 @@ const senderEnvMap: Record<SenderKey, string> = {
 
 function getSmtpConfig(sender: SenderKey): SmtpConfig {
   const prefix = senderEnvMap[sender];
-  const host = process.env[`SMTP_${prefix}_HOST`];
-  const port = Number(process.env[`SMTP_${prefix}_PORT`] ?? 587);
-  const secure = process.env[`SMTP_${prefix}_SECURE`] === "true";
-  const user = process.env[`SMTP_${prefix}_USER`];
-  const pass = process.env[`SMTP_${prefix}_PASS`];
-  const from = process.env[`SMTP_${prefix}_FROM`];
+  
+  // Fallbacks for Hostinger default configurations
+  const host = process.env[`SMTP_${prefix}_HOST`] || process.env.SMTP_HOST || "smtp.hostinger.com";
+  const port = Number(process.env[`SMTP_${prefix}_PORT`] || process.env.SMTP_PORT || 465);
+  const secure = (process.env[`SMTP_${prefix}_SECURE`] || process.env.SMTP_SECURE) === "true" || port === 465;
+  
+  // Predict user and from based on COMPANY.emails if not explicitly set
+  const user = process.env[`SMTP_${prefix}_USER`] || process.env.SMTP_USER || COMPANY.emails[sender];
+  const from = process.env[`SMTP_${prefix}_FROM`] || process.env.SMTP_FROM || COMPANY.emails[sender];
+  
+  // Password MUST be set in environment variables
+  const pass = process.env[`SMTP_${prefix}_PASS`] || process.env.SMTP_PASS;
 
   if (!host || !user || !pass || !from) {
     throw new Error(`SMTP config missing for sender: ${sender} (prefix: ${prefix})`);
