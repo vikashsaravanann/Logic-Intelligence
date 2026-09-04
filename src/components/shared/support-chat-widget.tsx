@@ -80,9 +80,13 @@ export default function SupportChatWidget() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close support chat" : "Open support chat"}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-black flex items-center justify-center shadow-lg shadow-primary/30 hover:scale-105 transition-transform mb-safe"
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform mb-safe overflow-hidden p-0 ${open ? 'bg-primary text-black shadow-primary/30' : 'bg-white shadow-black/20'}`}
       >
-        {open ? <X className="w-6 h-6" /> : <img src={COMPANY.logoIconPath} alt="Chat" className="w-full h-full object-cover rounded-full" />}
+        {open ? (
+          <X className="w-6 h-6" />
+        ) : (
+          <img src="/icon.png" alt="Chat with Logic AI" className="w-full h-full object-cover scale-105" />
+        )}
       </button>
 
       {/* Panel */}
@@ -100,7 +104,7 @@ export default function SupportChatWidget() {
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent p-0.5 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(0,191,255,0.2)] overflow-hidden">
                 <div className="w-full h-full bg-[#060B18] rounded-full flex items-center justify-center overflow-hidden">
-                  <img src={COMPANY.logoIconPath} alt="Company Logo" className="w-full h-full object-cover" />
+                  <img src="/icon.png" alt="Company Logo" className="w-full h-full object-cover" />
                 </div>
               </div>
               <div>
