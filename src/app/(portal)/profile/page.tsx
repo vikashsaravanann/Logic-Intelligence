@@ -59,11 +59,20 @@ export default async function ProfilePage() {
             {avatarUrl ? (
               <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />
             ) : (
-              user.email?.charAt(0).toUpperCase()
+              (fullName?.charAt(0) || user.email?.charAt(0) || 'U').toUpperCase()
             )}
           </div>
-          <h1 className="text-3xl font-black text-white tracking-tight">Client Portal</h1>
-          <p className="text-zinc-400 mt-2 text-sm">Manage your Logic Intelligence Technologies projects and account.</p>
+          <h1 className="text-3xl font-black text-white tracking-tight">
+            {fullName || 'Client Portal'}
+          </h1>
+          <p className="text-zinc-400 mt-1 text-sm">{user.email}</p>
+          {profileDetails.companyName && (
+            <p className="text-blue-400 mt-1 text-sm font-medium">{profileDetails.companyName}</p>
+          )}
+          {profileDetails.phoneNumber && (
+            <p className="text-zinc-400 mt-1 text-sm">{profileDetails.phoneNumber}</p>
+          )}
+          <p className="text-zinc-500 mt-2 text-xs">Manage your Logic Intelligence Technologies projects and account.</p>
         </div>
 
         <PortalTabs portalData={portalData} profileDetails={profileDetails} />

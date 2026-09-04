@@ -71,7 +71,7 @@ export function PortalTabs({ portalData, profileDetails }: PortalTabsProps) {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
+                  className={`flex items-center justify-center gap-2 px-5 py-4 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
                     isActive 
                       ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-[0_0_15px_rgba(0,191,255,0.4)]" 
                       : "text-zinc-400 hover:bg-white/5 hover:text-white border border-transparent"

@@ -123,7 +123,7 @@ export default function DashboardLayout({
               <input 
                 type="text" 
                 placeholder="Search anything (Cmd+K)..." 
-                className="bg-white/[0.02] border border-white/10 rounded-full pl-11 pr-4 py-2 text-sm focus:outline-none focus:border-indigo-500/50 focus:bg-indigo-500/5 w-72 transition-all placeholder:text-zinc-600 text-zinc-300 shadow-inner" 
+                className="bg-white/[0.02] border border-white/10 rounded-full pl-11 pr-4 py-2 text-base md:text-sm focus:outline-none focus:border-indigo-500/50 focus:bg-indigo-500/5 w-72 transition-all placeholder:text-zinc-600 text-zinc-300 shadow-inner" 
               />
             </div>
             <div className="relative">

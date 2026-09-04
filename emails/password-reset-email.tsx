@@ -5,57 +5,43 @@ import { EmailHeader } from './components/email-header';
 import { EmailFooter } from './components/email-footer';
 import { EmailButton } from './components/email-button';
 
-interface LeadConfirmationEmailProps {
+interface PasswordResetEmailProps {
   fullName: string;
-  service: string;
+  resetLink: string;
 }
 
-export const LeadConfirmationEmail = ({ fullName, service }: LeadConfirmationEmailProps) => {
+export const PasswordResetEmail = ({
+  fullName,
+  resetLink,
+}: PasswordResetEmailProps) => {
   return (
-    <EmailLayout preview="We received your request! — Logic Intelligence Technologies">
+    <EmailLayout preview="Reset your password">
       <EmailHeader />
       <Section style={content}>
         <Text style={greeting}>Hi {fullName},</Text>
 
         <Text style={heroText}>
-          We received your request.
+          Password Reset Request
         </Text>
 
         <Text style={paragraph}>
-          Thank you for reaching out to <strong>Logic Intelligence Technologies</strong>!
-          This is a quick automated message to confirm that we have successfully 
-          received your form submission regarding <strong>{service}</strong>.
+          We received a request to reset the password for your Logic Intelligence Technologies account. If you made this request, please click the button below to choose a new password:
         </Text>
 
         <Text style={paragraph}>
-          Our engineering and strategy team is reviewing your details.
-          We review all inquiries carefully and will get back to you
-          <strong> personally within the next 24 hours</strong> with next steps.
-        </Text>
-
-        <Text style={paragraph}>
-          In the meantime, feel free to check out our latest work on our website, 
-          or reply directly to this email if you need to add any more details to 
-          your request.
-        </Text>
-
-        <Text style={paragraph}>
-          <EmailButton href="https://www.logicintelligencetechnologies.in/work">
-            Explore Our Work →
+          <EmailButton href={resetLink}>
+            Reset Password
           </EmailButton>
         </Text>
 
         <Hr style={divider} />
-
-        <Text style={closingText}>
-          Talk to you very soon.
+        
+        <Text style={warningText}>
+          <strong>Security Warning:</strong> This link will expire in 1 hour. If you did not request a password reset, please ignore this email or contact our support team immediately if you feel your account has been compromised. Never share this link with anyone.
         </Text>
 
         <Section style={signatureBlock}>
-          <Text style={signatureName}>The Team at Logic Intelligence Technologies</Text>
-          <Text style={signatureContact}>
-            contact@logicintelligencetechnologies.in
-          </Text>
+          <Text style={signatureName}>Logic Intelligence Security Team</Text>
           <Link
             href="https://www.logicintelligencetechnologies.in"
             style={signatureLink}
@@ -69,7 +55,7 @@ export const LeadConfirmationEmail = ({ fullName, service }: LeadConfirmationEma
   );
 };
 
-export default LeadConfirmationEmail;
+export default PasswordResetEmail;
 
 const content = {
   padding: '36px 40px',
@@ -97,18 +83,19 @@ const paragraph = {
   margin: '0 0 16px 0',
 };
 
-
 const divider = {
   borderTop: '1px solid #e5e7eb',
   margin: '28px 0',
 };
 
-const closingText = {
-  color: '#111827',
-  fontSize: '16px',
-  fontWeight: '600' as const,
-  lineHeight: '26px',
-  margin: '0 0 20px 0',
+const warningText = {
+  color: '#6b7280',
+  fontSize: '14px',
+  lineHeight: '22px',
+  margin: '0 0 24px 0',
+  backgroundColor: '#f9fafb',
+  padding: '16px',
+  borderRadius: '4px',
 };
 
 const signatureBlock = {
@@ -122,13 +109,6 @@ const signatureName = {
   fontSize: '14px',
   fontWeight: '700' as const,
   margin: '0 0 4px 0',
-  lineHeight: '18px',
-};
-
-const signatureContact = {
-  color: '#6b7280',
-  fontSize: '13px',
-  margin: '0 0 2px 0',
   lineHeight: '18px',
 };
 

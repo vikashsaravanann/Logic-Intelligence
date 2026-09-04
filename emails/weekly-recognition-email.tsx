@@ -5,57 +5,53 @@ import { EmailHeader } from './components/email-header';
 import { EmailFooter } from './components/email-footer';
 import { EmailButton } from './components/email-button';
 
-interface LeadConfirmationEmailProps {
+interface WeeklyRecognitionEmailProps {
   fullName: string;
-  service: string;
+  dashboardUrl: string;
 }
 
-export const LeadConfirmationEmail = ({ fullName, service }: LeadConfirmationEmailProps) => {
+export const WeeklyRecognitionEmail = ({
+  fullName,
+  dashboardUrl,
+}: WeeklyRecognitionEmailProps) => {
   return (
-    <EmailLayout preview="We received your request! — Logic Intelligence Technologies">
+    <EmailLayout preview="Checking in: Let's build something amazing">
       <EmailHeader />
       <Section style={content}>
         <Text style={greeting}>Hi {fullName},</Text>
 
         <Text style={heroText}>
-          We received your request.
+          Let's Bring Your Ideas to Life!
         </Text>
 
         <Text style={paragraph}>
-          Thank you for reaching out to <strong>Logic Intelligence Technologies</strong>!
-          This is a quick automated message to confirm that we have successfully 
-          received your form submission regarding <strong>{service}</strong>.
+          We noticed you've been exploring what Logic Intelligence Technologies has to offer, but haven't taken the next step yet. We're reaching out to see how we can help you build, scale, and transform your digital presence.
         </Text>
 
         <Text style={paragraph}>
-          Our engineering and strategy team is reviewing your details.
-          We review all inquiries carefully and will get back to you
-          <strong> personally within the next 24 hours</strong> with next steps.
+          Whether you have a fully fleshed-out idea or just a concept in mind, our expert team is ready to collaborate with you to create stunning and performant digital solutions.
+        </Text>
+        
+        <Text style={paragraph}>
+          Check out your dashboard to see our latest offerings and how we can add value to your projects.
         </Text>
 
         <Text style={paragraph}>
-          In the meantime, feel free to check out our latest work on our website, 
-          or reply directly to this email if you need to add any more details to 
-          your request.
-        </Text>
-
-        <Text style={paragraph}>
-          <EmailButton href="https://www.logicintelligencetechnologies.in/work">
-            Explore Our Work →
+          <EmailButton href={dashboardUrl}>
+            Visit Your Dashboard
           </EmailButton>
         </Text>
 
         <Hr style={divider} />
 
-        <Text style={closingText}>
-          Talk to you very soon.
+        <Text style={paragraph}>
+          If you'd like to schedule a quick chat to discuss your specific needs or have any questions, feel free to reply directly to this email!
         </Text>
 
         <Section style={signatureBlock}>
-          <Text style={signatureName}>The Team at Logic Intelligence Technologies</Text>
-          <Text style={signatureContact}>
-            contact@logicintelligencetechnologies.in
-          </Text>
+          <Text style={signatureName}>Vikash Saravanan</Text>
+          <Text style={signatureTitle}>Founder &amp; CEO</Text>
+          <Text style={signatureCompany}>Logic Intelligence Technologies</Text>
           <Link
             href="https://www.logicintelligencetechnologies.in"
             style={signatureLink}
@@ -69,7 +65,7 @@ export const LeadConfirmationEmail = ({ fullName, service }: LeadConfirmationEma
   );
 };
 
-export default LeadConfirmationEmail;
+export default WeeklyRecognitionEmail;
 
 const content = {
   padding: '36px 40px',
@@ -97,18 +93,9 @@ const paragraph = {
   margin: '0 0 16px 0',
 };
 
-
 const divider = {
   borderTop: '1px solid #e5e7eb',
   margin: '28px 0',
-};
-
-const closingText = {
-  color: '#111827',
-  fontSize: '16px',
-  fontWeight: '600' as const,
-  lineHeight: '26px',
-  margin: '0 0 20px 0',
 };
 
 const signatureBlock = {
@@ -125,10 +112,17 @@ const signatureName = {
   lineHeight: '18px',
 };
 
-const signatureContact = {
+const signatureTitle = {
   color: '#6b7280',
   fontSize: '13px',
   margin: '0 0 2px 0',
+  lineHeight: '18px',
+};
+
+const signatureCompany = {
+  color: '#6b7280',
+  fontSize: '13px',
+  margin: '0 0 4px 0',
   lineHeight: '18px',
 };
 

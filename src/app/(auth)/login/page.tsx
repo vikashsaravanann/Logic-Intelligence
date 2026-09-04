@@ -181,7 +181,7 @@ function AuthContent() {
     }
   };
 
-  const inputBase = "w-full pl-11 pr-4 py-3.5 bg-white/[0.04] border rounded-xl text-sm text-white placeholder:text-zinc-600 focus:outline-none transition-all shadow-inner";
+  const inputBase = "w-full pl-11 pr-4 py-3.5 bg-white/[0.04] border rounded-xl text-base md:text-sm text-white placeholder:text-zinc-600 focus:outline-none transition-all shadow-inner";
   
   return (
     <div className="w-full max-w-md relative z-10">
@@ -416,7 +416,7 @@ function AuthContent() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm text-black bg-white hover:bg-primary transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-sm text-black bg-white hover:bg-primary transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] disabled:opacity-50 disabled:cursor-not-allowed mt-2"
             >
               {isLoading ? (
                 <>

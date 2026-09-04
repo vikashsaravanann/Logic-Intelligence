@@ -27,9 +27,7 @@ export const NewLeadNotificationEmail = ({
     <EmailLayout preview={`New Enquiry from ${fullName} — ${service}`}>
       <EmailHeader />
       <Section style={content}>
-        <Section style={alertBanner}>
-          <Text style={alertText}>🔔 NEW WEBSITE ENQUIRY</Text>
-        </Section>
+        <Text style={alertBannerText}>🔔 NEW WEBSITE ENQUIRY</Text>
 
         <Text style={heading}>Lead Details</Text>
 
@@ -65,7 +63,7 @@ export const NewLeadNotificationEmail = ({
           </Section>
         </Section>
         
-        <Text style={subheading}>📝 Project Description & Requirements</Text>
+        <Text style={subheading}>📝 Project Description &amp; Requirements</Text>
         <Section style={requirementsBox}>
           <Text style={requirementsText}>{requirements || 'No additional details provided.'}</Text>
         </Section>
@@ -78,98 +76,88 @@ export const NewLeadNotificationEmail = ({
 export default NewLeadNotificationEmail;
 
 const content = {
-  padding: '0 40px 36px 40px',
+  padding: '32px 40px 36px 40px',
 };
 
-const alertBanner = {
-  backgroundColor: '#00bfff',
-  padding: '12px 24px',
-  margin: '0 -40px 28px -40px',
-  textAlign: 'center' as const,
-};
-
-const alertText = {
-  color: '#0a0d1a',
-  fontSize: '13px',
-  fontWeight: '800' as const,
-  letterSpacing: '2px',
-  margin: '0',
+const alertBannerText = {
+  color: '#111827',
+  fontSize: '14px',
+  fontWeight: '700' as const,
+  letterSpacing: '1px',
+  margin: '0 0 16px 0',
+  textTransform: 'uppercase' as const,
 };
 
 const heading = {
-  color: '#ffffff',
-  fontSize: '22px',
+  color: '#111827',
+  fontSize: '20px',
   fontWeight: '700' as const,
   margin: '0 0 16px 0',
   lineHeight: '28px',
 };
 
 const subheading = {
-  color: '#ffffff',
-  fontSize: '16px',
+  color: '#374151',
+  fontSize: '14px',
   fontWeight: '700' as const,
-  margin: '28px 0 12px 0',
+  margin: '24px 0 8px 0',
 };
 
 const detailsCard = {
-  backgroundColor: '#1f2937',
-  borderRadius: '8px',
-  padding: '24px',
-  margin: '0 0 24px 0',
-  border: '1px solid #374151',
+  backgroundColor: '#f9fafb',
+  borderRadius: '6px',
+  border: '1px solid #e5e7eb',
+  padding: '4px 20px',
+  margin: '0 0 8px 0',
 };
 
 const detailRow = {
-  margin: '0 0 16px 0',
+  padding: '4px 0',
 };
 
 const rowDivider = {
-  borderTop: '1px solid #374151',
-  margin: '0 0 16px 0',
+  borderTop: '1px solid #e5e7eb',
+  margin: '0',
 };
 
 const detailLabel = {
-  color: '#9ca3af',
+  color: '#6b7280',
   fontSize: '12px',
   fontWeight: '600' as const,
   textTransform: 'uppercase' as const,
-  letterSpacing: '1px',
-  margin: '0 0 4px 0',
+  letterSpacing: '0.5px',
+  margin: '0 0 2px 0',
+  lineHeight: '16px',
 };
 
 const detailValue = {
-  color: '#ffffff',
-  fontSize: '16px',
+  color: '#111827',
+  fontSize: '15px',
   fontWeight: '500' as const,
   margin: '0',
+  lineHeight: '22px',
 };
 
 const detailValueHighlight = {
-  color: '#00bfff',
-  fontSize: '16px',
+  color: '#1d4ed8',
+  fontSize: '15px',
   fontWeight: '600' as const,
   margin: '0',
+  lineHeight: '22px',
 };
 
 const requirementsBox = {
-  backgroundColor: '#111827',
-  borderLeft: '4px solid #00bfff',
-  padding: '16px',
+  backgroundColor: '#f9fafb',
+  borderLeft: '3px solid #6b7280',
+  padding: '12px 16px',
   borderRadius: '4px',
-  margin: '8px 0 0 0',
+  margin: '0',
 };
 
 const requirementsText = {
-  color: '#d1d5db',
+  color: '#374151',
   fontSize: '14px',
   lineHeight: '24px',
   whiteSpace: 'pre-wrap' as const,
-};
-
-const footer = {
-  color: '#9ca3af',
-  fontSize: '13px',
-  margin: '32px 0 0 0',
-  borderTop: '1px solid #374151',
-  paddingTop: '16px',
+  margin: '0',
 };

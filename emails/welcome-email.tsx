@@ -11,13 +11,13 @@ interface WelcomeEmailProps {
 
 export const WelcomeEmail = ({ email }: WelcomeEmailProps) => {
   return (
-    <EmailLayout preview="Welcome to Logic Intelligence Technologies! 🚀">
+    <EmailLayout preview="Welcome to Logic Intelligence Technologies!">
       <EmailHeader />
       <Section style={content}>
         <Text style={greeting}>Hi {email},</Text>
 
         <Text style={heroText}>
-          Welcome to Logic Intelligence Technologies! 🚀
+          Welcome to Logic Intelligence Technologies!
         </Text>
 
         <Text style={paragraph}>
@@ -37,21 +37,21 @@ export const WelcomeEmail = ({ email }: WelcomeEmailProps) => {
 
         <Section style={bulletSection}>
           <Text style={bulletItem}>
-            🔹 Access your personal dashboard and manage your account
+            → Access your personal dashboard and manage your account
           </Text>
           <Text style={bulletItem}>
-            🔹 Explore our latest digital solutions and services
+            → Explore our latest digital solutions and services
           </Text>
           <Text style={bulletItem}>
-            🔹 Connect with our team for any questions or ideas
+            → Connect with our team for any questions or ideas
           </Text>
         </Section>
 
-        <Section style={buttonContainer}>
+        <Text style={paragraph}>
           <EmailButton href="https://www.logicintelligencetechnologies.in/login">
             Go to Your Dashboard →
           </EmailButton>
-        </Section>
+        </Text>
 
         <Hr style={divider} />
 
@@ -67,7 +67,7 @@ export const WelcomeEmail = ({ email }: WelcomeEmailProps) => {
 
         <Section style={signatureBlock}>
           <Text style={signatureName}>Vikash Saravanan</Text>
-          <Text style={signatureTitle}>Founder & CEO</Text>
+          <Text style={signatureTitle}>Founder &amp; CEO</Text>
           <Text style={signatureCompany}>Logic Intelligence Technologies</Text>
           <Link
             href="https://www.logicintelligencetechnologies.in"
@@ -89,14 +89,14 @@ const content = {
 };
 
 const greeting = {
-  color: '#ffffff',
+  color: '#111827',
   fontSize: '16px',
   lineHeight: '24px',
   margin: '0 0 8px 0',
 };
 
 const heroText = {
-  color: '#ffffff',
+  color: '#111827',
   fontSize: '22px',
   fontWeight: '700' as const,
   lineHeight: '30px',
@@ -104,19 +104,19 @@ const heroText = {
 };
 
 const paragraph = {
-  color: '#d1d5db',
+  color: '#374151',
   fontSize: '15px',
   lineHeight: '26px',
   margin: '0 0 16px 0',
 };
 
 const divider = {
-  borderTop: '1px solid #374151',
+  borderTop: '1px solid #e5e7eb',
   margin: '28px 0',
 };
 
 const sectionTitle = {
-  color: '#ffffff',
+  color: '#111827',
   fontSize: '17px',
   fontWeight: '700' as const,
   margin: '0 0 16px 0',
@@ -127,19 +127,14 @@ const bulletSection = {
 };
 
 const bulletItem = {
-  color: '#d1d5db',
+  color: '#374151',
   fontSize: '15px',
   lineHeight: '26px',
   margin: '0 0 12px 0',
 };
 
-const buttonContainer = {
-  textAlign: 'center' as const,
-  margin: '8px 0 0 0',
-};
-
 const closingText = {
-  color: '#ffffff',
+  color: '#111827',
   fontSize: '16px',
   fontWeight: '600' as const,
   lineHeight: '26px',
@@ -147,13 +142,13 @@ const closingText = {
 };
 
 const signatureBlock = {
-  borderLeft: '3px solid #00bfff',
+  borderLeft: '3px solid #2563eb',
   paddingLeft: '16px',
   margin: '0',
 };
 
 const signatureName = {
-  color: '#ffffff',
+  color: '#111827',
   fontSize: '14px',
   fontWeight: '700' as const,
   margin: '0 0 4px 0',
@@ -161,28 +156,21 @@ const signatureName = {
 };
 
 const signatureTitle = {
-  color: '#9ca3af',
+  color: '#6b7280',
   fontSize: '13px',
   margin: '0 0 2px 0',
   lineHeight: '18px',
 };
 
 const signatureCompany = {
-  color: '#9ca3af',
+  color: '#6b7280',
   fontSize: '13px',
   margin: '0 0 4px 0',
   lineHeight: '18px',
 };
 
-const signatureContact = {
-  color: '#9ca3af',
-  fontSize: '13px',
-  margin: '0 0 2px 0',
-  lineHeight: '18px',
-};
-
 const signatureLink = {
-  color: '#00bfff',
+  color: '#2563eb',
   fontSize: '13px',
-  textDecoration: 'none',
+  textDecoration: 'underline',
 };

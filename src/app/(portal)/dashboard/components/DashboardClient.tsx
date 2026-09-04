@@ -117,7 +117,7 @@ export default function DashboardClient({
             </Link>
           </div>
           
-          <div className="bg-white/[0.02] border border-white/5 rounded-3xl overflow-hidden shadow-xl backdrop-blur-sm">
+          <div className="bg-white/[0.02] border border-white/5 rounded-3xl overflow-x-auto shadow-xl backdrop-blur-sm">
             <table className="w-full text-left text-sm">
               <thead className="bg-white/[0.03] text-zinc-400 text-xs uppercase tracking-wider border-b border-white/5">
                 <tr>

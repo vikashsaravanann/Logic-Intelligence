@@ -5,57 +5,51 @@ import { EmailHeader } from './components/email-header';
 import { EmailFooter } from './components/email-footer';
 import { EmailButton } from './components/email-button';
 
-interface LeadConfirmationEmailProps {
+interface MaintenanceRenewalEmailProps {
   fullName: string;
-  service: string;
+  expiryDate: string;
+  renewLink: string;
 }
 
-export const LeadConfirmationEmail = ({ fullName, service }: LeadConfirmationEmailProps) => {
+export const MaintenanceRenewalEmail = ({
+  fullName,
+  expiryDate,
+  renewLink,
+}: MaintenanceRenewalEmailProps) => {
   return (
-    <EmailLayout preview="We received your request! — Logic Intelligence Technologies">
+    <EmailLayout preview="Your maintenance subscription is expiring soon">
       <EmailHeader />
       <Section style={content}>
         <Text style={greeting}>Hi {fullName},</Text>
 
         <Text style={heroText}>
-          We received your request.
+          Maintenance Subscription Renewal
         </Text>
 
         <Text style={paragraph}>
-          Thank you for reaching out to <strong>Logic Intelligence Technologies</strong>!
-          This is a quick automated message to confirm that we have successfully 
-          received your form submission regarding <strong>{service}</strong>.
+          This is a friendly reminder that your maintenance subscription with Logic Intelligence Technologies is set to expire on <strong>{expiryDate}</strong>.
         </Text>
 
         <Text style={paragraph}>
-          Our engineering and strategy team is reviewing your details.
-          We review all inquiries carefully and will get back to you
-          <strong> personally within the next 24 hours</strong> with next steps.
+          To ensure uninterrupted access to our support and services, please renew your subscription by clicking the button below:
         </Text>
 
         <Text style={paragraph}>
-          In the meantime, feel free to check out our latest work on our website, 
-          or reply directly to this email if you need to add any more details to 
-          your request.
-        </Text>
-
-        <Text style={paragraph}>
-          <EmailButton href="https://www.logicintelligencetechnologies.in/work">
-            Explore Our Work →
+          <EmailButton href={renewLink}>
+            Renew Maintenance Subscription
           </EmailButton>
         </Text>
 
         <Hr style={divider} />
 
-        <Text style={closingText}>
-          Talk to you very soon.
+        <Text style={paragraph}>
+          If you have any questions or need assistance, please don't hesitate to reach out to our support team.
         </Text>
 
         <Section style={signatureBlock}>
-          <Text style={signatureName}>The Team at Logic Intelligence Technologies</Text>
-          <Text style={signatureContact}>
-            contact@logicintelligencetechnologies.in
-          </Text>
+          <Text style={signatureName}>Vikash Saravanan</Text>
+          <Text style={signatureTitle}>Founder &amp; CEO</Text>
+          <Text style={signatureCompany}>Logic Intelligence Technologies</Text>
           <Link
             href="https://www.logicintelligencetechnologies.in"
             style={signatureLink}
@@ -69,7 +63,7 @@ export const LeadConfirmationEmail = ({ fullName, service }: LeadConfirmationEma
   );
 };
 
-export default LeadConfirmationEmail;
+export default MaintenanceRenewalEmail;
 
 const content = {
   padding: '36px 40px',
@@ -97,18 +91,9 @@ const paragraph = {
   margin: '0 0 16px 0',
 };
 
-
 const divider = {
   borderTop: '1px solid #e5e7eb',
   margin: '28px 0',
-};
-
-const closingText = {
-  color: '#111827',
-  fontSize: '16px',
-  fontWeight: '600' as const,
-  lineHeight: '26px',
-  margin: '0 0 20px 0',
 };
 
 const signatureBlock = {
@@ -125,10 +110,17 @@ const signatureName = {
   lineHeight: '18px',
 };
 
-const signatureContact = {
+const signatureTitle = {
   color: '#6b7280',
   fontSize: '13px',
   margin: '0 0 2px 0',
+  lineHeight: '18px',
+};
+
+const signatureCompany = {
+  color: '#6b7280',
+  fontSize: '13px',
+  margin: '0 0 4px 0',
   lineHeight: '18px',
 };
 

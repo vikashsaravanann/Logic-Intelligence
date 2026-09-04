@@ -1,28 +1,75 @@
 import "server-only";
 import nodemailer from "nodemailer";
+import { COMPANY } from "@/config/company";
 
-const smtpHost = process.env.SMTP_HOST;
-const smtpPort = Number(process.env.SMTP_PORT ?? 465);
-const smtpSecure = process.env.SMTP_SECURE === "true";
-const smtpUser = process.env.SMTP_USER;
-const smtpPass = process.env.SMTP_PASS;
+type SenderKey = keyof typeof COMPANY.emails;
 
-export const isSmtpConfigured = Boolean(
-  smtpHost && smtpUser && smtpPass && process.env.SMTP_FROM
-);
+interface SmtpConfig {
+  host: string;
+  port: number;
+  secure: boolean;
+  user: string;
+  pass: string;
+  from: string;
+}
 
-export function getSmtpTransporter() {
-  if (!isSmtpConfigured) {
-    throw new Error("SMTP email is not configured.");
+const senderEnvMap: Record<SenderKey, string> = {
+  noReply: "NOREPLY",
+  vikash: "VIKASH",
+  hello: "HELLO",
+  contact: "CONTACT",
+  admin: "ADMIN",
+  support: "SUPPORT",
+};
+
+function getSmtpConfig(sender: SenderKey): SmtpConfig {
+  const prefix = senderEnvMap[sender];
+  const host = process.env[`SMTP_${prefix}_HOST`];
+  const port = Number(process.env[`SMTP_${prefix}_PORT`] ?? 587);
+  const secure = process.env[`SMTP_${prefix}_SECURE`] === "true";
+  const user = process.env[`SMTP_${prefix}_USER`];
+  const pass = process.env[`SMTP_${prefix}_PASS`];
+  const from = process.env[`SMTP_${prefix}_FROM`];
+
+  if (!host || !user || !pass || !from) {
+    throw new Error(`SMTP config missing for sender: ${sender} (prefix: ${prefix})`);
   }
 
-  return nodemailer.createTransport({
-    host: smtpHost,
-    port: smtpPort,
-    secure: smtpSecure,
+  return { host, port, secure, user, pass, from };
+}
+
+const transporterCache = new Map<SenderKey, nodemailer.Transporter>();
+
+export function getSmtpTransporter(sender: SenderKey = "noReply"): nodemailer.Transporter {
+  const cached = transporterCache.get(sender);
+  if (cached) return cached;
+
+  const config = getSmtpConfig(sender);
+
+  const transporter = nodemailer.createTransport({
+    host: config.host,
+    port: config.port,
+    secure: config.secure,
     auth: {
-      user: smtpUser,
-      pass: smtpPass,
+      user: config.user,
+      pass: config.pass,
     },
   });
+
+  transporterCache.set(sender, transporter);
+  return transporter;
+}
+
+export function getSmtpFromAddress(sender: SenderKey = "noReply"): string {
+  const prefix = senderEnvMap[sender];
+  return process.env[`SMTP_${prefix}_FROM`] || COMPANY.emails[sender];
+}
+
+export function isSmtpConfigured(sender: SenderKey = "noReply"): boolean {
+  try {
+    getSmtpConfig(sender);
+    return true;
+  } catch {
+    return false;
+  }
 }

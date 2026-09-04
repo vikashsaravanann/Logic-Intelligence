@@ -80,7 +80,7 @@ export default function SupportChatWidget() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close support chat" : "Open support chat"}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-black flex items-center justify-center shadow-lg shadow-primary/30 hover:scale-105 transition-transform"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-black flex items-center justify-center shadow-lg shadow-primary/30 hover:scale-105 transition-transform mb-safe"
       >
         {open ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
       </button>
@@ -93,7 +93,7 @@ export default function SupportChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed bottom-24 right-6 z-50 w-[92vw] max-w-[360px] h-[75vh] max-h-[600px] rounded-2xl border border-white/10 bg-[#060B18]/95 backdrop-blur-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden"
+            className="fixed bottom-24 right-6 z-50 w-[92vw] max-w-[360px] h-[75vh] max-h-[600px] rounded-2xl border border-white/10 bg-[#060B18]/95 backdrop-blur-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden pb-safe"
           >
             {/* Header */}
             <div className="relative px-5 py-4 bg-gradient-to-r from-[#0A0F1E] to-[#12172B] border-b border-white/10 flex items-center gap-3">
@@ -149,7 +149,7 @@ export default function SupportChatWidget() {
                   onKeyDown={handleKeyDown}
                   placeholder="Ask a question..."
                   rows={1}
-                  className="flex-1 max-h-[100px] min-h-[40px] resize-none bg-transparent px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none scrollbar-thin scrollbar-thumb-white/10"
+                  className="flex-1 max-h-[100px] min-h-[40px] resize-none bg-transparent px-3 py-2.5 text-base md:text-sm text-white placeholder:text-zinc-500 focus:outline-none scrollbar-thin scrollbar-thumb-white/10"
                 />
                 <button
                   onClick={sendMessage}

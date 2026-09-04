@@ -85,7 +85,7 @@ export default function ProfileForm({
                 defaultValue={initialFullName}
                 placeholder="John Doe"
                 required
-                className="w-full bg-black/40 border border-white/10 rounded-xl pl-4 pr-10 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-cyan-500/50 focus:bg-cyan-950/20 focus:shadow-[0_0_20px_rgba(0,255,255,0.1)] transition-all duration-300"
+                className="w-full bg-black/40 border border-white/10 rounded-xl pl-4 pr-10 py-3.5 text-base md:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-cyan-500/50 focus:bg-cyan-950/20 focus:shadow-[0_0_20px_rgba(0,255,255,0.1)] transition-all duration-300"
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-cyan-400 opacity-0 group-focus-within:opacity-100 transition-opacity" />
             </div>
@@ -101,7 +101,7 @@ export default function ProfileForm({
                 type="email" 
                 defaultValue={email}
                 disabled
-                className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3.5 text-sm text-zinc-400 cursor-not-allowed"
+                className="w-full bg-white/5 border border-white/5 rounded-xl px-4 py-3.5 text-base md:text-sm text-zinc-400 cursor-not-allowed"
               />
             </div>
           </motion.div>
@@ -117,7 +117,7 @@ export default function ProfileForm({
                 name="companyName"
                 defaultValue={initialCompanyName}
                 placeholder="Logic Intelligence"
-                className="w-full bg-black/40 border border-white/10 rounded-xl pl-4 pr-10 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 focus:bg-blue-950/20 focus:shadow-[0_0_20px_rgba(59,130,246,0.1)] transition-all duration-300"
+                className="w-full bg-black/40 border border-white/10 rounded-xl pl-4 pr-10 py-3.5 text-base md:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50 focus:bg-blue-950/20 focus:shadow-[0_0_20px_rgba(59,130,246,0.1)] transition-all duration-300"
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-focus-within:opacity-100 transition-opacity" />
             </div>
@@ -134,7 +134,7 @@ export default function ProfileForm({
                 name="phoneNumber"
                 defaultValue={initialPhoneNumber}
                 placeholder="+91 90000 00000"
-                className="w-full bg-black/40 border border-white/10 rounded-xl pl-4 pr-10 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-purple-500/50 focus:bg-purple-950/20 focus:shadow-[0_0_20px_rgba(168,85,247,0.1)] transition-all duration-300"
+                className="w-full bg-black/40 border border-white/10 rounded-xl pl-4 pr-10 py-3.5 text-base md:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-purple-500/50 focus:bg-purple-950/20 focus:shadow-[0_0_20px_rgba(168,85,247,0.1)] transition-all duration-300"
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-purple-400 opacity-0 group-focus-within:opacity-100 transition-opacity" />
             </div>

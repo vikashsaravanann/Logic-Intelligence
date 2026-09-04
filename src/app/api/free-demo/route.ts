@@ -62,7 +62,9 @@ export async function POST(req: Request) {
     try {
       await sendEmail({
         to: email,
-        subject: "We received your request! (Logic Intelligence Technologies)",
+        from: "hello",
+        replyTo: "hello@logicintelligencetechnologies.in",
+        subject: "We received your request. (Logic Intelligence Technologies)",
         react: React.createElement(LeadConfirmationEmail, { fullName: name, service: service_type }),
       });
     } catch (emailErr) {
@@ -72,8 +74,9 @@ export async function POST(req: Request) {
     // 3. Send notification to Internal Team
     try {
       await sendEmail({
-        to: env.LEAD_NOTIFICATION_EMAIL,
-        replyTo: email,
+        to: ["contact@logicintelligencetechnologies.in", "vikash@logicintelligencetechnologies.in"],
+        from: "noReply",
+        replyTo: "contact@logicintelligencetechnologies.in",
         subject: `New website enquiry: ${name} — ${service_type}`,
         react: React.createElement(NewLeadNotificationEmail, {
           fullName: name, 

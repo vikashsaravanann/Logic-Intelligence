@@ -22,6 +22,14 @@ export const COMPANY = {
     photoPath: '/assets/founder.jpg',
     bio: 'First-year B.Tech student in AI & Data Science, Vikash founded Logic Intelligence Technologies to bring modern, AI-integrated web and software development to businesses in Coimbatore and beyond — with transparent pricing and a free demo before you pay.',
   },
+  emails: {
+    noReply: 'no-reply@logicintelligencetechnologies.in',
+    vikash: 'vikash@logicintelligencetechnologies.in',
+    hello: 'hello@logicintelligencetechnologies.in',
+    contact: 'contact@logicintelligencetechnologies.in',
+    admin: 'admin@logicintelligencetechnologies.in',
+    support: 'support@logicintelligencetechnologies.in',
+  },
 } as const;
 
 export const LEGAL_LAST_UPDATED = 'August 23, 2026';

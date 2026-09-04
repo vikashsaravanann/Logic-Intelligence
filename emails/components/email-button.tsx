@@ -1,4 +1,4 @@
-import { Button } from '@react-email/components';
+import { Link } from '@react-email/components';
 import * as React from 'react';
 
 interface EmailButtonProps {
@@ -8,22 +8,15 @@ interface EmailButtonProps {
 
 export const EmailButton = ({ href, children }: EmailButtonProps) => {
   return (
-    <Button style={button} href={href}>
+    <Link style={link} href={href}>
       {children}
-    </Button>
+    </Link>
   );
 };
 
-const button = {
-  backgroundColor: '#00bfff',
-  borderRadius: '8px',
-  color: '#0a0d1a',
+const link = {
+  color: '#2563eb',
   fontSize: '15px',
-  fontWeight: '700' as const,
-  textDecoration: 'none',
-  textAlign: 'center' as const,
-  display: 'inline-block' as const,
-  padding: '14px 32px',
-  margin: '8px 0',
-  letterSpacing: '0.5px',
+  textDecoration: 'underline',
+  fontWeight: '500' as const,
 };

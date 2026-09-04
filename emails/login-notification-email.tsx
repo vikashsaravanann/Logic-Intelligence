@@ -27,9 +27,7 @@ export const LoginNotificationEmail = ({
     <EmailLayout preview={`Login Activity: ${email}`}>
       <EmailHeader />
       <Section style={content}>
-        <Section style={alertBanner}>
-          <Text style={alertText}>🔐 CLIENT PORTAL LOGIN</Text>
-        </Section>
+        <Text style={alertBannerText}>🔐 CLIENT PORTAL LOGIN</Text>
 
         <Section style={detailsCard}>
           <Section style={detailRow}>
@@ -78,35 +76,29 @@ export const LoginNotificationEmail = ({
 export default LoginNotificationEmail;
 
 const content = {
-  padding: '0 40px 36px 40px',
+  padding: '32px 40px 36px 40px',
 };
 
-const alertBanner = {
-  backgroundColor: '#10b981',
-  padding: '12px 24px',
-  margin: '0 -40px 28px -40px',
-  textAlign: 'center' as const,
-};
-
-const alertText = {
-  color: '#ffffff',
-  fontSize: '13px',
-  fontWeight: '800' as const,
-  letterSpacing: '2px',
-  margin: '0',
+const alertBannerText = {
+  color: '#111827',
+  fontSize: '14px',
+  fontWeight: '700' as const,
+  letterSpacing: '1px',
+  margin: '0 0 20px 0',
+  textTransform: 'uppercase' as const,
 };
 
 const subheading = {
-  color: '#ffffff',
-  fontSize: '16px',
+  color: '#374151',
+  fontSize: '14px',
   fontWeight: '700' as const,
-  margin: '28px 0 12px 0',
+  margin: '24px 0 8px 0',
 };
 
 const detailsCard = {
-  backgroundColor: '#1f2937',
-  borderRadius: '12px',
-  border: '1px solid #374151',
+  backgroundColor: '#f9fafb',
+  borderRadius: '6px',
+  border: '1px solid #e5e7eb',
   padding: '4px 20px',
 };
 
@@ -115,12 +107,12 @@ const detailRow = {
 };
 
 const rowDivider = {
-  borderTop: '1px solid #374151',
+  borderTop: '1px solid #e5e7eb',
   margin: '0',
 };
 
 const detailLabel = {
-  color: '#9ca3af',
+  color: '#6b7280',
   fontSize: '12px',
   fontWeight: '600' as const,
   textTransform: 'uppercase' as const,
@@ -130,7 +122,7 @@ const detailLabel = {
 };
 
 const detailValue = {
-  color: '#ffffff',
+  color: '#111827',
   fontSize: '15px',
   fontWeight: '500' as const,
   margin: '0',
@@ -138,7 +130,7 @@ const detailValue = {
 };
 
 const detailValueHighlight = {
-  color: '#10b981',
+  color: '#1d4ed8',
   fontSize: '15px',
   fontWeight: '600' as const,
   margin: '0',
@@ -146,15 +138,16 @@ const detailValueHighlight = {
 };
 
 const userAgentBox = {
-  backgroundColor: '#111827',
-  padding: '16px 20px',
-  borderRadius: '12px',
-  borderLeft: '4px solid #10b981',
+  backgroundColor: '#f9fafb',
+  padding: '12px 16px',
+  borderRadius: '6px',
+  border: '1px solid #e5e7eb',
+  borderLeft: '3px solid #6b7280',
 };
 
 const userAgentText = {
   margin: '0',
-  color: '#9ca3af',
+  color: '#6b7280',
   fontSize: '11px',
   fontFamily: '"SF Mono", Monaco, "Cascadia Code", monospace',
   lineHeight: '18px',

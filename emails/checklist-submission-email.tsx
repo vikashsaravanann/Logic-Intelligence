@@ -19,9 +19,7 @@ export const ChecklistSubmissionEmail = ({
     <EmailLayout preview={`New Checklist Submission from ${email}`}>
       <EmailHeader />
       <Section style={content}>
-        <Section style={alertBanner}>
-          <Text style={alertText}>📋 NEW CHECKLIST SUBMISSION</Text>
-        </Section>
+        <Text style={alertBannerText}>📋 NEW CHECKLIST SUBMISSION</Text>
 
         <Section style={detailsCard}>
           <Section style={detailRow}>
@@ -58,92 +56,31 @@ export const ChecklistSubmissionEmail = ({
 export default ChecklistSubmissionEmail;
 
 const content = {
-  padding: '0 40px 36px 40px',
+  padding: '32px 40px 36px 40px',
 };
 
-const alertBanner = {
-  backgroundColor: '#ffffff',
-  padding: '12px 24px',
-  margin: '0 -40px 28px -40px',
-  textAlign: 'center' as const,
-};
-
-const title = {
-  color: '#ffffff',
-  fontSize: '22px',
+const alertBannerText = {
+  color: '#111827',
+  fontSize: '14px',
   fontWeight: '700' as const,
-  margin: '0 0 16px 0',
-  lineHeight: '28px',
-};
-
-const paragraph = {
-  color: '#d1d5db',
-  fontSize: '15px',
-  lineHeight: '24px',
-  margin: '0 0 24px 0',
-};
-
-const detailsContainer = {
-  backgroundColor: '#1f2937',
-  borderRadius: '8px',
-  padding: '24px',
-  margin: '0 0 24px 0',
-  border: '1px solid #374151',
-};
-
-const qnaBlock = {
-  margin: '0 0 20px 0',
-};
-
-const question = {
-  color: '#9ca3af',
-  fontSize: '13px',
-  fontWeight: '600' as const,
-  textTransform: 'uppercase' as const,
   letterSpacing: '1px',
-  margin: '0 0 6px 0',
-  lineHeight: '18px',
-};
-
-const answer = {
-  color: '#ffffff',
-  fontSize: '15px',
-  lineHeight: '24px',
-  margin: '0',
-  backgroundColor: '#111827',
-  padding: '12px 16px',
-  borderRadius: '6px',
-  borderLeft: '4px solid #8b5cf6',
-};
-
-const footer = {
-  color: '#9ca3af',
-  fontSize: '13px',
-  margin: '32px 0 0 0',
-  borderTop: '1px solid #374151',
-  paddingTop: '16px',
-};
-
-const alertText = {
-  color: '#ffffff',
-  fontSize: '13px',
-  fontWeight: '800' as const,
-  letterSpacing: '2px',
-  margin: '0',
+  margin: '0 0 20px 0',
+  textTransform: 'uppercase' as const,
 };
 
 const subheading = {
-  color: '#ffffff',
-  fontSize: '16px',
+  color: '#374151',
+  fontSize: '14px',
   fontWeight: '700' as const,
-  margin: '28px 0 12px 0',
+  margin: '24px 0 8px 0',
 };
 
 const detailsCard = {
-  backgroundColor: '#1f2937',
-  borderRadius: '12px',
-  border: '1px solid #374151',
+  backgroundColor: '#f9fafb',
+  borderRadius: '6px',
+  border: '1px solid #e5e7eb',
   padding: '4px 20px',
+  margin: '0 0 8px 0',
 };
 
 const detailRow = {
@@ -151,12 +88,12 @@ const detailRow = {
 };
 
 const rowDivider = {
-  borderTop: '1px solid #374151',
+  borderTop: '1px solid #e5e7eb',
   margin: '0',
 };
 
 const detailLabel = {
-  color: '#9ca3af',
+  color: '#6b7280',
   fontSize: '12px',
   fontWeight: '600' as const,
   textTransform: 'uppercase' as const,
@@ -166,7 +103,7 @@ const detailLabel = {
 };
 
 const detailValue = {
-  color: '#ffffff',
+  color: '#111827',
   fontSize: '15px',
   fontWeight: '500' as const,
   margin: '0',
@@ -174,7 +111,7 @@ const detailValue = {
 };
 
 const detailValueHighlight = {
-  color: '#8b5cf6',
+  color: '#1d4ed8',
   fontSize: '15px',
   fontWeight: '600' as const,
   margin: '0',
@@ -182,8 +119,10 @@ const detailValueHighlight = {
 };
 
 const answersCard = {
+  backgroundColor: '#f9fafb',
+  borderRadius: '6px',
+  border: '1px solid #e5e7eb',
   padding: '4px 20px',
-  borderLeft: '4px solid #8b5cf6',
 };
 
 const answerRow = {
@@ -191,7 +130,7 @@ const answerRow = {
 };
 
 const questionNumber = {
-  color: '#8b5cf6',
+  color: '#6b7280',
   fontSize: '11px',
   fontWeight: '700' as const,
   textTransform: 'uppercase' as const,
@@ -201,7 +140,7 @@ const questionNumber = {
 };
 
 const answerText = {
-  color: '#ffffff',
+  color: '#111827',
   fontSize: '14px',
   margin: '0',
   lineHeight: '22px',

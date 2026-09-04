@@ -123,7 +123,7 @@ export default function ContactPage() {
   };
 
   const inputBase =
-    "w-full px-5 py-4 bg-zinc-900/50 border rounded-xl text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner";
+    "w-full px-5 py-4 bg-zinc-900/50 border rounded-xl text-base md:text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner";
   const inputClass = (field: keyof FormData) =>
     `${inputBase} ${fieldErrors[field] ? "border-red-500/50" : "border-white/10"}`;
   const labelClass = "block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2";
@@ -312,7 +312,7 @@ export default function ContactPage() {
                     <button
                       type="button"
                       onClick={() => { setStep(step - 1); setFieldErrors({}); }}
-                      className="px-6 py-3 rounded-xl text-sm font-bold text-zinc-400 hover:text-white bg-white/5 hover:bg-white/10 transition-all flex items-center gap-2"
+                      className="px-6 py-4 rounded-xl text-sm font-bold text-zinc-400 hover:text-white bg-white/5 hover:bg-white/10 transition-all flex items-center gap-2"
                     >
                       <ArrowLeft className="w-4 h-4" /> Back
                     </button>
@@ -323,7 +323,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-8 py-3 rounded-xl text-sm font-bold text-black bg-white hover:bg-primary transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-8 py-4 rounded-xl text-sm font-bold text-black bg-white hover:bg-primary transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(0,191,255,0.4)] flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>
