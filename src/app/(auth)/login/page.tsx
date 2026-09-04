@@ -116,7 +116,16 @@ function AuthContent() {
   const inputBase = "w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-[14px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all shadow-sm";
   
   return (
-    <div className="w-full max-w-[460px] mx-auto z-10 px-6 sm:px-0 py-12">
+    <main className="min-h-screen flex bg-white font-sans overflow-hidden">
+      {/* Form Column */}
+      <motion.div 
+        layout
+        initial={false}
+        transition={{ type: "spring", stiffness: 70, damping: 20 }}
+        className={`w-full lg:w-[45%] flex flex-col justify-center relative bg-white z-20 shadow-[0_0_60px_rgba(0,0,0,0.1)] ${isSignUp ? 'lg:order-last' : 'lg:order-first'}`}
+      >
+        <div className="w-full h-full flex flex-col justify-center relative px-6 md:px-12 lg:px-16 py-12">
+          <div className="w-full max-w-[460px] mx-auto z-10 px-6 sm:px-0 py-12">
       <motion.div
         initial="hidden"
         animate="visible"
@@ -303,22 +312,16 @@ function AuthContent() {
         </motion.div>
       </motion.div>
     </div>
-  );
-}
+        </div>
+      </motion.div>
 
-export default function LoginPage() {
-  return (
-    <main className="min-h-screen flex bg-white font-sans">
-      {/* Left Column - Form */}
-      <div className="w-full lg:w-[45%] flex flex-col justify-center relative bg-white">
-        <Suspense fallback={<div className="text-gray-900 p-8">Loading Secure Portal...</div>}>
-          <AuthContent />
-        </Suspense>
-      </div>
-
-      {/* Right Column - Brand Showcase */}
-      <div className="hidden lg:flex flex-1 bg-zinc-950 relative overflow-hidden flex-col items-center justify-center p-12 xl:p-24 border-l border-zinc-800">
-        
+      {/* Brand Showcase Column */}
+      <motion.div 
+        layout
+        initial={false}
+        transition={{ type: "spring", stiffness: 70, damping: 20 }}
+        className={`hidden lg:flex flex-1 bg-zinc-950 relative overflow-hidden flex-col items-center justify-center p-12 xl:p-24 border-zinc-800 z-10 ${isSignUp ? 'border-r' : 'border-l'}`}
+      >
         {/* Subtle, highly professional grid background */}
         <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
@@ -400,7 +403,15 @@ export default function LoginPage() {
             </div>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white text-gray-900 font-bold">Loading Secure Portal...</div>}>
+      <AuthContent />
+    </Suspense>
   );
 }
