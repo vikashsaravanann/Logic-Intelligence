@@ -29,7 +29,9 @@ export async function updateProfile(formData: FormData) {
     const { supabaseAdmin } = await import("@/lib/supabase/admin");
     const { error } = await supabaseAdmin
       .from("profiles")
-      .update({
+      .upsert({
+        id: session.user.id,
+        email: session.user.email,
         full_name: fullName,
         company_name: companyName,
         phone_number: phoneNumber,
