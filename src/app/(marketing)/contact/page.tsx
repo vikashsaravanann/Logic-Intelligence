@@ -137,11 +137,11 @@ export default function ContactPage() {
 
         <div className="max-w-3xl mx-auto w-full relative z-10">
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-4">Start Your Project</h1>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4">Start Your Project</h1>
             <p className="text-zinc-400">Tell us about your requirements and we'll get back to you within 24 hours.</p>
           </div>
 
-          <div className="bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+          <div className="bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-6 md:p-12 shadow-2xl">
             {sent ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}

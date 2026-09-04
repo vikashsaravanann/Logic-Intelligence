@@ -6,13 +6,13 @@ import { packagesData } from "@/data/packagesData";
 
 export default function PackagesSection() {
   return (
-    <section id="packages" className="py-24 bg-[#0A0F1E] relative border-t border-white/5">
+    <section id="packages" className="py-16 md:py-24 bg-[#0A0F1E] relative border-t border-white/5">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
       
       <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <h2 className="text-primary font-bold tracking-[0.2em] uppercase text-sm mb-4">Our Service Packages</h2>
-          <h3 className="text-4xl md:text-5xl font-black text-white mb-6">Transparent pricing. No hidden charges. Real value.</h3>
+          <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6">Transparent pricing. No hidden charges. Real value.</h3>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
@@ -20,7 +20,7 @@ export default function PackagesSection() {
             const isPopular = pkg.slug === "business-pro-pack";
             return (
               <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.5, delay: i * 0.1 }}
-                className={`relative rounded-3xl p-8 md:p-10 flex flex-col h-full bg-zinc-900/60 backdrop-blur-xl border ${isPopular ? "lg:-mt-6 lg:mb-6 border-accent/50 shadow-[0_0_30px_rgba(123,47,190,0.15)]" : "border-white/10"}`}>
+                className={`relative rounded-3xl p-8 md:p-6 md:p-10 flex flex-col h-full bg-zinc-900/60 backdrop-blur-xl border ${isPopular ? "lg:-mt-6 lg:mb-6 border-accent/50 shadow-[0_0_30px_rgba(123,47,190,0.15)]" : "border-white/10"}`}>
                 
                 {isPopular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.2em] text-white bg-accent shadow-[0_0_15px_rgba(123,47,190,0.5)]">

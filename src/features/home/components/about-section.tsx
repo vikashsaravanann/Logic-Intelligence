@@ -15,9 +15,9 @@ export default function AboutSection() {
   ];
 
   return (
-    <section id="about" className="py-24 bg-[#0A0F1E] border-y border-white/5 relative overflow-hidden">
+    <section id="about" className="py-16 md:py-24 bg-[#0A0F1E] border-y border-white/5 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-16 items-center">
           
           {/* Text Content */}
           <motion.div 
@@ -68,7 +68,7 @@ export default function AboutSection() {
           >
             {/* Abstract Tech Graphic */}
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-black to-accent/20 opacity-50" />
-            <div className="absolute inset-0 flex items-center justify-center p-12">
+            <div className="absolute inset-0 flex items-center justify-center p-6 md:p-12">
               <div className="w-full h-full border border-white/5 rounded-full animate-[spin_60s_linear_infinite] relative">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow-[0_0_20px_rgba(0,191,255,1)]" />
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-4 h-4 bg-accent rounded-full shadow-[0_0_20px_rgba(238,42,123,1)]" />

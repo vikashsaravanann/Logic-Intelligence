@@ -60,7 +60,7 @@ export default function ProfileForm({
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="bg-[rgba(10,15,30,0.6)] border border-white/[0.08] rounded-3xl p-6 md:p-10 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_0_80px_rgba(255,255,255,0.02)] relative overflow-hidden"
+      className="bg-[rgba(10,15,30,0.6)] border border-white/[0.08] rounded-3xl p-6 md:p-6 md:p-10 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_0_80px_rgba(255,255,255,0.02)] relative overflow-hidden"
     >
       <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />

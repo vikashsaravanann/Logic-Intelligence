@@ -40,7 +40,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <span>{post.readingTime}</span>
         </div>
 
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-8">{post.title}</h1>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-8">{post.title}</h1>
 
         <div className="prose-content space-y-6">
           {post.body.map((block, i) => {

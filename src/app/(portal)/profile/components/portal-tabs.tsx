@@ -59,7 +59,7 @@ export function PortalTabs({ portalData, profileDetails }: PortalTabsProps) {
   };
 
   return (
-    <div className="flex flex-col items-center gap-10 w-full max-w-4xl mx-auto mt-6">
+    <div className="flex flex-col items-center gap-6 md:p-10 w-full max-w-4xl mx-auto mt-6">
       {/* Horizontal Navigation */}
       <div className="w-full">
         <div className="bg-[rgba(10,15,30,0.6)] border border-white/[0.08] rounded-2xl p-2 backdrop-blur-2xl shadow-xl">

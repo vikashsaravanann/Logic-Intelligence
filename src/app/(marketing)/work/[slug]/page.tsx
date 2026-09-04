@@ -45,7 +45,7 @@ export default async function WorkDetailPage({ params }: { params: Promise<{ slu
           {project.category}
           {project.client ? ` · ${project.client}` : ""}
         </span>
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-6">{project.title}</h1>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6">{project.title}</h1>
         <p className="text-lg text-zinc-300 leading-relaxed mb-8">{project.description}</p>
 
         {project.metrics && project.metrics.length > 0 && (

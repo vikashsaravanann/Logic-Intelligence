@@ -57,7 +57,7 @@ export default function Footer() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-8 relative z-10">
         
         {/* Main Grid: Custom column widths for better proportion */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 xl:gap-16 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:p-12 lg:gap-8 xl:gap-8 md:gap-16 mb-16">
           
           {/* Column 1: Brand */}
           <div className="flex flex-col gap-8 overflow-hidden lg:col-span-4">

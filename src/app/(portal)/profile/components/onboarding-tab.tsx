@@ -55,7 +55,7 @@ export function OnboardingTab({ onboarding }: { onboarding: any[] }) {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: "easeOut" }}
-      className="p-8 md:p-10 rounded-3xl border border-white/[0.08] bg-[rgba(10,15,30,0.6)] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_0_80px_rgba(255,255,255,0.02)] max-w-3xl mx-auto"
+      className="p-8 md:p-6 md:p-10 rounded-3xl border border-white/[0.08] bg-[rgba(10,15,30,0.6)] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_0_80px_rgba(255,255,255,0.02)] max-w-3xl mx-auto"
     >
       <div className="mb-8 flex items-start gap-4 border-b border-white/5 pb-6">
         <div className="p-3 bg-blue-500/10 text-cyan-400 rounded-xl shadow-inner">

@@ -8,7 +8,7 @@ export default function TestimonialsSection() {
   const hasTestimonials = testimonials.length > 0;
 
   return (
-    <section id="testimonials" className="py-24 bg-[#060B18] border-y border-white/5 relative overflow-hidden">
+    <section id="testimonials" className="py-16 md:py-24 bg-[#060B18] border-y border-white/5 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
           <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">
@@ -74,7 +74,7 @@ export default function TestimonialsSection() {
             viewport={{ once: true }}
             className="max-w-3xl mx-auto"
           >
-            <div className="rounded-3xl border border-dashed border-white/15 bg-white/[0.02] p-10 md:p-14 text-center">
+            <div className="rounded-3xl border border-dashed border-white/15 bg-white/[0.02] p-6 md:p-10 md:p-8 md:p-14 text-center">
               <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-6">
                 <MessageSquareQuote className="w-8 h-8 text-primary" />
               </div>

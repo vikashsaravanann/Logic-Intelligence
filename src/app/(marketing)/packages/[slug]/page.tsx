@@ -34,7 +34,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
       <BackToHome />
       <section className="py-20 px-6 lg:px-8 max-w-5xl mx-auto text-center relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-[300px] opacity-[0.1] blur-[100px] bg-gradient-to-r from-primary to-accent pointer-events-none" />
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-4 relative z-10">{pkg.title}</h1>
+        <h1 className="text-3xl md:text-4xl lg:text-6xl font-black text-white mb-4 relative z-10">{pkg.title}</h1>
         <p className="text-xl text-zinc-300 max-w-3xl mx-auto mb-6 relative z-10">{pkg.subtitle}</p>
         <p className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-10 relative z-10">{pkg.price}</p>
         
@@ -45,7 +45,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
       </section>
 
       <section className="py-16 px-6 lg:px-8 max-w-4xl mx-auto">
-        <div className="p-8 md:p-12 rounded-3xl glass-card bg-zinc-900/60 border border-white/10">
+        <div className="p-8 md:p-6 md:p-12 rounded-3xl glass-card bg-zinc-900/60 border border-white/10">
           <h2 className="text-2xl font-bold text-white mb-8">What's Included</h2>
           <div className="space-y-6">
             {pkg.inclusions.map((item, i) => (

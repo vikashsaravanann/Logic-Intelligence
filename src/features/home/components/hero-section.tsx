@@ -62,7 +62,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-            className="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6"
+            className="text-3xl md:text-4xl lg:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6"
           >
             {COMPANY.tagline.split(" ").slice(0, 3).join(" ")} <br className="hidden sm:block"/>
             <span className="inline-block text-white pb-2">{COMPANY.tagline.split(" ").slice(3).join(" ")}</span>

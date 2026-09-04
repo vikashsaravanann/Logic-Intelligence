@@ -217,7 +217,7 @@ export default function Navbar() {
         <AnimatePresence>
           {isOpen && (
             <motion.div initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }} transition={{ type: "tween", duration: 0.3 }} className="fixed top-0 right-0 w-[85vw] h-[100vh] bg-[rgba(10,15,30,0.98)] backdrop-blur-2xl border-l border-white/10 lg:hidden shadow-2xl z-40 overflow-y-auto">
-              <div className="flex flex-col px-6 py-24 space-y-3">
+              <div className="flex flex-col px-6 py-16 md:py-24 space-y-3">
                 <Link href="/" onClick={() => setIsOpen(false)} className="py-3 text-lg font-bold text-zinc-300">HOME</Link>
                 <Link href="/#services" onClick={() => setIsOpen(false)} className="py-3 text-lg font-bold text-zinc-300">SERVICES</Link>
                 <Link href="/work" onClick={() => setIsOpen(false)} className="py-3 text-lg font-bold text-zinc-300">WORK</Link>

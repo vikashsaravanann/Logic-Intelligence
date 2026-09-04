@@ -43,7 +43,7 @@ export default function DashboardClient({
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
-      className="p-10 space-y-10 max-w-7xl mx-auto"
+      className="p-6 md:p-10 space-y-10 max-w-7xl mx-auto"
     >
       {/* Top Metrics - Equal Layout */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

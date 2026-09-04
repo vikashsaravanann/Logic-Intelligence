@@ -32,7 +32,7 @@ export default function AboutPage() {
       {/* Header */}
       <section className="py-16 px-6 lg:px-8 max-w-7xl mx-auto text-center">
         <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">Who We Are</span>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
+        <h1 className="text-3xl md:text-4xl lg:text-6xl font-black text-white mb-6 leading-tight">
           Built in Coimbatore.<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
             Built for your business.
@@ -47,8 +47,8 @@ export default function AboutPage() {
 
       {/* Founder Section */}
       <section className="py-16 px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5 p-8 md:p-12">
-          <div className="grid md:grid-cols-3 gap-10 items-center">
+        <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5 p-8 md:p-6 md:p-12">
+          <div className="grid md:grid-cols-3 gap-6 md:p-10 items-center">
             <div className="flex flex-col items-center md:items-start gap-4">
               <div className="w-36 h-36 rounded-2xl overflow-hidden border-2 border-primary/30 bg-zinc-800 flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(0,191,255,0.15)]">
                 <img
@@ -103,7 +103,7 @@ export default function AboutPage() {
 
       {/* Our Story */}
       <section className="py-16 px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:p-12 items-center">
           <div className="space-y-6">
             <h2 className="text-3xl font-bold text-white">Our Story</h2>
             <p className="text-zinc-300 leading-relaxed">

@@ -1,6 +1,6 @@
 export default function NewProjectPage() {
   return (
-    <div className="p-10 max-w-3xl mx-auto">
+    <div className="p-6 md:p-10 max-w-3xl mx-auto">
       <h2 className="text-2xl font-bold text-white mb-6">Initialize New Project</h2>
       <div className="bg-white/5 border border-white/10 p-8 rounded-3xl">
         <form className="space-y-4">

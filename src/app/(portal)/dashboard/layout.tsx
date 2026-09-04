@@ -106,7 +106,7 @@ export default function DashboardLayout({
       {/* Main Content Area */}
       <main className="flex-1 h-screen overflow-y-auto bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/10 via-[#030712] to-[#030712]">
         {/* Sleek Header */}
-        <header className="h-20 border-b border-white/5 flex items-center justify-between px-10 bg-[#030712]/50 backdrop-blur-md sticky top-0 z-10">
+        <header className="h-20 border-b border-white/5 flex items-center justify-between px-6 md:px-10 bg-[#030712]/50 backdrop-blur-md sticky top-0 z-10">
           <div className="flex items-center gap-4">
             <h1 className="text-2xl font-black tracking-tight text-white">
               Command <span className="text-indigo-500">Center</span>

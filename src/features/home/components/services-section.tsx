@@ -52,7 +52,7 @@ export default function ServicesSection() {
   ];
 
   return (
-    <section id="services" className="relative py-32 bg-[#0A0F1E] overflow-hidden">
+    <section id="services" className="relative py-20 md:py-32 bg-[#0A0F1E] overflow-hidden">
       {/* Background Elements */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] mix-blend-overlay pointer-events-none" />
@@ -74,7 +74,7 @@ export default function ServicesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-black text-white tracking-tight mb-6"
+            className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight mb-6"
           >
             Comprehensive Digital <br />
             <span className="text-white opacity-90 font-light">Solutions for Real Businesses</span>
@@ -98,7 +98,7 @@ export default function ServicesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`group relative bg-[#12172B]/80 backdrop-blur-xl border border-white/5 rounded-[2rem] p-8 md:p-10 transition-all duration-500 overflow-hidden flex flex-col h-full hover:-translate-y-2 ${service.borderHover} ${service.shadowHover}`}
+              className={`group relative bg-[#12172B]/80 backdrop-blur-xl border border-white/5 rounded-[2rem] p-8 md:p-6 md:p-10 transition-all duration-500 overflow-hidden flex flex-col h-full hover:-translate-y-2 ${service.borderHover} ${service.shadowHover}`}
             >
               {/* Unique gradient hover effect */}
               <div className={`absolute inset-0 bg-gradient-to-br ${service.accent} opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none`} />

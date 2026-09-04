@@ -31,7 +31,7 @@ export default function HowItWorksSection() {
   ];
 
   return (
-    <section className="py-24 bg-[#060B18] border-y border-white/5 relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-[#060B18] border-y border-white/5 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
         <div className="text-center mb-20">
           <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">Our Process</span>
@@ -45,7 +45,7 @@ export default function HowItWorksSection() {
           <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-white/5 -translate-y-1/2" />
           <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-primary via-accent to-primary -translate-y-1/2 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-1000" />
           
-          <div className="grid md:grid-cols-4 gap-12 md:gap-6 relative">
+          <div className="grid md:grid-cols-4 gap-6 md:p-12 md:gap-6 relative">
             {steps.map((step, i) => (
               <motion.div 
                 key={i}

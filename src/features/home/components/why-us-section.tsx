@@ -27,7 +27,7 @@ export default function WhyUsSection() {
   ];
 
   return (
-    <section className="py-24 bg-[#0A0F1E] relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-[#0A0F1E] relative overflow-hidden">
       {/* Background blueprint/grid styling */}
       <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dbuznxrrm/image/upload/v1704285811/grid-pattern_q5aocu.svg')] opacity-5" />
       <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 pointer-events-none">
@@ -40,7 +40,7 @@ export default function WhyUsSection() {
       </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-16 items-center">
           
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
