@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, Mail, Eye, EyeOff, ArrowRight, Shield, Smartphone, Briefcase, Zap, CheckCircle2 } from "lucide-react";
+import { Lock, Mail, Eye, EyeOff, ArrowRight, Shield, Zap, Code, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { COMPANY } from "@/config/company";
@@ -14,17 +14,16 @@ function validateEmail(email: string) {
   return undefined;
 }
 
-function validatePhone(phone: string) {
-  if (!phone) return "Phone number is required.";
-  if (phone.length < 10) return "Enter a valid phone number (include country code, e.g. +1).";
-  return undefined;
-}
-
 function validatePassword(password: string, isSignUp: boolean) {
   if (!password) return "Password is required.";
   if (isSignUp && password.length < 6) return "Password must be at least 6 characters.";
   return undefined;
 }
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0 }
+};
 
 function AuthContent() {
   const supabase = createClientComponentClient({
@@ -32,18 +31,11 @@ function AuthContent() {
     supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   });
   const [isSignUp, setIsSignUp] = useState(false);
-  const [authMode, setAuthMode] = useState<"email" | "phone">("email");
-  
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [otp, setOtp] = useState("");
-  const [showOtpInput, setShowOtpInput] = useState(false);
-  
   const [showPass, setShowPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
-  const [fieldErrors, setFieldErrors] = useState<{ email?: string; phone?: string; password?: string }>({});
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
   const [serverError, setServerError] = useState<string | null>(null);
   const [serverSuccess, setServerSuccess] = useState<string | null>(null);
   
@@ -51,7 +43,6 @@ function AuthContent() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Check if there's an error from OAuth redirect
     const errorDescription = searchParams.get("error_description");
     const errorParam = searchParams.get("error");
     if (errorDescription) {
@@ -62,7 +53,6 @@ function AuthContent() {
   }, [searchParams]);
 
   useEffect(() => {
-    // If the user is already logged in, redirect them to the dashboard
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
@@ -72,7 +62,7 @@ function AuthContent() {
     checkSession();
   }, [router, supabase.auth]);
 
-  const handleOAuthLogin = async (provider: 'google' | 'apple' | 'github') => {
+  const handleOAuthLogin = async (provider: 'google' | 'github') => {
     try {
       setIsLoading(true);
       setServerError(null);
@@ -83,14 +73,14 @@ function AuthContent() {
         },
       });
       if (error) throw error;
-      // Redirect happens automatically
     } catch (err: any) {
       setServerError(err.message || `Failed to authenticate with ${provider}.`);
       setIsLoading(false);
     }
   };
 
-  const handleEmailAuth = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     const eErr = validateEmail(email);
     const pErr = validatePassword(password, isSignUp);
     if (eErr || pErr) {
@@ -98,6 +88,7 @@ function AuthContent() {
       return;
     }
     
+    setFieldErrors({});
     setIsLoading(true);
     setServerError(null);
     setServerSuccess(null);
@@ -106,17 +97,12 @@ function AuthContent() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
-          }
+          options: { emailRedirectTo: `${window.location.origin}/auth/callback` }
         });
         if (error) throw error;
         setServerSuccess("Account created! Please check your email to verify your account.");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         router.push("/dashboard");
       }
@@ -127,116 +113,52 @@ function AuthContent() {
     }
   };
 
-  const handlePhoneAuth = async () => {
-    if (!showOtpInput) {
-      const pErr = validatePhone(phone);
-      if (pErr) {
-        setFieldErrors({ phone: pErr });
-        return;
-      }
-      setIsLoading(true);
-      setServerError(null);
-      try {
-        const { error } = await supabase.auth.signInWithOtp({
-          phone,
-        });
-        if (error) throw error;
-        setShowOtpInput(true);
-        setServerSuccess("A code has been sent to your phone.");
-      } catch (err: any) {
-        setServerError(err.message || "Failed to send OTP.");
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      if (!otp) {
-        setServerError("Please enter the verification code.");
-        return;
-      }
-      setIsLoading(true);
-      setServerError(null);
-      try {
-        const { error } = await supabase.auth.verifyOtp({
-          phone,
-          token: otp,
-          type: 'sms',
-        });
-        if (error) throw error;
-        router.push("/dashboard");
-      } catch (err: any) {
-        setServerError(err.message || "Invalid or expired code.");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFieldErrors({});
-    if (authMode === "email") {
-      handleEmailAuth();
-    } else {
-      handlePhoneAuth();
-    }
-  };
-
-  const inputBase = "w-full pl-11 pr-4 py-3.5 bg-white border rounded-xl text-base md:text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none transition-all shadow-sm";
+  const inputBase = "w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-[14px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all shadow-sm";
   
   return (
-    <div className="w-full max-w-[440px] mx-auto z-10 p-6 md:p-0">
-      <div className="mb-6">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-all duration-200"
-        >
-          &larr; Back to Home
-        </Link>
-      </div>
-
+    <div className="w-full max-w-[420px] mx-auto z-10 px-6 sm:px-0 py-12">
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        initial="hidden"
+        animate="visible"
+        transition={{ staggerChildren: 0.1 }}
       >
-        <div className="mb-8">
-          <Link href="/" className="inline-block mb-6">
+        <motion.div variants={itemVariants} className="mb-10">
+          <Link href="/" className="inline-block mb-8 group">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl overflow-hidden bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
+              <div className="w-14 h-14 rounded-full overflow-hidden bg-white flex items-center justify-center shadow-[0_8px_16px_rgba(0,191,255,0.15)] ring-2 ring-primary/20 group-hover:shadow-[0_8px_24px_rgba(0,191,255,0.3)] transition-all">
                 <img
                   src={COMPANY.logoIconPath}
                   alt={`${COMPANY.displayName} logo`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-full"
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
-                    e.currentTarget.parentElement!.innerHTML = '<span class="text-xl font-black text-white">LI</span>';
+                    e.currentTarget.parentElement!.innerHTML = '<span class="text-xl font-black text-primary">LI</span>';
                   }}
                 />
               </div>
-              <span className="text-xl font-bold text-gray-900 tracking-tight">Logic Intelligence</span>
+              <div>
+                <span className="block text-xl font-extrabold text-gray-900 tracking-tight leading-tight">Logic Intelligence</span>
+                <span className="block text-[11px] font-semibold text-primary uppercase tracking-widest">{COMPANY.tagline}</span>
+              </div>
             </div>
           </Link>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight mb-2">
-            {isSignUp ? "Create an account" : "Welcome back"}
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-2">
+            {isSignUp ? "Create Account" : "Welcome Back"}
           </h1>
-          <p className="text-gray-500 text-base">
-            {isSignUp ? "Start transforming your business today." : "Enter your details to access your dashboard."}
+          <p className="text-gray-500 text-[15px]">
+            {isSignUp ? "Join the future of enterprise software." : "Sign in to your client dashboard."}
           </p>
-        </div>
+        </motion.div>
 
         {serverError && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm font-medium flex items-start gap-3"
-          >
+          <motion.div variants={itemVariants} className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm font-medium flex items-start gap-3">
             <Shield className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
             <div className="flex-1">
               <p className="font-bold mb-1">Authentication Error</p>
               <p>{serverError}</p>
               {serverError.toLowerCase().includes("google") && (
-                <p className="mt-2 text-xs opacity-80">
-                  Note: Google Login requires proper configuration in your Supabase Dashboard (Authentication &gt; Providers &gt; Google) and the Google Cloud Console.
+                <p className="mt-2 text-xs opacity-80 font-normal">
+                  Google Login requires configuration in Supabase Dashboard (Authentication &gt; Providers &gt; Google).
                 </p>
               )}
             </div>
@@ -244,22 +166,18 @@ function AuthContent() {
         )}
 
         {serverSuccess && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm font-medium flex items-center gap-2"
-          >
-            <CheckCircle2 className="w-5 h-5 text-green-500" />
+          <motion.div variants={itemVariants} className="mb-6 p-4 rounded-xl bg-green-50 border border-green-100 text-green-700 text-sm font-medium flex items-center gap-2">
+            <ShieldCheck className="w-5 h-5 text-green-500" />
             {serverSuccess}
           </motion.div>
         )}
 
-        <div className="grid grid-cols-2 gap-3 mb-6">
+        <motion.div variants={itemVariants} className="grid grid-cols-2 gap-3 mb-6">
           <button
             type="button"
             onClick={() => handleOAuthLogin('google')}
             disabled={isLoading}
-            className="flex items-center justify-center gap-2.5 py-3 rounded-xl text-[13px] font-semibold bg-white border border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm transition-all text-gray-700 disabled:opacity-50"
+            className="flex items-center justify-center gap-2.5 py-3 rounded-xl text-[13px] font-bold bg-white border border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm transition-all text-gray-700 disabled:opacity-50"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -273,102 +191,95 @@ function AuthContent() {
             type="button"
             onClick={() => handleOAuthLogin('github')}
             disabled={isLoading}
-            className="flex items-center justify-center gap-2.5 py-3 rounded-xl text-[13px] font-semibold bg-white border border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm transition-all text-gray-700 disabled:opacity-50"
+            className="flex items-center justify-center gap-2.5 py-3 rounded-xl text-[13px] font-bold bg-white border border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm transition-all text-gray-700 disabled:opacity-50"
           >
             <svg className="w-4 h-4" viewBox="0 0 496 512" fill="#111827">
               <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/>
             </svg>
             GitHub
           </button>
-        </div>
+        </motion.div>
 
-        <div className="flex items-center gap-3 mb-6">
+        <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
           <div className="flex-1 h-px bg-gray-200" />
-          <span className="text-xs text-gray-400 font-semibold uppercase tracking-wider">Or continue with</span>
+          <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Or sign in with email</span>
           <div className="flex-1 h-px bg-gray-200" />
-        </div>
+        </motion.div>
 
         <form onSubmit={handleSubmit} noValidate className="space-y-4">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key="email-form"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 10 }}
-              className="space-y-4"
-            >
-              <div>
-                <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1.5">
-                  Work Email
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    type="email"
-                    autoComplete="email"
-                    placeholder="you@company.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className={`${inputBase} ${fieldErrors.email ? "border-red-400 ring-4 ring-red-50" : "border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10"}`}
-                  />
-                </div>
-                {fieldErrors.email && <p className="mt-1.5 text-xs text-red-500 font-medium">{fieldErrors.email}</p>}
-              </div>
+          <motion.div variants={itemVariants}>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-widest mb-1.5">
+              Work Email
+            </label>
+            <div className="relative group">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary transition-colors" />
+              <input
+                type="email"
+                autoComplete="email"
+                placeholder="you@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={`${inputBase} ${fieldErrors.email ? "border-red-400 ring-4 ring-red-50" : ""}`}
+              />
+            </div>
+            {fieldErrors.email && <p className="mt-1.5 text-xs text-red-500 font-medium">{fieldErrors.email}</p>}
+          </motion.div>
 
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide">
-                    Password
-                  </label>
-                  {!isSignUp && (
-                    <a href="#" className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors">
-                      Forgot password?
-                    </a>
-                  )}
-                </div>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    type={showPass ? "text" : "password"}
-                    autoComplete={isSignUp ? "new-password" : "current-password"}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className={`${inputBase} pr-11 ${fieldErrors.password ? "border-red-400 ring-4 ring-red-50" : "border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10"}`}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPass(!showPass)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                  >
-                    {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-                {fieldErrors.password && <p className="mt-1.5 text-xs text-red-500 font-medium">{fieldErrors.password}</p>}
-              </div>
-            </motion.div>
-          </AnimatePresence>
+          <motion.div variants={itemVariants}>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-gray-600 uppercase tracking-widest">
+                Password
+              </label>
+              {!isSignUp && (
+                <a href="#" className="text-xs font-bold text-primary hover:text-primary/80 transition-colors">
+                  Forgot?
+                </a>
+              )}
+            </div>
+            <div className="relative group">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary transition-colors" />
+              <input
+                type={showPass ? "text" : "password"}
+                autoComplete={isSignUp ? "new-password" : "current-password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={`${inputBase} pr-11 ${fieldErrors.password ? "border-red-400 ring-4 ring-red-50" : ""}`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPass(!showPass)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            {fieldErrors.password && <p className="mt-1.5 text-xs text-red-500 font-medium">{fieldErrors.password}</p>}
+          </motion.div>
 
-          <button
+          <motion.button
+            variants={itemVariants}
+            whileHover={{ y: -1 }}
+            whileTap={{ y: 1 }}
             type="submit"
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-primary to-[#0088ff] hover:from-[#0088ff] hover:to-primary transition-all shadow-[0_4px_14px_0_rgba(0,191,255,0.39)] hover:shadow-[0_6px_20px_rgba(0,191,255,0.23)] hover:-translate-y-[1px] disabled:opacity-50 disabled:cursor-not-allowed mt-3"
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-[14px] text-white bg-gradient-to-r from-primary to-[#0088ff] transition-all shadow-[0_4px_14px_0_rgba(0,191,255,0.39)] hover:shadow-[0_6px_20px_rgba(0,191,255,0.23)] disabled:opacity-50 disabled:cursor-not-allowed mt-4"
           >
             {isLoading ? (
               <>
                 <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                Please wait...
+                Processing...
               </>
             ) : (
               <>
-                {isSignUp ? "Create Account" : "Sign In"}
+                {isSignUp ? "Create Secure Account" : "Access Dashboard"}
                 <ArrowRight className="w-4 h-4" /> 
               </>
             )}
-          </button>
+          </motion.button>
         </form>
 
-        <div className="mt-8 text-center">
+        <motion.div variants={itemVariants} className="mt-8 text-center">
           <button
             type="button"
             onClick={() => {
@@ -380,12 +291,12 @@ function AuthContent() {
             className="text-sm text-gray-500 hover:text-gray-900 transition-colors font-medium"
           >
             {isSignUp ? (
-              <>Already have an account? <span className="text-primary font-bold">Sign In</span></>
+              <>Already registered? <span className="text-primary font-bold">Sign In Here</span></>
             ) : (
-              <>Don't have an account? <span className="text-primary font-bold">Sign Up</span></>
+              <>New to Logic Intelligence? <span className="text-primary font-bold">Apply for Access</span></>
             )}
           </button>
-        </div>
+        </motion.div>
       </motion.div>
     </div>
   );
@@ -393,51 +304,77 @@ function AuthContent() {
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen flex bg-gray-50">
+    <main className="min-h-screen flex bg-white font-sans">
       {/* Left Column - Form */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center relative bg-white">
-        <Suspense fallback={<div className="text-gray-900 p-8">Loading...</div>}>
+      <div className="w-full lg:w-[45%] flex flex-col justify-center relative bg-white">
+        <Suspense fallback={<div className="text-gray-900 p-8">Loading Secure Portal...</div>}>
           <AuthContent />
         </Suspense>
       </div>
 
-      {/* Right Column - Image/Branding (Hidden on mobile) */}
-      <div className="hidden lg:flex w-1/2 bg-[#0A0F1E] relative overflow-hidden items-center justify-center">
-        {/* Subtle Background Elements */}
-        <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
-        <div className="absolute top-1/4 -right-1/4 w-[40rem] h-[40rem] bg-primary/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none" />
-        <div className="absolute -bottom-1/4 -left-1/4 w-[40rem] h-[40rem] bg-[#7B2FBE]/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none" />
+      {/* Right Column - Brand Showcase */}
+      <div className="hidden lg:flex flex-1 bg-[#0A0F1E] relative overflow-hidden flex-col justify-center p-20 border-l border-white/10 shadow-[-20px_0_40px_rgba(0,0,0,0.1)]">
+        {/* Dynamic Background */}
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] mix-blend-overlay"></div>
+        <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-gradient-to-tr from-[#7B2FBE]/15 to-transparent rounded-full blur-[80px] translate-y-1/4 -translate-x-1/4" />
         
-        <div className="relative z-10 max-w-lg px-12">
-          <div className="flex gap-4 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center border border-white/20">
-              <Zap className="w-6 h-6 text-primary" />
-            </div>
-            <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center border border-white/20">
-              <Briefcase className="w-6 h-6 text-[#7B2FBE]" />
-            </div>
-            <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center border border-white/20">
-              <Shield className="w-6 h-6 text-green-400" />
-            </div>
-          </div>
-          
-          <h2 className="text-4xl font-black text-white leading-tight mb-6">
-            Intelligent solutions for <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#00FF88]">modern businesses.</span>
-          </h2>
-          
-          <p className="text-lg text-gray-300 leading-relaxed mb-10">
-            Join hundreds of forward-thinking enterprises that use Logic Intelligence to automate their workflows, secure their data, and accelerate growth.
-          </p>
+        {/* Decorative Grid */}
+        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-          <div className="flex items-center gap-4 text-sm font-semibold text-gray-400">
-            <div className="flex -space-x-3">
-              <img src="https://i.pravatar.cc/100?img=1" className="w-10 h-10 rounded-full border-2 border-[#0A0F1E]" alt="User" />
-              <img src="https://i.pravatar.cc/100?img=2" className="w-10 h-10 rounded-full border-2 border-[#0A0F1E]" alt="User" />
-              <img src="https://i.pravatar.cc/100?img=3" className="w-10 h-10 rounded-full border-2 border-[#0A0F1E]" alt="User" />
-              <img src="https://i.pravatar.cc/100?img=4" className="w-10 h-10 rounded-full border-2 border-[#0A0F1E]" alt="User" />
+        <div className="relative z-10 max-w-xl">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8"
+          >
+            <span className="w-2 h-2 rounded-full bg-[#00FF88] shadow-[0_0_8px_#00FF88] animate-pulse" />
+            <span className="text-xs font-bold text-gray-300 uppercase tracking-widest">{COMPANY.tagline}</span>
+          </motion.div>
+
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-5xl font-black text-white leading-[1.1] tracking-tight mb-8"
+          >
+            Empowering Modern <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#00FF88] to-primary bg-[length:200%_auto] animate-gradientShift">
+              Digital Enterprises.
+            </span>
+          </motion.h2>
+
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-xl text-gray-400 leading-relaxed font-light mb-12 max-w-md"
+          >
+            Automate workflows, deploy robust full-stack solutions, and scale your business with engineered precision.
+          </motion.p>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="grid grid-cols-2 gap-8 border-t border-white/10 pt-10"
+          >
+            <div>
+              <div className="flex items-center gap-3 mb-2 text-white">
+                <Code className="w-5 h-5 text-primary" />
+                <h4 className="font-bold text-lg">Custom Software</h4>
+              </div>
+              <p className="text-sm text-gray-500">Enterprise CRM, ERP, and bespoke web applications.</p>
             </div>
-            <p>Trusted by 500+ professionals</p>
-          </div>
+            <div>
+              <div className="flex items-center gap-3 mb-2 text-white">
+                <Zap className="w-5 h-5 text-[#00FF88]" />
+                <h4 className="font-bold text-lg">AI Integration</h4>
+              </div>
+              <p className="text-sm text-gray-500">Intelligent automation powered by modern machine learning.</p>
+            </div>
+          </motion.div>
         </div>
       </div>
     </main>
