@@ -2,7 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';\nimport { COMPANY } from '@/config/company';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { COMPANY } from '@/config/company';
 
 
 const STORAGE_KEY = 'lit_ai_chats';
@@ -558,18 +559,20 @@ export default function GeminiAiChatPage() {
       </div>
 
       {/* Main area */}
-      <div className="main-area">
+      <div className="main-area" style={{ position: 'relative' }}>
+        <div style={{ position: 'absolute', bottom: '16px', left: '16px', fontSize: 'clamp(14px, 2vw, 20px)', fontWeight: '900', letterSpacing: '3px', textTransform: 'uppercase', background: 'linear-gradient(135deg, #fff, #00bfff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', zIndex: 10, pointerEvents: 'none' }}>
+          LOGIC AI
+        </div>
         <div className="top-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <button className="hamburger" onClick={() => setSidebarOpen((s) => !s)}>☰</button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }} />
-              <span style={{ fontWeight: '800', letterSpacing: '1.5px', fontSize: '15px', textTransform: 'uppercase', color: '#fff' }}>
-                LOGIC INTELLIGENCE TECHNOLOGIES
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontWeight: '600', letterSpacing: '2px', fontSize: '12px', textTransform: 'uppercase', color: '#A0A3A6' }}>
+                {COMPANY.tagline}
               </span>
             </div>
           </div>
-          <a href="/" className="back-to-website-btn">
+          <a href="/" className="px-6 py-2 rounded-full text-[11px] font-black text-black uppercase tracking-[0.2em] bg-white hover:bg-gray-200 transition-all shadow-lg hover:shadow-xl whitespace-nowrap text-decoration-none">
             Back to Website
           </a>
         </div>
@@ -577,9 +580,8 @@ export default function GeminiAiChatPage() {
         {showWelcome ? (
           <div className="welcome-screen welcome-fade">
             <div className="welcome-title-row">
-              <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', marginBottom: '20px', boxShadow: '0 0 20px rgba(0, 191, 255, 0.2)' }} />
-              <div className="welcome-company">LOGIC INTELLIGENCE TECHNOLOGIES</div>
-              <div className="welcome-ai-name">LOGIC AI</div>
+              <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '140px', height: '140px', borderRadius: '50%', objectFit: 'cover', marginBottom: '24px', boxShadow: '0 0 30px rgba(0, 191, 255, 0.3)' }} />
+              <div className="welcome-company" style={{ whiteSpace: 'nowrap', fontSize: 'clamp(18px, 4vw, 26px)' }}>LOGIC INTELLIGENCE TECHNOLOGIES</div>
             </div>
             <div className="suggestion-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
               {SUGGESTIONS.map((s, i) => (
