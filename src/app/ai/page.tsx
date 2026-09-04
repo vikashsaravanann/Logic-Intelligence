@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
 
 const STORAGE_KEY = 'lit_ai_chats';
 
@@ -25,10 +28,10 @@ function saveChats(chats: any) {
 }
 
 const SUGGESTIONS = [
-  { icon: '💼', title: 'What services', subtitle: 'does Logic Intelligence Technologies offer?' },
-  { icon: '💰', title: 'Business Pro Pack', subtitle: 'pricing and features' },
-  { icon: '⚛️', title: 'React optimization', subtitle: 'tips for reducing re-renders' },
-  { icon: '🛠️', title: 'Tech stack', subtitle: 'used in our live products' },
+  { icon: '⚡', title: 'Generate a tech proposal', subtitle: 'for a new SaaS application' },
+  { icon: '💻', title: 'Write React.js code', subtitle: 'to build a beautiful dashboard UI' },
+  { icon: '🏢', title: 'Enterprise Development', subtitle: 'explain the process of custom software' },
+  { icon: '📊', title: 'Cloud Architecture', subtitle: 'best practices for scalable databases' },
 ];
 
 // Brain-circuit logo matching the company brand mark
@@ -69,6 +72,15 @@ export default function GeminiAiChatPage() {
   const [chats, setChats] = useState<any[]>([]);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [input, setInput] = useState('');
+  const [user, setUser] = useState<any>(null);
+  const supabase = createClientComponentClient();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data?.user) setUser(data.user);
+    });
+  }, [supabase.auth]);
+
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -417,18 +429,19 @@ export default function GeminiAiChatPage() {
 
         .suggestion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 640px; width: 100%; }
         .suggestion-card {
-          background-color: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px;
-          padding: 18px; text-align: left; cursor: pointer; font-size: 13.5px;
-          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-          display: flex; flex-direction: column; gap: 6px;
+          background-color: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+          padding: 20px; text-align: left; cursor: pointer; font-size: 14px;
+          transition: all 0.3s ease;
+          display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+          min-height: 120px;
         }
         .suggestion-card:hover {
-          background-color: rgba(255,255,255,0.05); transform: translateY(-3px);
-          border-color: #00bfff; box-shadow: 0 8px 24px rgba(0,191,255,0.15);
+          background-color: rgba(255,255,255,0.08); transform: translateY(-2px);
+          border-color: rgba(255,255,255,0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .suggestion-icon { font-size: 20px; margin-bottom: 2px; }
-        .suggestion-card .s-title { color: #F1F2F3; font-weight: 600; }
-        .suggestion-card .s-subtitle { color: #8E918F; font-size: 12.5px; }
+        .suggestion-icon { font-size: 24px; padding-bottom: 8px; }
+        .suggestion-card .s-title { color: #fff; font-weight: 700; font-size: 15px; }
+        .suggestion-card .s-subtitle { color: #A0A3A6; font-size: 13px; font-weight: 400; line-height: 1.4; }
 
         .avatar {
           width: 34px; height: 34px; border-radius: 50%;
@@ -541,32 +554,34 @@ export default function GeminiAiChatPage() {
             ))}
         </div>
 
-        <div className="sidebar-footer">
-          <span className="status-dot"></span>
-          <span>Proprietary AI Core &middot; Qwen-1.5B LoRA + RAG</span>
-        </div>
+        
       </div>
 
       {/* Main area */}
       <div className="main-area">
-        <div className="top-bar">
-          <button className="hamburger" onClick={() => setSidebarOpen((s) => !s)}>☰</button>
-          <div className="top-bar-title">
-            <BrandLogo size={18} />
-            <span>Core Intelligence v1.0</span>
+        <div className="top-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <button className="hamburger" onClick={() => setSidebarOpen((s) => !s)}>☰</button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }} />
+              <span style={{ fontWeight: '800', letterSpacing: '1.5px', fontSize: '15px', textTransform: 'uppercase', color: '#fff' }}>
+                LOGIC INTELLIGENCE TECHNOLOGIES
+              </span>
+            </div>
           </div>
-          <a href="/" className="status-pill hover:scale-105 transition-transform cursor-pointer" style={{textDecoration: 'none'}}>
-            <span className="status-dot"></span> Back to Website
+          <a href="/" className="back-to-website-btn">
+            Back to Website
           </a>
         </div>
 
         {showWelcome ? (
           <div className="welcome-screen welcome-fade">
-            <div className="welcome-logo logo-float"><BrandLogo size={72} /></div>
-            <div className="welcome-title shimmer-text">Welcome back</div>
-            <div className="welcome-subtitle">How can I help you today?</div>
-            <div className="welcome-company">LOGIC INTELLIGENCE TECHNOLOGIES</div>
-            <div className="suggestion-grid">
+            <div className="welcome-title-row">
+              <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', marginBottom: '20px', boxShadow: '0 0 20px rgba(0, 191, 255, 0.2)' }} />
+              <div className="welcome-company">LOGIC INTELLIGENCE TECHNOLOGIES</div>
+              <div className="welcome-ai-name">LOGIC AI</div>
+            </div>
+            <div className="suggestion-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
               {SUGGESTIONS.map((s, i) => (
                 <div key={i} className="suggestion-card" onClick={() => sendMessage(`${s.title} ${s.subtitle}`)}>
                   <span className="suggestion-icon">{s.icon}</span>
@@ -581,11 +596,21 @@ export default function GeminiAiChatPage() {
             {activeChat.messages.map((msg: any, idx: number) => (
               <div key={idx} className="chat-bubble message-row">
                 <div className={`avatar ${msg.role === 'assistant' ? 'avatar-assistant' : 'avatar-user'}`}>
-                  {msg.role === 'assistant' ? <BrandLogo size={18} /> : 'U'}
+                  {msg.role === 'assistant' ? (
+                    <img src={COMPANY.logoIconPath} alt="AI" />
+                  ) : user?.user_metadata?.avatar_url ? (
+                    <img src={user.user_metadata.avatar_url} alt="User" />
+                  ) : (
+                    'U'
+                  )}
                 </div>
                 <div className="message-content">
-                  <div className="message-text" style={{ color: msg.role === 'assistant' ? '#E8E9EA' : '#C4C7C5' }}>
-                    {msg.text}
+                  <div className="message-text" style={{ color: msg.role === 'assistant' ? '#E8E9EA' : '#C4C7C5', width: '100%' }}>
+                    {msg.role === 'assistant' ? (
+                      <div className="markdown-body"><ReactMarkdown>{msg.text}</ReactMarkdown></div>
+                    ) : (
+                      msg.text
+                    )}
                   </div>
                   {msg.role === 'assistant' && (
                     <div className="message-actions">
@@ -600,8 +625,13 @@ export default function GeminiAiChatPage() {
 
             {loading && (
               <div className="chat-bubble message-row">
-                <div className="avatar avatar-assistant ai-icon-computing"><BrandLogo size={18} /></div>
-                <div className="typing-dots"><span></span><span></span><span></span></div>
+                <div className="avatar avatar-assistant ai-pulse">
+                  <img src={COMPANY.logoIconPath} alt="AI" />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div className="typing-dots"><span></span><span></span><span></span></div>
+                  <span style={{ fontSize: '13px', color: '#00bfff', fontWeight: '500', animation: 'pulse 2s infinite' }}>LOGIC AI is thinking...</span>
+                </div>
               </div>
             )}
             <div ref={chatEndRef} />
