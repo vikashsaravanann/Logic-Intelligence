@@ -10,7 +10,13 @@ import { z } from "zod";
 
 const GROQ_API_KEY = process.env.GROK_API_KEY || process.env.XAI_API_KEY || process.env.GROQ_API_KEY;
 const GROQ_API_URL = process.env.GROQ_API_URL || process.env.XAI_API_URL || "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = "qwen/qwen3.8-27b";
+
+let GROQ_MODEL = "llama-3.3-70b-versatile"; // Default Groq model
+if (GROQ_API_URL.includes("x.ai")) {
+    GROQ_MODEL = "grok-beta";
+} else if (GROQ_API_URL.includes("openrouter.ai")) {
+    GROQ_MODEL = "qwen/qwen-2.5-72b-instruct";
+}
 
 // --- Request validation -----------------------------------------------------
 
