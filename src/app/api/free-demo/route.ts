@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email/send-email";
-import LeadConfirmationEmail from "@/emails/lead-confirmation-email";
+import FreeDemoConfirmationEmail from "@/emails/free-demo-confirmation-email";
 import NewLeadNotificationEmail from "@/emails/new-lead-notification-email";
 import { env } from "@/config/env";
 import { z } from "zod";
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
         from: "hello",
         replyTo: "hello@logicintelligencetechnologies.in",
         subject: "We received your request. (Logic Intelligence Technologies)",
-        react: React.createElement(LeadConfirmationEmail, { fullName: name, service: service_type }),
+        react: React.createElement(FreeDemoConfirmationEmail, { fullName: name }),
       });
       if (!emailResult.success) {
         console.error("[Email Error] Failed to send email:", emailResult.message);
