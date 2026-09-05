@@ -29,10 +29,12 @@ export default function DashboardClient({
   leads,
   projects,
   invoices,
+  user
 }: {
   leads: any[];
   projects: any[];
   invoices: any[];
+  user: any;
 }) {
   const totalRevenue = invoices.reduce((sum, inv) => sum + Number(inv.amount || 0), 0);
   const activeProjects = projects.filter(p => p.status !== 'Completed').length;
