@@ -17,7 +17,6 @@ const senderEnvMap: Record<SenderKey, string> = {
   noReply: "NOREPLY",
   vikash: "VIKASH",
   hello: "HELLO",
-  contact: "CONTACT",
   admin: "ADMIN",
   support: "SUPPORT",
 };

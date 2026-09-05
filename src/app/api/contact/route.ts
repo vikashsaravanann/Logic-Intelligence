@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     // 1. Send internal notification (don't let failure block user confirmation)
     try {
       const emailResult = await sendEmail({
-        to: process.env.LEAD_NOTIFICATION_EMAIL || "contact@logicintelligencetechnologies.in",
+        to: process.env.LEAD_NOTIFICATION_EMAIL || "support@logicintelligencetechnologies.in",
         from: "noReply",
         replyTo: email,
         subject: `New Lead: ${projectType} from ${fullName}`,

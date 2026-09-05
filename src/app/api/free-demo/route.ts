@@ -79,9 +79,9 @@ export async function POST(req: Request) {
     // 3. Send notification to Internal Team
     try {
       const emailResult = await sendEmail({
-        to: ["contact@logicintelligencetechnologies.in", "vikash@logicintelligencetechnologies.in"],
+        to: ["support@logicintelligencetechnologies.in", "vikash@logicintelligencetechnologies.in"],
         from: "noReply",
-        replyTo: "contact@logicintelligencetechnologies.in",
+        replyTo: "support@logicintelligencetechnologies.in",
         subject: `New website enquiry: ${name} — ${service_type}`,
         react: React.createElement(NewLeadNotificationEmail, {
           fullName: name, 

@@ -6,7 +6,6 @@ Resend and Gmail are NOT used.
 ## Active Mailboxes & Envs
 - no-reply@logicintelligencetechnologies.in -> \`SMTP_NOREPLY_PASS\`
 - hello@logicintelligencetechnologies.in -> \`SMTP_HELLO_PASS\`
-- contact@logicintelligencetechnologies.in -> \`SMTP_CONTACT_PASS\`
 - admin@logicintelligencetechnologies.in -> \`SMTP_ADMIN_PASS\`
 - support@logicintelligencetechnologies.in -> \`SMTP_SUPPORT_PASS\`
 - vikash@logicintelligencetechnologies.in -> \`SMTP_VIKASH_PASS\`

@@ -60,7 +60,7 @@ Copy `.env.example` to `.env.local` and fill in all values:
 | `SMTP_SECURE` | `true` for port 465 |
 | `SMTP_USER` | Gmail address |
 | `SMTP_PASS` | Gmail App Password (not your account password) |
-| `SMTP_FROM` | Sender address (e.g. `contact@logicintelligencetechnologies.in`) |
+| `SMTP_FROM` | Sender address (e.g. `support@logicintelligencetechnologies.in`) |
 | `SMTP_REPLY_TO` | Reply-to address |
 | `LEAD_NOTIFICATION_EMAIL` | Internal email to receive new lead notifications |
 

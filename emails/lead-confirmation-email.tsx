@@ -54,7 +54,7 @@ export const LeadConfirmationEmail = ({ fullName, service }: LeadConfirmationEma
         <Section style={signatureBlock}>
           <Text style={signatureName}>The Team at Logic Intelligence Technologies</Text>
           <Text style={signatureContact}>
-            contact@logicintelligencetechnologies.in
+            support@logicintelligencetechnologies.in
           </Text>
           <Link
             href="https://www.logicintelligencetechnologies.in"

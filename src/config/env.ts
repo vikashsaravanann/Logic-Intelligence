@@ -9,7 +9,7 @@ const envSchema = z.object({
   // Secrets
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   SUPABASE_WEBHOOK_SECRET: z.string().optional(),
-  LEAD_NOTIFICATION_EMAIL: z.string().optional().default("contact@logicintelligencetechnologies.in"),
+  LEAD_NOTIFICATION_EMAIL: z.string().optional().default("support@logicintelligencetechnologies.in"),
   
   // Redis (Optional)
   UPSTASH_REDIS_REST_URL: z.string().optional(),

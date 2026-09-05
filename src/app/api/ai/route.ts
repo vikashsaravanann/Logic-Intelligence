@@ -125,7 +125,7 @@ REFUND POLICY:
 - After final deployment and source code handover, no refunds are issued - a bug-fixing warranty period is provided post-launch
 - Monthly maintenance/retainer: cancel with 30 days written notice; billed for current month; no partial month refunds
 - Digital products are final sale
-- Exceptional disputes reviewed case-by-case. Contact: contact@logicintelligencetechnologies.in.
+- Exceptional disputes reviewed case-by-case. Contact: support@logicintelligencetechnologies.in.
 
 SUPPORT & MAINTENANCE:
 - Digital Launch Pack: 1 month free support

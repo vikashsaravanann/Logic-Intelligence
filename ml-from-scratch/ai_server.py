@@ -135,7 +135,7 @@ KNOWLEDGE_BASE = [
     # REFUND + POLICIES
     {
         "keywords": ["refund", "cancellation", "refund policy", "cancel project", "money back", "partial refund", "dispute"],
-        "context": "Fact - Refund Policy: Projects are divided into milestones. Initial deposits are non-refundable once discovery or design has started. Approved milestone payments are non-refundable. If you cancel mid-development, you are only billed for work completed to that date. After final deployment and source code handover, no refunds are issued - a bug-fixing warranty period is provided post-launch. Monthly maintenance/retainer: cancel with 30 days written notice; billed for current month; no partial month refunds. Digital products are final sale. Exceptional disputes reviewed case-by-case. Contact: contact@logicintelligencetechnologies.in."
+        "context": "Fact - Refund Policy: Projects are divided into milestones. Initial deposits are non-refundable once discovery or design has started. Approved milestone payments are non-refundable. If you cancel mid-development, you are only billed for work completed to that date. After final deployment and source code handover, no refunds are issued - a bug-fixing warranty period is provided post-launch. Monthly maintenance/retainer: cancel with 30 days written notice; billed for current month; no partial month refunds. Digital products are final sale. Exceptional disputes reviewed case-by-case. Contact: support@logicintelligencetechnologies.in."
     },
     {
         "keywords": ["support", "maintenance", "contact", "help", "whatsapp", "response time", "after launch", "bug fix"],

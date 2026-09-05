@@ -46,7 +46,7 @@ export const ChecklistDownloadEmail = ({ fullName = "there" }: ChecklistDownload
         <Section style={signatureBlock}>
           <Text style={signatureName}>The Team at Logic Intelligence Technologies</Text>
           <Text style={signatureContact}>
-            {COMPANY.emails.contact}
+            {COMPANY.emails.support}
           </Text>
           <Link
             href={COMPANY.websiteUrl}
