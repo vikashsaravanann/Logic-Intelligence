@@ -93,9 +93,9 @@ export default function SupportChatWidget() {
           <>
             <div className="w-11 h-11 rounded-full bg-white p-0 flex items-center justify-center shrink-0 shadow-md overflow-hidden border border-white/20">
               <img
-                src="/icon.png"
+                src="/out/logo.jpg"
                 alt="Logic Intelligence Logo"
-                className="w-full h-full object-contain scale-110"
+                className="w-full h-full object-contain rounded-full"
               />
             </div>
             <div className="flex items-center justify-center pr-1 select-none">
