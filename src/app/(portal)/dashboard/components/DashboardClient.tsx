@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import {
   Users, Briefcase, FileText,
-  Plus, TrendingUp, Calendar, Mail, Phone, ArrowUpRight, Activity
+  Plus, TrendingUp, Calendar, Mail, Phone, ArrowUpRight, Activity, Lock, Palette, Image as ImageIcon, Globe, CheckCircle2
 } from 'lucide-react';
 import Link from 'next/link';
 import RevenueChart from './RevenueChart';
@@ -213,6 +213,137 @@ export default function DashboardClient({
         </motion.div>
       </div>
       
+      {/* Visual Project Timeline */}
+      <motion.div variants={fadeIn} className="mt-12 space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              <Activity className="w-5 h-5 text-emerald-400" /> Project Timeline
+            </h3>
+            <p className="text-xs text-zinc-500 mt-1">Live progression of current deliverables</p>
+          </div>
+        </div>
+        
+        <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-8 shadow-xl">
+          <div className="relative flex justify-between items-center w-full max-w-4xl mx-auto">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-white/10 rounded-full"></div>
+            <div 
+              className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-emerald-500 rounded-full transition-all duration-1000"
+              style={{ width: '50%' }}
+            ></div>
+            
+            {['Discovery', 'Design', 'Development', 'QA', 'Launch'].map((stage, idx) => {
+              const currentStage = 2; // Development
+              return (
+                <div key={idx} className="relative z-10 flex flex-col items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all duration-500 ${
+                    idx <= currentStage 
+                      ? 'bg-emerald-500 border-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.5)]' 
+                      : 'bg-[#18181b] border-white/20 text-zinc-500'
+                  }`}>
+                    {idx < currentStage ? <CheckCircle2 className="w-5 h-5" /> : idx + 1}
+                  </div>
+                  <span className={`text-xs font-bold ${idx <= currentStage ? 'text-white' : 'text-zinc-500'}`}>
+                    {stage}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Secure Vault & Client Onboarding */}
+      <motion.div variants={fadeIn} className="mt-12 space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              <Lock className="w-5 h-5 text-pink-400" /> Secure Vault & Onboarding
+            </h3>
+            <p className="text-xs text-zinc-500 mt-1">Manage brand assets and sensitive credentials</p>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Brand Colors */}
+          <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 shadow-xl relative overflow-hidden group hover:border-pink-500/30 transition-all">
+            <div className="absolute -right-10 -top-10 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl group-hover:bg-pink-500/20 transition-all"></div>
+            <div className="flex items-center gap-3 mb-6 relative z-10">
+              <div className="p-3 bg-pink-500/10 text-pink-400 rounded-xl">
+                <Palette className="w-5 h-5" />
+              </div>
+              <h4 className="text-white font-bold">Brand Colors</h4>
+            </div>
+            <div className="space-y-4 relative z-10">
+              <div>
+                <label className="text-xs text-zinc-400 font-medium mb-1.5 block">Primary Color (Hex)</label>
+                <div className="flex gap-2">
+                  <div className="w-10 h-10 rounded-xl border border-white/10 bg-[#6366f1]"></div>
+                  <input type="text" defaultValue="#6366f1" className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 text-sm text-white focus:outline-none focus:border-pink-500/50" />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs text-zinc-400 font-medium mb-1.5 block">Secondary Color (Hex)</label>
+                <div className="flex gap-2">
+                  <div className="w-10 h-10 rounded-xl border border-white/10 bg-[#ec4899]"></div>
+                  <input type="text" defaultValue="#ec4899" className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 text-sm text-white focus:outline-none focus:border-pink-500/50" />
+                </div>
+              </div>
+              <button className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 rounded-xl text-xs transition-colors mt-2">Save Colors</button>
+            </div>
+          </div>
+          
+          {/* Logo Assets */}
+          <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 shadow-xl relative overflow-hidden group hover:border-blue-500/30 transition-all">
+            <div className="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all"></div>
+            <div className="flex items-center gap-3 mb-6 relative z-10">
+              <div className="p-3 bg-blue-500/10 text-blue-400 rounded-xl">
+                <ImageIcon className="w-5 h-5" />
+              </div>
+              <h4 className="text-white font-bold">Logo Assets</h4>
+            </div>
+            <div className="space-y-4 relative z-10">
+              <div>
+                <label className="text-xs text-zinc-400 font-medium mb-1.5 block">Logo URL (SVG/PNG)</label>
+                <input type="text" placeholder="https://..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/50" />
+              </div>
+              <div className="h-[90px] border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center text-zinc-500 text-xs hover:border-blue-500/30 hover:bg-white/5 transition-all cursor-pointer">
+                <ImageIcon className="w-6 h-6 mb-2 opacity-50" />
+                <span>Or drop logo here</span>
+              </div>
+              <button className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 rounded-xl text-xs transition-colors mt-2">Update Logo</button>
+            </div>
+          </div>
+          
+          {/* Domain Credentials */}
+          <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 shadow-xl relative overflow-hidden group hover:border-amber-500/30 transition-all">
+            <div className="absolute -right-10 -top-10 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-all"></div>
+            <div className="flex items-center gap-3 mb-6 relative z-10">
+              <div className="p-3 bg-amber-500/10 text-amber-400 rounded-xl">
+                <Globe className="w-5 h-5" />
+              </div>
+              <h4 className="text-white font-bold">Domain Credentials</h4>
+            </div>
+            <div className="space-y-4 relative z-10">
+              <div>
+                <label className="text-xs text-zinc-400 font-medium mb-1.5 block">Domain Name</label>
+                <input type="text" placeholder="example.com" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500/50" />
+              </div>
+              <div>
+                <label className="text-xs text-zinc-400 font-medium mb-1.5 block">Provider & Login</label>
+                <div className="flex gap-2">
+                  <input type="text" placeholder="GoDaddy" className="w-1/3 bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500/50" />
+                  <input type="password" placeholder="••••••••" className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500/50" />
+                </div>
+              </div>
+              <button className="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-bold py-2.5 rounded-xl text-xs transition-colors mt-2 border border-amber-500/20 flex items-center justify-center gap-2">
+                <Lock className="w-3 h-3" /> Encrypt & Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Kanban Pipeline Section */}
       <motion.div variants={fadeIn} className="mt-12 space-y-6">
         <div className="flex items-center justify-between">
