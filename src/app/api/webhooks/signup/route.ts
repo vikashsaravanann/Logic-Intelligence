@@ -68,8 +68,8 @@ export async function POST(req: Request) {
     // 4. Send Welcome Email via Nodemailer
     const emailResult = await sendEmail({
       to: userEmail,
-      from: "vikash",
-      subject: "Welcome to Logic Intelligence Technologies",
+      from: "noReply",
+      subject: "Welcome to Logic Intelligence Technologies!",
       react: React.createElement(WelcomeEmail, { email: userEmail }),
     });
 
