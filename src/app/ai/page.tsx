@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { COMPANY } from '@/config/company';
-import { Rocket, Briefcase, Building2, Wrench, AlertTriangle, Square, Copy, RefreshCcw } from 'lucide-react';
+import { Rocket, Briefcase, Building2, Wrench, AlertTriangle, Square, Copy, RefreshCcw, Paperclip, Mic, Table, Code2, Calculator, Handshake, CreditCard, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 
@@ -213,7 +213,7 @@ export default function GeminiAiChatPage() {
   const MarkdownComponents = {
     table: ({ node, ...props }: any) => (
       <div className="artifact-trigger" onClick={() => setArtifact({ type: 'table', content: props.children })}>
-        <span className="icon">📊</span>
+        <span className="icon"><Table size={20} className="text-[#00bfff]" /></span>
         <div>
           <div className="title">Interactive Data Table</div>
           <div className="subtitle">Click to view artifact</div>
@@ -228,7 +228,7 @@ export default function GeminiAiChatPage() {
       if (!inline && (codeString.length > 200 || codeString.includes('<!DOCTYPE') || codeString.includes('<div') || codeString.includes('export default'))) {
         return (
           <div className="artifact-trigger code-artifact" onClick={() => setArtifact({ type: 'code', content: codeString })}>
-            <span className="icon">💻</span>
+            <span className="icon"><Code2 size={20} className="text-[#00bfff]" /></span>
             <div>
               <div className="title">Code Preview</div>
               <div className="subtitle">Click to view artifact</div>
@@ -862,7 +862,7 @@ export default function GeminiAiChatPage() {
                                <button style={{ background: '#000', color: '#fff', padding: '10px 20px', borderRadius: '4px' }} onClick={() => alert('Proposal Requested! Our team will contact you.')}>Request Final Proposal</button>
                              </div>
                            ) })}>
-                             <span className="icon">💰</span>
+                             <span className="icon"><Calculator size={20} className="text-[#00bfff]" /></span>
                              <div>
                                <div className="title">Interactive Quote Builder</div>
                                <div className="subtitle">Click to calculate pricing</div>
@@ -875,7 +875,7 @@ export default function GeminiAiChatPage() {
                              await supabase.from('support_tickets').insert({ user_id: user.id, subject: 'Escalated from AI Chat', message: 'User requested human assistance via AI chat.', status: 'Open' });
                              alert('Support ticket created successfully! Vikash will review it shortly.');
                            }}>
-                             <span className="icon">🤝</span>
+                             <span className="icon"><Handshake size={20} className="text-[#00bfff]" /></span>
                              <div>
                                <div className="title">Live Support Handoff</div>
                                <div className="subtitle">Click to escalate to Vikash</div>
@@ -884,7 +884,7 @@ export default function GeminiAiChatPage() {
                         )}
                         {msg.text.includes('[CHECKOUT:') && (
                            <div className="artifact-trigger code-artifact" onClick={() => alert('Redirecting to secure Stripe Checkout...')}>
-                             <span className="icon">💳</span>
+                             <span className="icon"><CreditCard size={20} className="text-[#00bfff]" /></span>
                              <div>
                                <div className="title">Secure Checkout</div>
                                <div className="subtitle">Pay Advance via Stripe / Razorpay</div>
@@ -898,7 +898,7 @@ export default function GeminiAiChatPage() {
                                <iframe src="https://calendly.com/" width="100%" height="100%" frameBorder="0" style={{ minHeight: '450px' }}></iframe>
                              </div>
                            ) })}>
-                             <span className="icon">📅</span>
+                             <span className="icon"><Calendar size={20} className="text-[#00bfff]" /></span>
                              <div>
                                <div className="title">Book a Meeting</div>
                                <div className="subtitle">Schedule a Google Meet with our team</div>
@@ -943,12 +943,8 @@ export default function GeminiAiChatPage() {
               style={{ display: 'none' }} 
               onChange={handleFileChange} 
             />
-            <button type="button" onClick={() => fileInputRef.current?.click()} title="Attach File" style={{ background: 'transparent', border: 'none', color: selectedFile ? '#00bfff' : '#A0A3A6', cursor: 'pointer', padding: '0 8px 6px 0', fontSize: '20px', transition: 'color 0.2s' }}>
-              📎
-            </button>
-            <button type="button" onClick={toggleListen} title="Voice Input" style={{ background: 'transparent', border: 'none', color: isListening ? '#f44336' : '#A0A3A6', cursor: 'pointer', padding: '0 8px 6px 0', fontSize: '20px', transition: 'color 0.2s' }}>
-              🎤
-            </button>
+            <button type="button" onClick={() => fileInputRef.current?.click()} title="Attach File" style={{ background: 'transparent', border: 'none', color: selectedFile ? '#00bfff' : '#A0A3A6', cursor: 'pointer', padding: '0 8px 6px 0', fontSize: '20px', transition: 'color 0.2s' }}><Paperclip size={18} /></button>
+            <button type="button" onClick={toggleListen} title="Voice Input" style={{ background: 'transparent', border: 'none', color: isListening ? '#f44336' : '#A0A3A6', cursor: 'pointer', padding: '0 8px 6px 0', fontSize: '20px', transition: 'color 0.2s' }}><Mic size={18} /></button>
             <textarea
               ref={textareaRef}
               rows={1}
