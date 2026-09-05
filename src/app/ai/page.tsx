@@ -4,6 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { COMPANY } from '@/config/company';
+import { Rocket, Briefcase, Building2, Wrench, AlertTriangle, Square, Copy, RefreshCcw } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 
 const STORAGE_KEY = 'lit_ai_chats';
@@ -29,14 +31,14 @@ function saveChats(chats: any) {
 }
 
 const SUGGESTIONS = [
-  { icon: '📦', title: 'Digital Launch Pack', subtitle: 'Rs.8,999 - up to 5 pages, mobile-responsive, basic SEO' },
-  { icon: '💼', title: 'Business Pro Pack', subtitle: 'Rs.18,999 - booking system, admin panel, payment gateway' },
-  { icon: '🏢', title: 'Enterprise Pack', subtitle: 'custom from Rs.50,000 - dedicated project manager, unlimited pages' },
-  { icon: '🔧', title: 'Services Inquiry', subtitle: 'Full stack web, mobile apps, CRM, SEO, hosting & maintenance' },
+  { icon: <Rocket size={24} className="text-[#00bfff]" />, title: 'Digital Launch Pack', subtitle: 'Rs.8,999 - up to 5 pages, mobile-responsive, basic SEO' },
+  { icon: <Briefcase size={24} className="text-[#0055ff]" />, title: 'Business Pro Pack', subtitle: 'Rs.18,999 - booking system, admin panel, payment gateway' },
+  { icon: <Building2 size={24} className="text-[#9b72cb]" />, title: 'Enterprise Pack', subtitle: 'custom from Rs.50,000 - dedicated project manager, unlimited pages' },
+  { icon: <Wrench size={24} className="text-[#00bfff]" />, title: 'Services Inquiry', subtitle: 'Full stack web, mobile apps, CRM, SEO, hosting & maintenance' },
 ];
 
 // Brain-circuit logo matching the company brand mark
-function BrandLogo({ size = 28 }: { size?: number }) {
+function BrandLogo({ size = 28 }: { size?: number | string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -95,7 +97,15 @@ export default function GeminiAiChatPage() {
   
   const chatEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
   const [isMounted, setIsMounted] = useState(false);
+
+  const stopGenerating = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -164,9 +174,12 @@ export default function GeminiAiChatPage() {
         </div>
       </div>
     ),
-    pre: ({ node, ...props }: any) => {
-      const codeString = node.children?.[0]?.children?.[0]?.value || '';
-      if (codeString.length > 200 || codeString.includes('<!DOCTYPE') || codeString.includes('<div') || codeString.includes('export default')) {
+    code: ({ node, inline, className, children, ...props }: any) => {
+      const match = /language-(\w+)/.exec(className || '');
+      const codeString = String(children).replace(/\n$/, '');
+      
+      // Heuristic for large structural code to become artifacts
+      if (!inline && (codeString.length > 200 || codeString.includes('<!DOCTYPE') || codeString.includes('<div') || codeString.includes('export default'))) {
         return (
           <div className="artifact-trigger code-artifact" onClick={() => setArtifact({ type: 'code', content: codeString })}>
             <span className="icon">💻</span>
@@ -177,8 +190,40 @@ export default function GeminiAiChatPage() {
           </div>
         );
       }
-      return <pre {...props} />;
-    }
+
+      if (!inline && match) {
+        return (
+          <div style={{ background: '#1E1F20', borderRadius: '12px', overflow: 'hidden', margin: '16px 0', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#282A2C', padding: '6px 16px', fontSize: '12px', color: '#A0A3A6' }}>
+              <span>{match[1]}</span>
+              <button 
+                onClick={() => {
+                  navigator.clipboard.writeText(codeString);
+                  // Quick visual feedback without needing state for every block
+                  const btn = document.activeElement as HTMLButtonElement;
+                  if (btn) {
+                    const originalText = btn.innerText;
+                    btn.innerText = 'Copied!';
+                    setTimeout(() => { btn.innerText = originalText; }, 1500);
+                  }
+                }}
+                style={{ background: 'none', border: 'none', color: '#A0A3A6', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+              >
+                <Copy size={12} /> Copy
+              </button>
+            </div>
+            <pre style={{ margin: 0, padding: '16px', overflowX: 'auto', background: 'transparent' }}>
+              <code className={className} {...props}>
+                {children}
+              </code>
+            </pre>
+          </div>
+        );
+      }
+      return <code className={className} {...props}>{children}</code>;
+    },
+    pre: ({ children }: any) => <>{children}</>, // Handled entirely inside the code component above for fenced blocks
+    a: ({ node, ...props }: any) => <a {...props} target="_blank" rel="noopener noreferrer" />
   };
 
   const createNewChat = () => {
@@ -290,10 +335,12 @@ export default function GeminiAiChatPage() {
     );
 
     try {
+      abortControllerRef.current = new AbortController();
       const res = await fetch('/api/ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: payloadText, max_tokens: 400 }),
+        signal: abortControllerRef.current.signal,
       });
       
       const reader = res.body?.getReader();
@@ -337,16 +384,21 @@ export default function GeminiAiChatPage() {
         await supabase.from('ai_chats').update({ updated_at: new Date().toISOString() }).eq('id', chatId);
       }
       speakText(fullText);
-    } catch (err) {
-      setChats((prev) =>
-        prev.map((c) =>
-          c.id === chatId
-            ? { ...c, messages: [...c.messages.slice(0, -1), { role: 'assistant', text: 'Connection failed.' }] }
-            : c
-        )
-      );
+    } catch (err: any) {
+      if (err.name === 'AbortError') {
+        // Just stop generating, keep what we have
+      } else {
+        setChats((prev) =>
+          prev.map((c) =>
+            c.id === chatId
+              ? { ...c, messages: [...c.messages.slice(0, -1), { role: 'assistant', text: '', isError: true, previousUserText: payloadText }] }
+              : c
+          )
+        );
+      }
     } finally {
       setLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
@@ -369,10 +421,6 @@ export default function GeminiAiChatPage() {
   return (
     <div className="app-root">
       <style dangerouslySetInnerHTML={{__html: `
-        :global(nav), :global(footer), :global(.fixed) { display: none !important; }
-        :global(body), :global(html) { overflow: hidden !important; margin: 0; padding: 0; }
-        :global(main) { padding: 0 !important; margin: 0 !important; }
-
         * { box-sizing: border-box; }
         html, body, #root { height: 100%; margin: 0; }
 
@@ -386,7 +434,6 @@ export default function GeminiAiChatPage() {
           overflow: hidden;
           position: fixed;
           top: 0; left: 0; right: 0; bottom: 0;
-          z-index: 99999;
         }
 
         /* Ambient animated background glow (subtle for Gemini) */
@@ -533,6 +580,7 @@ export default function GeminiAiChatPage() {
         }
         .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
         .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0s; }
 
         .input-bar-wrap { padding: 0 26px 22px; max-width: 860px; width: 100%; margin: 0 auto; box-sizing: border-box; position: relative; z-index: 20; }
         .input-bar {
@@ -557,6 +605,13 @@ export default function GeminiAiChatPage() {
         .send-btn:hover:not(:disabled) { transform: scale(1.05); }
         .send-btn:disabled { background: #282A2C; color: #5f6368; cursor: default; }
 
+        .stop-btn {
+          background: #F28B82; color: #131314; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0; transition: all 0.2s ease;
+        }
+        .stop-btn:hover { background: #E07B72; transform: scale(1.05); }
+
         .disclaimer { text-align: center; font-size: 11px; color: #6E7175; padding-top: 12px; }
 
         .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 90; backdrop-filter: blur(2px); }
@@ -579,13 +634,29 @@ export default function GeminiAiChatPage() {
         }
       `}} />
 
-      <div className="ambient-glow" />
+      <div className="ambient-glow">
+        <motion.div 
+          animate={{ opacity: [0.02, 0.05, 0.02], scale: [1, 1.05, 1], rotate: [-2, 2, -2] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80vw', height: '80vw', maxWidth: '800px', maxHeight: '800px' }}
+        >
+          <BrandLogo size={800} />
+        </motion.div>
+      </div>
 
       <div className={`sidebar-overlay ${sidebarOpen && isMobile ? 'show' : ''}`} onClick={() => setSidebarOpen(false)} />
 
       {/* Sidebar */}
-      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-        <div className="sidebar-brand">
+      <AnimatePresence>
+        {(!isMobile || sidebarOpen) && (
+          <motion.div 
+            initial={isMobile ? { x: '-100%' } : { x: 0 }}
+            animate={{ x: 0 }}
+            exit={isMobile ? { x: '-100%' } : { x: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className={`sidebar ${sidebarOpen ? 'open' : ''}`}
+          >
+            <div className="sidebar-brand">
           <div className="logo-float"><BrandLogo size={32} /></div>
           <div className="brand-text-wrap">
             <span className="brand-text-main">LOGIC INTELLIGENCE</span>
@@ -612,7 +683,9 @@ export default function GeminiAiChatPage() {
         </div>
 
         
-      </div>
+        </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main area */}
       <div className="main-area" style={{ position: 'relative' }}>
@@ -666,26 +739,51 @@ export default function GeminiAiChatPage() {
                 Hello, {user?.user_metadata?.full_name?.split(' ')[0] || 'there'}
               </div>
               <div style={{ color: '#5f6368', fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: '500', letterSpacing: '-1px' }}>
-                Welcome to the Logic Intelligence Technologies AI Assistant
+                {chats.some(c => c.messages.length > 0) ? 'Welcome back to the' : 'Welcome to the'} Logic Intelligence Technologies AI Assistant
               </div>
               <div style={{ color: '#8E918F', fontSize: '14px', marginTop: '8px' }}>
                 Founded by Vikash Saravanan • Coimbatore, Tamil Nadu, India
               </div>
             </div>
-            <div className="suggestion-grid">
+            <motion.div 
+              className="suggestion-grid"
+              variants={{
+                hidden: { opacity: 0 },
+                show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+              }}
+              initial="hidden"
+              animate="show"
+            >
               {SUGGESTIONS.map((s, i) => (
-                <div key={i} className="suggestion-card" onClick={() => sendMessage(`${s.title} ${s.subtitle}`)}>
+                <motion.div 
+                  key={i} 
+                  className="suggestion-card" 
+                  onClick={() => sendMessage(`${s.title} ${s.subtitle}`)}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 25 } }
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
                   <span className="suggestion-icon">{s.icon}</span>
                   <div className="s-title">{s.title}</div>
                   <div className="s-subtitle">{s.subtitle}</div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         ) : (
           <div className="message-stream">
+            <AnimatePresence initial={false}>
             {activeChat.messages.map((msg: any, idx: number) => (
-              <div key={idx} className="chat-bubble message-row">
+              <motion.div 
+                key={idx} 
+                initial={{ opacity: 0, y: 12, scale: 0.98 }} 
+                animate={{ opacity: 1, y: 0, scale: 1 }} 
+                transition={{ type: "spring", stiffness: 350, damping: 28 }}
+                className={`chat-bubble message-row ${msg.role === 'user' ? 'user' : ''}`}
+              >
                 <div className={`avatar ${msg.role === 'assistant' ? 'avatar-assistant' : 'avatar-user'}`}>
                   {msg.role === 'assistant' ? (
                     <img src={COMPANY.logoIconPath} alt="AI" />
@@ -698,6 +796,15 @@ export default function GeminiAiChatPage() {
                 <div className="message-content">
                   <div className="message-text" style={{ color: msg.role === 'assistant' ? '#E8E9EA' : '#C4C7C5', width: '100%' }}>
                     {msg.role === 'assistant' ? (
+                      msg.isError ? (
+                        <div style={{ color: '#F28B82', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <AlertTriangle size={18} />
+                          <span>Connection failed.</span>
+                          <button onClick={() => sendMessage(msg.previousUserText)} style={{ marginLeft: '12px', background: 'rgba(242, 139, 130, 0.1)', border: '1px solid #F28B82', color: '#F28B82', borderRadius: '6px', padding: '4px 12px', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <RefreshCcw size={14} /> Retry
+                          </button>
+                        </div>
+                      ) : (
                       <div className="markdown-body">
                         <ReactMarkdown components={MarkdownComponents}>{msg.text.replace(/\[QUOTE_BUILDER\]/g, '').replace(/\[HUMAN_HANDOFF\]/g, '').replace(/\[CHECKOUT:.*?\]/g, '').replace(/\[CALENDAR\]/g, '')}</ReactMarkdown>
                         {msg.text.includes('[QUOTE_BUILDER]') && (
@@ -759,6 +866,7 @@ export default function GeminiAiChatPage() {
                            </div>
                         )}
                       </div>
+                      )
                     ) : (
                       msg.text
                     )}
@@ -771,8 +879,9 @@ export default function GeminiAiChatPage() {
                     </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
+            </AnimatePresence>
 
             {loading && (
               <div className="chat-bubble message-row assistant">
@@ -811,7 +920,13 @@ export default function GeminiAiChatPage() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
             />
-            <button type="submit" className="send-btn" disabled={loading || (!input.trim() && !selectedFile)}>↑</button>
+            {loading ? (
+              <button type="button" onClick={stopGenerating} className="stop-btn" title="Stop generating">
+                <Square size={16} fill="currentColor" />
+              </button>
+            ) : (
+              <button type="submit" className="send-btn" disabled={!input.trim() && !selectedFile}>↑</button>
+            )}
           </form>
           <div className="disclaimer">Logic Intelligence AI may display inaccurate info. Verify important details.</div>
         </div>
