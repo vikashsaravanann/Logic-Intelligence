@@ -5,6 +5,7 @@ import { sendEmail } from "@/lib/email/send-email";
 import LoginNotificationEmail from "@/emails/login-notification-email";
 import * as React from "react";
 import { env } from "@/config/env";
+import { UAParser } from 'ua-parser-js';
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
@@ -24,17 +25,40 @@ export async function GET(request: Request) {
       
       if (session?.user?.email) {
         // Send Login Notification on successful OAuth / Magic Link login
+        
+        const uaString = request.headers.get("user-agent") || "";
+        const parser = new UAParser(uaString);
+        const result = parser.getResult();
+        const deviceStr = [result.device.vendor, result.device.model, result.os.name].filter(Boolean).join(" ") || result.os.name || "Unknown Device";
+        const browserStr = result.browser.name || "Unknown Browser";
+        const deviceSummary = `${deviceStr} • ${browserStr}`;
+
+        const ipAddress = request.headers.get('x-forwarded-for') || "Local Development";
+        const city = request.headers.get('x-vercel-ip-city');
+        const region = request.headers.get('x-vercel-ip-region');
+        const country = request.headers.get('x-vercel-ip-country');
+        
+        let location = "Local Development";
+        if (city || region || country) {
+          location = [city, region, country].filter(Boolean).join(", ");
+        }
+
+        const adminEmail = process.env.ADMIN_ALERT_EMAIL || "admin@logicintelligencetechnologies.in";
+
         const emailResult = await sendEmail({
-          to: session.user.email,
+          to: adminEmail,
           from: "noReply",
-          subject: "New login to your Logic Intelligence account",
+          subject: `Client login: ${session.user.email}`,
           react: React.createElement(LoginNotificationEmail, { 
             email: session.user.email,
             loginTimestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-            userAgent: request.headers.get("user-agent") || "Unknown Device",
-            deviceSummary: "Unknown Location" // Could use Vercel headers for precise location
+            userAgent: uaString,
+            location: location,
+            parsedDevice: deviceSummary,
+            ipAddress: ipAddress,
           }),
         });
+
         
         if (!emailResult.success) {
           console.error("[Email Error] Login notification failed:", emailResult.message);

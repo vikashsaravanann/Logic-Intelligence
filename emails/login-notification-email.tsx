@@ -8,64 +8,62 @@ interface LoginNotificationEmailProps {
   email: string;
   loginTimestamp: string;
   userAgent?: string;
-  deviceSummary?: string;
+  location?: string;
+  parsedDevice?: string;
   screenSize?: string;
   timezone?: string;
   ipAddress?: string;
 }
 
-export const LoginNotificationEmail = ({ 
-  email,
-  loginTimestamp,
-  userAgent,
-  deviceSummary,
-  screenSize,
-  timezone,
-  ipAddress
-}: LoginNotificationEmailProps) => {
+export const LoginNotificationEmail = (props: LoginNotificationEmailProps) => {
   return (
-    <EmailLayout preview={`Login Activity: ${email}`}>
+    <EmailLayout preview={`Login Activity: ${props.email}`}>
       <EmailHeader />
       <Section style={content}>
-        <Text style={alertBannerText}>🔐 CLIENT PORTAL LOGIN</Text>
+        <Text style={alertBannerText}>🚨 INTERNAL ALERT: LOGIN ACTIVITY</Text>
 
         <Section style={detailsCard}>
           <Section style={detailRow}>
             <Text style={detailLabel}>Email</Text>
-            <Text style={detailValueHighlight}>{email}</Text>
+            <Text style={detailValueHighlight}>{props.email}</Text>
           </Section>
           <Hr style={rowDivider} />
           <Section style={detailRow}>
             <Text style={detailLabel}>Timestamp</Text>
             <Text style={detailValue}>
-              {new Date(loginTimestamp).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+              {new Date(props.loginTimestamp).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
             </Text>
           </Section>
           <Hr style={rowDivider} />
           <Section style={detailRow}>
             <Text style={detailLabel}>Device</Text>
-            <Text style={detailValue}>{deviceSummary || 'Unknown'}</Text>
+            <Text style={detailValue}>{props.parsedDevice || 'Unknown'}</Text>
+          </Section>
+          <Hr style={rowDivider} />
+          <Section style={detailRow}>
+            <Text style={detailLabel}>Location</Text>
+            <Text style={detailValue}>{props.location || 'Unknown'}</Text>
           </Section>
           <Hr style={rowDivider} />
           <Section style={detailRow}>
             <Text style={detailLabel}>Screen Size</Text>
-            <Text style={detailValue}>{screenSize || 'Unknown'}</Text>
+            <Text style={detailValue}>{props.screenSize || 'Unknown'}</Text>
           </Section>
           <Hr style={rowDivider} />
           <Section style={detailRow}>
             <Text style={detailLabel}>Timezone</Text>
-            <Text style={detailValue}>{timezone || 'Unknown'}</Text>
+            <Text style={detailValue}>{props.timezone || 'Unknown'}</Text>
           </Section>
           <Hr style={rowDivider} />
           <Section style={detailRow}>
             <Text style={detailLabel}>IP Address</Text>
-            <Text style={detailValue}>{ipAddress || 'Hidden'}</Text>
+            <Text style={detailValue}>{props.ipAddress || 'Hidden'}</Text>
           </Section>
         </Section>
         
         <Text style={subheading}>🖥️ Raw User Agent</Text>
         <Section style={userAgentBox}>
-          <Text style={userAgentText}>{userAgent || 'Not provided'}</Text>
+          <Text style={userAgentText}>{props.userAgent || 'Not provided'}</Text>
         </Section>
       </Section>
       <EmailFooter />

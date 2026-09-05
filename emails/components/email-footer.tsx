@@ -8,17 +8,13 @@ export const EmailFooter = () => {
       <Hr style={topDivider} />
       <Text style={companyLine}>{COMPANY.legalName}</Text>
       <Text style={addressLine}>{COMPANY.address}</Text>
-      <Text style={linksLine}>
-        <Link href={COMPANY.websiteUrl} style={footerLink}>Website</Link>
-        {'  •  '}
-        <Link href={COMPANY.instagramUrl} style={footerLink}>Instagram</Link>
-        {'  •  '}
-        <Link href={COMPANY.linkedinUrl} style={footerLink}>LinkedIn</Link>
-        {'  •  '}
-        <Link href={COMPANY.whatsappGroupUrl} style={footerLink}>WhatsApp Group</Link>
-        {'  •  '}
-        <Link href={COMPANY.telegramBotUrl} style={footerLink}>Telegram</Link>
-      </Text>
+      <Section style={linksContainer}>
+        <Link href={COMPANY.websiteUrl} style={footerBtn}>Website</Link>
+        <Link href={COMPANY.instagramUrl} style={footerBtn}>Instagram</Link>
+        <Link href={COMPANY.linkedinUrl} style={footerBtn}>LinkedIn</Link>
+        <Link href={COMPANY.whatsappGroupUrl} style={footerBtn}>WhatsApp</Link>
+        <Link href={COMPANY.telegramBotUrl} style={footerBtn}>Telegram</Link>
+      </Section>
       <Text style={copyright}>
         © {new Date().getFullYear()} Logic Intelligence Technologies. All rights reserved.
       </Text>
@@ -66,4 +62,24 @@ const copyright = {
   color: '#9ca3af',
   fontSize: '11px',
   margin: '0',
+};
+
+
+const linksContainer = {
+  margin: '16px 0 20px 0',
+  display: 'block',
+};
+
+const footerBtn = {
+  backgroundColor: '#eff6ff',
+  color: '#2563eb',
+  padding: '6px 12px',
+  borderRadius: '16px',
+  textDecoration: 'none',
+  fontSize: '11px',
+  fontWeight: '600' as const,
+  display: 'inline-block',
+  marginRight: '8px',
+  marginBottom: '8px',
+  border: '1px solid #bfdbfe',
 };

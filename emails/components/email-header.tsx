@@ -9,8 +9,8 @@ export const EmailHeader = () => {
       <Img
         src={LOGO_URL}
         alt="Logic Intelligence Technologies"
-        width="56"
-        height="56"
+        width="80"
+        height="80"
         style={logo}
       />
     </Section>
@@ -25,6 +25,6 @@ const header = {
 
 const logo = {
   display: 'block',
-  borderRadius: '50%',
+  borderRadius: "8px",
   margin: '0',
 };

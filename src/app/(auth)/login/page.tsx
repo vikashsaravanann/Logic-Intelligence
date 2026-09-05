@@ -105,7 +105,14 @@ function AuthContent() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         // Trigger login notification quietly in background
-        fetch('/api/auth/login-notification', { method: 'POST' }).catch(() => {});
+        fetch('/api/auth/login-notification', { 
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            screenSize: typeof window !== 'undefined' ? `${window.screen.width}x${window.screen.height}` : undefined, 
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone 
+          }) 
+        }).catch(() => {});
         router.push("/dashboard");
       }
     } catch (err: any) {
