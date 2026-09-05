@@ -27,6 +27,7 @@ export default async function DashboardPage() {
       leads={leads || []} 
       projects={projects || []} 
       invoices={invoices || []} 
+      user={session?.user}
     />
   );
 }
