@@ -448,12 +448,36 @@ export default function GeminiAiChatPage() {
           width: 34px; height: 34px; border-radius: 50%;
           display: flex; align-items: center; justify-content: center;
           font-size: 14px; font-weight: bold; flex-shrink: 0;
+          overflow: hidden;
+        }
+        .avatar img {
+          width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
         }
         .avatar-assistant {
           background: linear-gradient(135deg, #00bfff, #0055ff, #001144);
           box-shadow: 0 0 12px rgba(0,191,255,0.3);
         }
         .avatar-user { background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+
+        /* Professional Markdown Styling */
+        .markdown-body { font-size: 15px; line-height: 1.7; word-wrap: break-word; }
+        .markdown-body p { margin-top: 0; margin-bottom: 16px; }
+        .markdown-body p:last-child { margin-bottom: 0; }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 { margin-top: 24px; margin-bottom: 12px; font-weight: 600; color: #fff; line-height: 1.3; }
+        .markdown-body h1 { font-size: 24px; } .markdown-body h2 { font-size: 20px; } .markdown-body h3 { font-size: 18px; }
+        .markdown-body strong { font-weight: 600; color: #fff; }
+        .markdown-body ul, .markdown-body ol { margin-top: 0; margin-bottom: 16px; padding-left: 24px; }
+        .markdown-body li { margin-bottom: 6px; }
+        .markdown-body li > p { margin-bottom: 6px; }
+        .markdown-body a { color: #00bfff; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+        .markdown-body a:hover { border-color: #00bfff; }
+        .markdown-body code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13.5px; color: #E8E9EA; }
+        .markdown-body pre { background: #0A0F1A; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; overflow-x: auto; margin: 16px 0; }
+        .markdown-body pre code { background: transparent; padding: 0; border-radius: 0; color: #00bfff; font-size: 13.5px; }
+        .markdown-body blockquote { border-left: 4px solid #0055ff; margin: 0 0 16px 0; padding: 0 16px; color: #A0A3A6; font-style: italic; }
+        .markdown-body table { border-collapse: collapse; width: 100%; margin-bottom: 16px; }
+        .markdown-body th, .markdown-body td { border: 1px solid rgba(255,255,255,0.1); padding: 8px 12px; text-align: left; }
+        .markdown-body th { background: rgba(255,255,255,0.03); font-weight: 600; color: #fff; }
 
         .message-row { display: flex; gap: 16px; margin-bottom: 26px; }
         .message-content { flex: 1; padding-top: 5px; }
@@ -481,11 +505,12 @@ export default function GeminiAiChatPage() {
         .input-bar-wrap { padding: 0 26px 22px; max-width: 860px; width: 100%; margin: 0 auto; box-sizing: border-box; }
         .input-bar {
           display: flex; align-items: flex-end; gap: 8px;
-          background-color: rgba(255,255,255,0.02); border-radius: 28px;
-          padding: 12px 12px 12px 22px; border: 1px solid rgba(255,255,255,0.1);
+          background-color: rgba(15,20,35,0.75); backdrop-filter: blur(20px); border-radius: 28px;
+          padding: 12px 12px 12px 22px; border: 1px solid rgba(255,255,255,0.15);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.4);
           transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
-        .input-bar:focus-within { border-color: #00bfff; box-shadow: 0 0 0 3px rgba(0,191,255,0.12); }
+        .input-bar:focus-within { border-color: #00bfff; box-shadow: 0 0 0 3px rgba(0,191,255,0.15), 0 4px 20px rgba(0,0,0,0.4); }
         .input-bar textarea {
           flex: 1; background: transparent; border: none; color: #E8E9EA;
           font-size: 14.5px; outline: none; resize: none; font-family: inherit;
@@ -579,9 +604,14 @@ export default function GeminiAiChatPage() {
 
         {showWelcome ? (
           <div className="welcome-screen welcome-fade">
-            <div className="welcome-title-row">
-              <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '140px', height: '140px', borderRadius: '50%', objectFit: 'cover', marginBottom: '24px', boxShadow: '0 0 30px rgba(0, 191, 255, 0.3)' }} />
-              <div className="welcome-company" style={{ whiteSpace: 'nowrap', fontSize: 'clamp(18px, 4vw, 26px)' }}>LOGIC INTELLIGENCE TECHNOLOGIES</div>
+            <div className="welcome-title-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', marginBottom: '20px', boxShadow: '0 0 40px rgba(0, 191, 255, 0.4)' }} />
+              <div className="welcome-title gradient-text" style={{ fontSize: 'clamp(28px, 5vw, 42px)', fontWeight: 'bold', marginBottom: '8px', textAlign: 'center' }}>
+                How can I help you today?
+              </div>
+              <div className="welcome-company" style={{ color: '#8E918F', letterSpacing: '2px', fontSize: '13px', marginBottom: '40px', textTransform: 'uppercase', textAlign: 'center' }}>
+                {COMPANY.displayName} AI Assistant
+              </div>
             </div>
             <div className="suggestion-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
               {SUGGESTIONS.map((s, i) => (
