@@ -69,6 +69,7 @@ export async function POST(req: Request) {
 
         await sendEmail({
           to: email,
+          from: "hello",
           subject: isLeadMagnet ? "Your Website Launch Checklist" : "We received your request! (Logic Intelligence Technologies)",
           react: isLeadMagnet 
             ? React.createElement(ChecklistDownloadEmail, { fullName: "there" })
@@ -87,6 +88,7 @@ export async function POST(req: Request) {
     try {
       await sendEmail({
         to: env.LEAD_NOTIFICATION_EMAIL,
+        from: "noReply",
         replyTo: email || undefined,
         subject: isLeadMagnet ? `New Lead Magnet Download: ${email}` : `New Client Discovery Form: ${email || 'Anonymous'}`,
         react: isLeadMagnet 

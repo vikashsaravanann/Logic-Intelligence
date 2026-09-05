@@ -132,6 +132,9 @@ export default function SupportChatWidget() {
                 <p className="text-sm font-bold text-white flex items-center gap-1.5 truncate">
                   Logic Intelligence <Sparkles className="w-3.5 h-3.5 text-accent shrink-0" />
                 </p>
+                <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-semibold flex items-center gap-1.5 text-center">
+                  <span>Technologies</span>
+                </p>
                 <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-semibold flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> Online • AI Assistant
                 </p>
