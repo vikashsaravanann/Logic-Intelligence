@@ -29,10 +29,10 @@ function saveChats(chats: any) {
 }
 
 const SUGGESTIONS = [
-  { icon: '⚡', title: 'Generate a tech proposal', subtitle: 'for a new SaaS application' },
-  { icon: '💻', title: 'Write React.js code', subtitle: 'to build a beautiful dashboard UI' },
-  { icon: '🏢', title: 'Enterprise Development', subtitle: 'explain the process of custom software' },
-  { icon: '📊', title: 'Cloud Architecture', subtitle: 'best practices for scalable databases' },
+  { icon: '📦', title: 'Digital Launch Pack', subtitle: 'Rs.8,999 - up to 5 pages, mobile-responsive, basic SEO' },
+  { icon: '💼', title: 'Business Pro Pack', subtitle: 'Rs.18,999 - booking system, admin panel, payment gateway' },
+  { icon: '🏢', title: 'Enterprise Pack', subtitle: 'custom from Rs.50,000 - dedicated project manager, unlimited pages' },
+  { icon: '🔧', title: 'Services Inquiry', subtitle: 'Full stack web, mobile apps, CRM, SEO, hosting & maintenance' },
 ];
 
 // Brain-circuit logo matching the company brand mark
@@ -536,8 +536,11 @@ export default function GeminiAiChatPage() {
               <div className="gemini-gradient-text" style={{ fontSize: 'clamp(36px, 6vw, 56px)', fontWeight: '500', marginBottom: '8px', letterSpacing: '-1px' }}>
                 Hello, {user?.user_metadata?.full_name?.split(' ')[0] || 'there'}
               </div>
-              <div style={{ color: '#5f6368', fontSize: 'clamp(36px, 6vw, 56px)', fontWeight: '500', letterSpacing: '-1px' }}>
-                How can I help you today?
+              <div style={{ color: '#5f6368', fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: '500', letterSpacing: '-1px' }}>
+                Welcome to the Logic Intelligence Technologies AI Assistant
+              </div>
+              <div style={{ color: '#8E918F', fontSize: '14px', marginTop: '8px' }}>
+                Founded by Vikash Saravanan • Coimbatore, Tamil Nadu, India
               </div>
             </div>
             <div className="suggestion-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
