@@ -45,7 +45,7 @@ export async function GET(request: Request) {
           if (email) {
             await sendEmail({
               to: email,
-              from: "hello",
+              from: "noReply",
               subject: "Welcome to Logic Intelligence Technologies",
               react: React.createElement(WelcomeEmail, { email: email }),
             });
