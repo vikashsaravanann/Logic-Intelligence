@@ -122,11 +122,9 @@ const ThinkingStatus = ({ activeMessage }: { activeMessage?: string }) => {
 export default function GeminiAiChatPage() {
   const [chats, setChats] = useState<any[]>([]);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
-  const [input, setInput] = useState('');
+const [input, setInput] = useState('');
   const [user, setUser] = useState<any>(null);
-  const [isListening, setIsListening] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-    const [selectedFile, setSelectedFile] = useState<{name: string, type: string, data: string, raw: File} | null>(null);
+  const [selectedFile, setSelectedFile] = useState<{name: string, type: string, data: string, raw: File} | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClientComponentClient();
 
@@ -146,6 +144,9 @@ export default function GeminiAiChatPage() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
 
   const stopGenerating = () => {
     if (abortControllerRef.current) {
@@ -352,41 +353,8 @@ export default function GeminiAiChatPage() {
     navigator.clipboard.writeText(text);
     setCopiedIdx(idx);
     setTimeout(() => setCopiedIdx(null), 1500);
-  };
+};
 
-  const speakText = (text: string) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text.replace(/[*_#`~>]/g, ''));
-      const voices = window.speechSynthesis.getVoices();
-      const preferred = voices.find(v => v.name.includes('Google UK English') || v.name.includes('Samantha') || v.name.includes('Daniel'));
-      if (preferred) utterance.voice = preferred;
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => setIsSpeaking(false);
-      window.speechSynthesis.speak(utterance);
-    }
-  };
-
-  const toggleListen = () => {
-    if (isListening) {
-      setIsListening(false);
-      return;
-    }
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) return alert("Speech Recognition not supported in this browser.");
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = true;
-    recognition.onstart = () => setIsListening(true);
-    recognition.onresult = (e: any) => {
-      const transcript = Array.from(e.results).map((res: any) => res[0].transcript).join('');
-      setInput(transcript);
-    };
-    recognition.onend = () => setIsListening(false);
-    recognition.start();
-  };
-
-  
   const handleRegenerate = async (messageIdx: number) => {
     if (!activeChat) return;
     const msg = activeChat.messages[messageIdx];
@@ -501,8 +469,7 @@ export default function GeminiAiChatPage() {
         await supabase.from('ai_messages').insert({ chat_id: chatId, role: 'assistant', content: fullText });
         await supabase.from('ai_chats').update({ updated_at: new Date().toISOString() }).eq('id', chatId);
       }
-      speakText(fullText);
-    } catch (err: any) {
+      } catch (err: any) {
       if (err.name === 'AbortError') {
         // Just stop generating, keep what we have
       } else {
@@ -520,6 +487,37 @@ export default function GeminiAiChatPage() {
     }
   };
 
+  const speakText = (text: string) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text.slice(0, 500));
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const toggleListen = () => {
+    if (typeof window === 'undefined') return;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+    if (isListening) {
+      setIsListening(false);
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-IN';
+    recognition.interimResults = false;
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setInput((prev) => prev + transcript);
+      setIsListening(false);
+    };
+    recognition.onerror = () => setIsListening(false);
+    recognition.onend = () => setIsListening(false);
+    setIsListening(true);
+    recognition.start();
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     sendMessage();
@@ -533,8 +531,6 @@ export default function GeminiAiChatPage() {
   };
 
   if (!isMounted) return null;
-
-  const showWelcome = !activeChat || activeChat.messages.length === 0;
 
   return (
     <div className="app-root">
