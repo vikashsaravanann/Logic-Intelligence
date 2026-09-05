@@ -123,17 +123,14 @@ export default function SupportChatWidget() {
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
               <div className="w-11 h-11 rounded-xl bg-white p-1 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(0,191,255,0.3)] overflow-hidden border border-white/30">
                 <img
-                  src="/icon.png"
+                  src="/assets/image.png"
                   alt="Logic Intelligence Technologies"
                   className="w-full h-full object-contain"
                 />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-bold text-white flex items-center gap-1.5 truncate">
-                  Logic Intelligence <Sparkles className="w-3.5 h-3.5 text-accent shrink-0" />
-                </p>
-                <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-semibold flex items-center gap-1.5 text-center">
-                  <span>Technologies</span>
+                  LOGIC INTELLIGENCE TECHNOLOGIES
                 </p>
               </div>
             </div>
