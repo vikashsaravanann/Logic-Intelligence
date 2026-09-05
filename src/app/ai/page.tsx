@@ -74,6 +74,8 @@ export default function GeminiAiChatPage() {
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [input, setInput] = useState('');
   const [user, setUser] = useState<any>(null);
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const supabase = createClientComponentClient();
 
   useEffect(() => {
@@ -86,13 +88,14 @@ export default function GeminiAiChatPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
+  const [artifact, setArtifact] = useState<{ type: 'table' | 'code', content: any } | null>(null);
+  
   const chatEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    setChats(loadChats());
     setIsMobile(window.innerWidth < 768);
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
@@ -100,8 +103,30 @@ export default function GeminiAiChatPage() {
   }, []);
 
   useEffect(() => {
-    if (isMounted) saveChats(chats);
-  }, [chats, isMounted]);
+    if (!isMounted) return;
+    if (user) {
+      const fetchChats = async () => {
+        const { data: chatData } = await supabase.from('ai_chats').select('*').order('updated_at', { ascending: false });
+        if (chatData) {
+          const { data: msgData } = await supabase.from('ai_messages').select('*').order('created_at', { ascending: true });
+          const mapped = chatData.map(c => ({
+            id: c.id,
+            title: c.title,
+            createdAt: new Date(c.created_at).getTime(),
+            messages: (msgData || []).filter(m => m.chat_id === c.id).map(m => ({ role: m.role, text: m.content }))
+          }));
+          setChats(mapped);
+        }
+      };
+      fetchChats();
+    } else {
+      setChats(loadChats());
+    }
+  }, [user, isMounted, supabase]);
+
+  useEffect(() => {
+    if (isMounted && !user) saveChats(chats);
+  }, [chats, isMounted, user]);
 
   const activeChat = chats.find((c) => c.id === activeChatId);
 
@@ -116,9 +141,36 @@ export default function GeminiAiChatPage() {
     }
   }, [input]);
 
+  const MarkdownComponents = {
+    table: ({ node, ...props }: any) => (
+      <div className="artifact-trigger" onClick={() => setArtifact({ type: 'table', content: props.children })}>
+        <span className="icon">📊</span>
+        <div>
+          <div className="title">Interactive Data Table</div>
+          <div className="subtitle">Click to view artifact</div>
+        </div>
+      </div>
+    ),
+    pre: ({ node, ...props }: any) => {
+      const codeString = node.children?.[0]?.children?.[0]?.value || '';
+      if (codeString.length > 200 || codeString.includes('<!DOCTYPE') || codeString.includes('<div') || codeString.includes('export default')) {
+        return (
+          <div className="artifact-trigger code-artifact" onClick={() => setArtifact({ type: 'code', content: codeString })}>
+            <span className="icon">💻</span>
+            <div>
+              <div className="title">Code Preview</div>
+              <div className="subtitle">Click to view artifact</div>
+            </div>
+          </div>
+        );
+      }
+      return <pre {...props} />;
+    }
+  };
+
   const createNewChat = () => {
     const newChat = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       title: 'New chat',
       messages: [],
       createdAt: Date.now(),
@@ -128,10 +180,13 @@ export default function GeminiAiChatPage() {
     if (isMobile) setSidebarOpen(false);
   };
 
-  const deleteChat = (id: string, e: React.MouseEvent) => {
+  const deleteChat = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setChats((prev) => prev.filter((c) => c.id !== id));
     if (activeChatId === id) setActiveChatId(null);
+    if (user) {
+      await supabase.from('ai_chats').delete().eq('id', id);
+    }
   };
 
   const selectChat = (id: string) => {
@@ -145,6 +200,38 @@ export default function GeminiAiChatPage() {
     setTimeout(() => setCopiedIdx(null), 1500);
   };
 
+  const speakText = (text: string) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text.replace(/[*_#`~>]/g, ''));
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find(v => v.name.includes('Google UK English') || v.name.includes('Samantha') || v.name.includes('Daniel'));
+      if (preferred) utterance.voice = preferred;
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  const toggleListen = () => {
+    if (isListening) {
+      setIsListening(false);
+      return;
+    }
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) return alert("Speech Recognition not supported in this browser.");
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.onstart = () => setIsListening(true);
+    recognition.onresult = (e: any) => {
+      const transcript = Array.from(e.results).map((res: any) => res[0].transcript).join('');
+      setInput(transcript);
+    };
+    recognition.onend = () => setIsListening(false);
+    recognition.start();
+  };
+
   const sendMessage = async (textOverride?: string) => {
     const messageText = (textOverride ?? input).trim();
     if (!messageText || loading) return;
@@ -152,19 +239,21 @@ export default function GeminiAiChatPage() {
     let chatId = activeChatId;
 
     if (!chatId) {
-      const newChat = {
-        id: Date.now().toString(),
-        title: messageText.slice(0, 40),
-        messages: [],
-        createdAt: Date.now(),
-      };
+      const newId = crypto.randomUUID();
+      chatId = newId;
+      if (user) {
+        await supabase.from('ai_chats').insert({ id: newId, user_id: user.id, title: messageText.slice(0, 40) });
+      }
+      const newChat = { id: newId, title: messageText.slice(0, 40), messages: [], createdAt: Date.now() };
       setChats((prev) => [newChat, ...prev]);
-      chatId = newChat.id;
-      setActiveChatId(chatId);
+      setActiveChatId(newId);
     }
 
     setInput('');
     setLoading(true);
+    if (user) {
+      await supabase.from('ai_messages').insert({ chat_id: chatId, role: 'user', content: messageText });
+    }
 
     setChats((prev) =>
       prev.map((c) => {
@@ -179,29 +268,23 @@ export default function GeminiAiChatPage() {
     );
 
     try {
-      // Use the Next.js API route that hooks up to the Python backend to allow streaming or normal fetching
       const res = await fetch('/api/ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: messageText, max_tokens: 300 }),
+        body: JSON.stringify({ text: messageText, max_tokens: 400 }),
       });
       
       const reader = res.body?.getReader();
       const decoder = new TextDecoder("utf-8");
       let fullText = "";
 
-      setChats((prev) =>
-        prev.map((c) =>
-          c.id === chatId ? { ...c, messages: [...c.messages, { role: 'assistant', text: '' }] } : c
-        )
-      );
+      setChats((prev) => prev.map(c => c.id === chatId ? { ...c, messages: [...c.messages, { role: 'assistant', text: '' }] } : c));
 
       if (reader) {
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
           const chunk = decoder.decode(value, { stream: true });
-          
           const lines = chunk.split('\n');
           for (const line of lines) {
             if (line.startsWith('data: ')) {
@@ -227,17 +310,16 @@ export default function GeminiAiChatPage() {
           }
         }
       }
+      if (user) {
+        await supabase.from('ai_messages').insert({ chat_id: chatId, role: 'assistant', content: fullText });
+        await supabase.from('ai_chats').update({ updated_at: new Date().toISOString() }).eq('id', chatId);
+      }
+      speakText(fullText);
     } catch (err) {
       setChats((prev) =>
         prev.map((c) =>
           c.id === chatId
-            ? {
-                ...c,
-                messages: [
-                  ...c.messages.slice(0, -1),
-                  { role: 'assistant', text: 'Connection failed. Ensure the AI backend is running.' },
-                ],
-              }
+            ? { ...c, messages: [...c.messages.slice(0, -1), { role: 'assistant', text: 'Connection failed.' }] }
             : c
         )
       );
@@ -577,7 +659,7 @@ export default function GeminiAiChatPage() {
                 <div className="message-content">
                   <div className="message-text" style={{ color: msg.role === 'assistant' ? '#E8E9EA' : '#C4C7C5', width: '100%' }}>
                     {msg.role === 'assistant' ? (
-                      <div className="markdown-body"><ReactMarkdown>{msg.text}</ReactMarkdown></div>
+                      <div className="markdown-body"><ReactMarkdown components={MarkdownComponents}>{msg.text}</ReactMarkdown></div>
                     ) : (
                       msg.text
                     )}
@@ -594,7 +676,7 @@ export default function GeminiAiChatPage() {
             ))}
 
             {loading && (
-              <div className="chat-bubble message-row">
+              <div className="chat-bubble message-row assistant">
                 <div className="avatar avatar-assistant ai-pulse">
                   <img src={COMPANY.logoIconPath} alt="AI" />
                 </div>
@@ -610,6 +692,9 @@ export default function GeminiAiChatPage() {
 
         <div className="input-bar-wrap">
           <form onSubmit={handleSubmit} className="input-bar">
+            <button type="button" onClick={toggleListen} title="Voice Input" style={{ background: 'transparent', border: 'none', color: isListening ? '#f44336' : '#A0A3A6', cursor: 'pointer', padding: '0 8px 6px 0', fontSize: '20px', transition: 'color 0.2s' }}>
+              🎤
+            </button>
             <textarea
               ref={textareaRef}
               rows={1}
@@ -621,6 +706,22 @@ export default function GeminiAiChatPage() {
             <button type="submit" className="send-btn" disabled={loading || !input.trim()}>↑</button>
           </form>
           <div className="disclaimer">Logic Intelligence AI may display inaccurate info. Verify important details.</div>
+        </div>
+      </div>
+
+      {/* Artifact Pane */}
+      <div className={`artifact-pane ${artifact ? 'open' : ''}`}>
+        <div className="artifact-header">
+          <div className="artifact-title">{artifact?.type === 'table' ? 'Interactive Data Table' : 'Code Preview'}</div>
+          <button className="artifact-close" onClick={() => setArtifact(null)}>✕</button>
+        </div>
+        <div className="artifact-content markdown-body">
+          {artifact?.type === 'table' && <table>{artifact.content}</table>}
+          {artifact?.type === 'code' && (
+             artifact.content.includes('<div') || artifact.content.includes('<html') 
+              ? <iframe srcDoc={artifact.content} style={{ width: '100%', height: '100%', border: 'none', background: '#fff', borderRadius: '8px' }} />
+              : <pre><code>{artifact.content}</code></pre>
+          )}
         </div>
       </div>
     </div>
