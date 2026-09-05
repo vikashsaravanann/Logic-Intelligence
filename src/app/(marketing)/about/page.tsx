@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import FloatingElements from "@/components/motion/floating-elements";
 import BackToHome from "@/components/ui/back-to-home";
 import { COMPANY } from "@/config/company";
-import { CheckCircle2, ExternalLink, Mail, Phone } from "lucide-react";
+import { CheckCircle2, ExternalLink, Mail, Phone, Coins, PlayCircle, Sparkles, Handshake, ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
   title: `About Us`,
@@ -17,11 +17,11 @@ export const metadata: Metadata = {
 };
 
 const values = [
-  { title: "Transparent Pricing", desc: "No hidden fees. You see the full scope and cost before we start." },
-  { title: "Free Demo First", desc: "Experience a working prototype of your project before committing." },
-  { title: "AI-Native Thinking", desc: "Founded by an AI & Data Science specialist — not a generic web shop." },
-  { title: "Client Partnership", desc: "We work directly with you from discovery through launch and beyond." },
-  { title: "Built to Last", desc: "Clean code, documented systems, and proper hosting so your site doesn't break." },
+  { title: "Transparent Pricing", desc: "No hidden fees. You see the full scope and cost before we start.", icon: Coins },
+  { title: "Free Demo First", desc: "Experience a working prototype of your project before committing.", icon: PlayCircle },
+  { title: "AI-Native Thinking", desc: "Founded by an AI & Data Science specialist — not a generic web shop.", icon: Sparkles },
+  { title: "Client Partnership", desc: "We work directly with you from discovery through launch and beyond.", icon: Handshake },
+  { title: "Built to Last", desc: "Clean code, documented systems, and proper hosting so your site doesn't break.", icon: ShieldCheck },
 ];
 
 export default function AboutPage() {
@@ -156,7 +156,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {values.map((v, i) => (
             <div key={i} className="p-6 border border-white/5 bg-white/[0.02] rounded-2xl hover:bg-white/5 transition-colors flex gap-4">
-              <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <v.icon className="w-6 h-6 text-primary shrink-0 mt-0.5" />
               <div>
                 <h4 className="text-base font-bold text-white mb-1">{v.title}</h4>
                 <p className="text-zinc-400 text-sm leading-relaxed">{v.desc}</p>

@@ -141,7 +141,23 @@ export async function POST(request: Request) {
 
     let injectedContext = "";
     if (file && file.type === 'application/pdf') {
-      injectedContext = `\n\n[PDF parsing not available - please provide text content or describe the PDF content in your query]`;
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const pdfParse = require('pdf-parse');
+        const base64Data = (file.data as string).replace(/^data:application\/pdf;base64,/, '');
+        const buffer = Buffer.from(base64Data, 'base64');
+        const parsed = await pdfParse(buffer);
+        const extractedText = parsed.text?.trim();
+        if (extractedText) {
+          injectedContext = `\n\nUploaded PDF Content:\n"""\n${extractedText.slice(0, 8000)}\n"""`;
+        } else {
+          injectedContext = `\n\n[The uploaded PDF appears to be empty or image-only. Please describe what you need help with.]`;
+        }
+      } catch {
+        injectedContext = `\n\n[PDF uploaded but could not be parsed. Please paste the text content directly.]`;
+      }
+    } else if (file && file.data) {
+      injectedContext = `\n\nUploaded File (${file.name || 'file'}):\n"""\n${(file.data as string).slice(0, 8000)}\n"""`;
     }
 
     const rag_context = injectedContext;

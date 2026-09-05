@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Clock, Tag, Share2, Calendar, ArrowRight } from "lucide-react";
 import { blogPosts, getPostBySlug } from "@/data/blogData";
 
 export function generateStaticParams() {
@@ -24,58 +24,102 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
+  // Formatting date
+  const formattedDate = new Date(post.publishedAt).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  });
+
   return (
-    <main className="min-h-screen bg-[#0A0F1E] text-white pt-32 pb-24">
-      <article className="max-w-3xl mx-auto px-6 lg:px-8">
+    <main className="min-h-screen bg-[#0A0F1E] text-white pt-32 pb-24 relative selection:bg-primary/30">
+      {/* Background decoration */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-primary/10 blur-[120px] rounded-full pointer-events-none opacity-50" />
+
+      <article className="max-w-3xl mx-auto px-6 lg:px-8 relative z-10">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-primary transition-colors mb-10"
+          className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors mb-12 group"
         >
-          <ArrowLeft className="w-4 h-4" /> Back to Blog
+          <div className="p-2 rounded-full bg-white/5 border border-white/10 group-hover:bg-white/10 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> 
+          </div>
+          Back to all articles
         </Link>
 
-        <div className="flex items-center gap-3 text-xs text-zinc-500 mb-4 uppercase tracking-wide">
-          <span className="text-primary font-bold">{post.category}</span>
-          <span>·</span>
-          <span>{post.readingTime}</span>
-        </div>
+        <header className="mb-12 border-b border-white/10 pb-12">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400 mb-6">
+            <span className="flex items-center gap-1.5 text-primary font-medium bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+              <Tag className="w-3.5 h-3.5" />
+              {post.category}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Calendar className="w-4 h-4" />
+              {formattedDate}
+            </span>
+            <span className="hidden sm:inline text-zinc-700">•</span>
+            <span className="flex items-center gap-1.5">
+              <Clock className="w-4 h-4" />
+              {post.readingTime}
+            </span>
+          </div>
 
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-8">{post.title}</h1>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6 leading-[1.1] tracking-tight">
+            {post.title}
+          </h1>
+          
+          <p className="text-xl text-zinc-400 leading-relaxed font-light">
+            {post.excerpt}
+          </p>
+        </header>
 
-        <div className="prose-content space-y-6">
+        <div className="prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary hover:prose-a:text-primary/80 prose-p:text-zinc-300 prose-p:leading-relaxed prose-li:text-zinc-300">
           {post.body.map((block, i) => {
             if (block.type === "heading") {
               return (
-                <h2 key={i} className="text-2xl font-bold text-white mt-10 mb-2">
+                <h2 key={i} className="text-2xl md:text-3xl font-bold text-white mt-12 mb-6">
                   {block.text}
                 </h2>
               );
             }
             if (block.type === "list") {
               return (
-                <ul key={i} className="list-disc pl-6 space-y-2 text-zinc-300">
+                <ul key={i} className="list-disc pl-6 space-y-3 text-zinc-300 my-6 marker:text-primary">
                   {block.items.map((item, j) => (
-                    <li key={j}>{item}</li>
+                    <li key={j} className="pl-2">{item}</li>
                   ))}
                 </ul>
               );
             }
             return (
-              <p key={i} className="text-zinc-300 leading-relaxed">
+              <p key={i} className="text-zinc-300 leading-relaxed mb-6 text-lg">
                 {block.text}
               </p>
             );
           })}
         </div>
 
-        <div className="mt-14 p-8 rounded-2xl border border-primary/20 bg-primary/5 text-center">
-          <p className="text-lg font-bold text-white mb-2">Have a project in mind?</p>
-          <p className="text-zinc-400 text-sm mb-6">Get a free demo and see what we'd build for you.</p>
+        <footer className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <span className="text-sm font-medium text-zinc-400">Share this article:</span>
+            <button className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:text-primary transition-colors text-zinc-300">
+              <Share2 className="w-4 h-4" />
+            </button>
+          </div>
+        </footer>
+
+        <div className="mt-20 p-10 rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent text-center relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
+          <h3 className="text-2xl font-bold text-white mb-3">Ready to start your project?</h3>
+          <p className="text-zinc-400 text-lg mb-8 max-w-lg mx-auto">
+            Get a free demo and see exactly what we'd build for your business. No commitments.
+          </p>
           <Link
             href="/free-demo"
-            className="inline-flex px-8 py-3 rounded-xl text-sm font-bold text-black bg-primary neon-btn"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-bold text-black bg-primary hover:bg-primary/90 transition-all neon-btn hover:scale-105 duration-200"
           >
-            Start a Free Demo
+            Request a Free Demo
+            <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
       </article>

@@ -1,6 +1,7 @@
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { DollarSign, Briefcase, MessageSquare, Ticket } from "lucide-react";
 import { AdminTriggers } from "./components/AdminTriggers";
+import { CreateInvoiceForm } from "./components/CreateInvoiceForm";
 
 export const revalidate = 0; // Opt out of caching for real-time admin data
 
@@ -12,7 +13,7 @@ async function getAdminData() {
     { count: ticketsCount },
   ] = await Promise.all([
     supabaseAdmin.from("ai_chats").select("*", { count: "exact", head: true }),
-    supabaseAdmin.from("invoices").select("amount"),
+    supabaseAdmin.from("invoices").select("amount").eq("status", "paid"),
     supabaseAdmin
       .from("projects")
       .select("*", { count: "exact", head: true })
@@ -89,7 +90,10 @@ export default async function AdminDashboardPage() {
         </div>
             </div>
 
-      <AdminTriggers />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <CreateInvoiceForm />
+        <AdminTriggers />
+      </div>
     </div>
   );
 }
