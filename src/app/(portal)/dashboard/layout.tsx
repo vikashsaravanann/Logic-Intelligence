@@ -128,6 +128,7 @@ export default function DashboardLayout({
             </div>
             <div className="relative">
               <button 
+                type="button"
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="relative p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors border border-white/5"
               >

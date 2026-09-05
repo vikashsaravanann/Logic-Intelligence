@@ -1,6 +1,5 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
 import { COMPANY } from "@/config/company";
 
 export default function FloatingWhatsApp() {

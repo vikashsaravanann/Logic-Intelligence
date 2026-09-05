@@ -65,6 +65,11 @@
     position: relative;
     overflow-x: hidden;
   }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
   
   /* Safe area utilities for notch/Dynamic Island support */
   .pb-safe {

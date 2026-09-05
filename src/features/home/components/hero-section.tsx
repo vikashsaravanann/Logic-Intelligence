@@ -62,7 +62,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-            className="text-3xl md:text-4xl lg:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6"
+            className="text-3xl md:text-4xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6"
           >
             {COMPANY.tagline.split(" ").slice(0, 3).join(" ")} <br className="hidden sm:block"/>
             <span className="inline-block text-white pb-2">{COMPANY.tagline.split(" ").slice(3).join(" ")}</span>
@@ -96,7 +96,7 @@ export default function HeroSection() {
             <a href="#services" className="bg-white text-black px-8 py-3.5 rounded-xl text-sm font-bold w-full sm:w-auto text-center flex items-center justify-center gap-2 group hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.2)]">
               View Our Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
-<a href={`https://wa.me/${COMPANY.whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-white/5 transition-all w-full sm:w-auto group">
+<a href={`https://wa.me/${COMPANY.whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-sm font-bold text-white bg-[#25D366] hover:bg-[#128C7E] transition-all w-full sm:w-auto group">
                 <svg
                   className="w-4 h-4 fill-current"
                   viewBox="0 0 448 512"

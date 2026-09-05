@@ -69,7 +69,24 @@ export function BillingTab({ invoices }: { invoices: any[] }) {
                 {invoice.status}
               </p>
             </div>
-            <button className="p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-blue-500/20 hover:border-blue-500/40 text-zinc-400 hover:text-cyan-400 transition-all hover:shadow-[0_0_15px_rgba(0,191,255,0.2)]" title="Download PDF (Coming Soon)">
+            <button
+              type="button"
+              onClick={() => {
+                const blob = new Blob(
+                  [`Invoice ${invoice.invoice_code || invoice.id}\nClient: ${invoice.client_name}\nAmount: ${invoice.amount}\nStatus: ${invoice.status}\n`],
+                  { type: "text/plain;charset=utf-8" }
+                );
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `${invoice.invoice_code || "invoice"}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+              className="p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-blue-500/20 hover:border-blue-500/40 text-zinc-400 hover:text-cyan-400 transition-all hover:shadow-[0_0_15px_rgba(0,191,255,0.2)]"
+              title="Download invoice summary"
+              aria-label="Download invoice summary"
+            >
               <Download className="w-5 h-5" />
             </button>
           </div>

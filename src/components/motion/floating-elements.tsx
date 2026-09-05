@@ -41,7 +41,9 @@ export default function FloatingElements() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             onClick={scrollToTop}
-            className="fixed bottom-6 left-6 z-50 p-3 bg-[rgba(0,191,255,0.1)] border border-primary/50 rounded-full text-primary hover:bg-primary hover:text-black shadow-[0_0_15px_rgba(0,191,255,0.3)] hover:shadow-[0_0_25px_rgba(0,191,255,0.6)] transition-all hover:scale-110"
+            className="fixed bottom-24 left-6 z-50 p-3 bg-[rgba(0,191,255,0.1)] border border-primary/50 rounded-full text-primary hover:bg-primary hover:text-black shadow-[0_0_15px_rgba(0,191,255,0.3)] hover:shadow-[0_0_25px_rgba(0,191,255,0.6)] transition-all hover:scale-110"
+            aria-label="Back to top"
+            type="button"
           >
             <ArrowUp className="w-5 h-5" />
           </motion.button>
@@ -61,10 +63,10 @@ export default function FloatingElements() {
               We use cookies to improve your experience and deliver personalized services.
             </p>
             <div className="flex gap-4">
-              <button onClick={acceptCookies} className="px-6 py-2 rounded-lg text-sm font-bold bg-primary text-black hover:bg-primary/90 neon-btn">
+              <button type="button" onClick={acceptCookies} className="px-6 py-2 rounded-lg text-sm font-bold bg-primary text-black hover:bg-primary/90 neon-btn">
                 Accept
               </button>
-              <button onClick={() => setShowCookie(false)} className="p-2 text-zinc-500 hover:text-white">
+              <button type="button" onClick={() => setShowCookie(false)} className="p-2 text-zinc-500 hover:text-white" aria-label="Dismiss cookie notice">
                 <X className="w-5 h-5" />
               </button>
             </div>

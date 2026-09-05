@@ -8,6 +8,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { COMPANY } from '@/config/company';
 import { Rocket, Briefcase, Building2, Wrench, AlertTriangle, Square, Copy, RefreshCcw, Paperclip, Mic, Table, Code2, Calculator, Handshake, CreditCard, Calendar, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 
 const STORAGE_KEY = 'lit_ai_chats';
@@ -209,7 +210,7 @@ const [input, setInput] = useState('');
       
       // 8MB limit
       if (file.size > 8 * 1024 * 1024) {
-        alert("File size exceeds 8MB limit.");
+        toast.error("File size exceeds 8MB limit.");
         e.target.value = '';
         return;
       }
@@ -223,7 +224,7 @@ const [input, setInput] = useState('');
       const isCodeExt = /\.(ts|tsx|js|jsx|py|json|md|csv|txt)$/i.test(file.name);
       
       if (!allowedTypes.includes(file.type) && !isCodeExt) {
-        alert("Unsupported file type. Please upload images, PDFs, or text/code files.");
+        toast.error("Unsupported file type. Please upload images, PDFs, or text/code files.");
         e.target.value = '';
         return;
       }
@@ -931,7 +932,7 @@ const [input, setInput] = useState('');
                                  <br/>
                                  <label><input type="checkbox" /> Add SEO Optimization (+₹10,000)</label>
                                </div>
-                               <button style={{ background: '#000', color: '#fff', padding: '10px 20px', borderRadius: '4px' }} onClick={() => alert('Proposal Requested! Our team will contact you.')}>Request Final Proposal</button>
+                               <button type="button" style={{ background: '#000', color: '#fff', padding: '10px 20px', borderRadius: '4px', cursor: 'pointer' }} onClick={() => toast.success('Proposal requested. Our team will contact you shortly.')}>Request Final Proposal</button>
                              </div>
                            ) })}>
                              <span className="icon"><Calculator size={20} className="text-[#00bfff]" /></span>
@@ -943,9 +944,16 @@ const [input, setInput] = useState('');
                         )}
                         {msg.text.includes('[HUMAN_HANDOFF]') && (
                            <div className="artifact-trigger code-artifact" onClick={async () => {
-                             if (!user) return alert('Please log in to create a support ticket.');
-                             await supabase.from('support_tickets').insert({ user_id: user.id, subject: 'Escalated from AI Chat', message: 'User requested human assistance via AI chat.', status: 'Open' });
-                             alert('Support ticket created successfully! Vikash will review it shortly.');
+                             if (!user) {
+                               toast.error('Please sign in to create a support ticket.');
+                               return;
+                             }
+                             const { error } = await supabase.from('support_tickets').insert({ user_id: user.id, subject: 'Escalated from AI Chat', message: 'User requested human assistance via AI chat.', status: 'Open' });
+                             if (error) {
+                               toast.error('Could not create the ticket. Please use WhatsApp or the contact form.');
+                               return;
+                             }
+                             toast.success('Support ticket created. Vikash will review it shortly.');
                            }}>
                              <span className="icon"><Handshake size={20} className="text-[#00bfff]" /></span>
                              <div>
@@ -955,7 +963,9 @@ const [input, setInput] = useState('');
                            </div>
                         )}
                         {msg.text.includes('[CHECKOUT:') && (
-                           <div className="artifact-trigger code-artifact" onClick={() => alert('Redirecting to secure Stripe Checkout...')}>
+                           <div className="artifact-trigger code-artifact" onClick={() => {
+                             window.location.href = '/contact';
+                           }}>
                              <span className="icon"><CreditCard size={20} className="text-[#00bfff]" /></span>
                              <div>
                                <div className="title">Secure Checkout</div>

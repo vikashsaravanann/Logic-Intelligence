@@ -35,13 +35,31 @@ const socialLinks = [
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data?.message || "Subscription failed. Please try again.");
+      }
       setSubscribed(true);
-      setTimeout(() => setSubscribed(false), 3000);
       setEmail("");
+      setTimeout(() => setSubscribed(false), 4000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to subscribe right now.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -123,8 +141,8 @@ export default function Footer() {
             </h3>
             <ul className="flex flex-col gap-5">
               {[
-                { label: 'ABOUT US', href: '/#about' },
-                { label: 'OUR WORK', href: '/#portfolio' },
+                { label: 'ABOUT US', href: '/about' },
+                { label: 'OUR WORK', href: '/work' },
                 { label: 'TERMS OF SERVICE', href: '/terms' },
                 { label: 'PRIVACY POLICY', href: '/privacy' },
                 { label: 'REFUND POLICY', href: '/refund-policy' },
@@ -158,15 +176,20 @@ export default function Footer() {
                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs xl:text-sm text-white placeholder:text-zinc-500 placeholder:uppercase placeholder:tracking-widest focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all pr-12"
               />
               <button 
-                type="submit" 
-                className="absolute right-1 top-1 bottom-1 w-10 bg-gradient-to-tr from-primary to-accent rounded-md flex items-center justify-center text-white hover:scale-105 transition-transform"
+                type="submit"
+                disabled={loading}
+                className="absolute right-1 top-1 bottom-1 w-10 bg-gradient-to-tr from-primary to-accent rounded-md flex items-center justify-center text-white hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
                 title="Subscribe"
+                aria-label="Subscribe to newsletter"
               >
                 <Send className="w-4 h-4 ml-0.5" />
               </button>
             </form>
             {subscribed && (
-              <p className="text-xs text-primary font-bold uppercase tracking-widest animate-pulse">THANK YOU FOR SUBSCRIBING!</p>
+              <p className="text-xs text-primary font-bold uppercase tracking-widest">THANK YOU FOR SUBSCRIBING!</p>
+            )}
+            {error && (
+              <p className="text-xs text-red-400 font-bold uppercase tracking-widest">{error}</p>
             )}
 
             <div className="flex items-center gap-4 mt-2">

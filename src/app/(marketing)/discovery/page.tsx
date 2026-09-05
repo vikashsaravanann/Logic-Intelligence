@@ -13,6 +13,7 @@ export default function DiscoveryPage() {
   // Create an array of 31 empty strings for the answers
   const [answers, setAnswers] = useState<string[]>(Array(31).fill(""));
   const [email, setEmail] = useState("");
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const questions = [
     // Section 1: Business Goals & Identity
@@ -89,13 +90,26 @@ export default function DiscoveryPage() {
   };
   
   const handleDownload = () => {
-    alert("In a real implementation, this would trigger jsPDF to download a PDF of your answers.");
+    const blob = new Blob(
+      [
+        `Logic Intelligence Technologies — Discovery Responses\n`,
+        `Email: ${email || "not provided"}\n\n`,
+        answers.map((a, i) => `Q${i + 1}: ${a || "—"}`).join("\n"),
+      ],
+      { type: "text/plain;charset=utf-8" }
+    );
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "lit-discovery-responses.txt";
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
-      alert("Please provide an email address to receive a copy.");
+      setSubmitError("Please provide an email address to receive a copy.");
       return;
     }
     setIsSubmitting(true);
@@ -250,7 +264,7 @@ export default function DiscoveryPage() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <button type="button" onClick={handleDownload} className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-white bg-zinc-800 hover:bg-zinc-700 transition-all border border-white/10">
-                            <Download className="w-5 h-5" /> Download PDF
+                            <Download className="w-5 h-5" /> Download Copy
                           </button>
                           <button 
                             type="submit" 
@@ -260,6 +274,7 @@ export default function DiscoveryPage() {
                             {isSubmitting ? 'Submitting...' : <><Send className="w-5 h-5" /> Send Answers</>}
                           </button>
                         </div>
+                        {submitError && <p className="text-sm text-red-400">{submitError}</p>}
                         <p className="text-center text-xs text-zinc-500 flex justify-center items-center">
                           Downloading is instant. Sending shares a copy with our team.
                         </p>

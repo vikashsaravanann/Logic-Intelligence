@@ -141,7 +141,7 @@ export default function ContactPage() {
             <p className="text-zinc-400">Tell us about your requirements and we'll get back to you within 24 hours.</p>
           </div>
 
-          <div className="bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-6 md:p-12 shadow-2xl">
+          <div className="bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
             {sent ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}

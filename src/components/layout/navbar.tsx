@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, Monitor, LayoutTemplate, Palette, CloudUpload, Code, Cloud, Building, Hotel, Plane, ShoppingCart, Smartphone, Brush, Terminal, Gamepad, Users, GraduationCap, Receipt, Search, FileText, ArrowRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { COMPANY } from "@/config/company";
@@ -31,6 +31,8 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [session, setSession] = useState<any>(null);
   const pathname = usePathname();
+  const { scrollYProgress } = useScroll();
+  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   useEffect(() => {
     const supabase = createClientComponentClient({
@@ -68,9 +70,8 @@ export default function Navbar() {
   return (
     <>
       <motion.div 
-        className="fixed top-0 left-0 h-[2px] bg-primary z-[60] shadow-[0_0_10px_rgba(0,191,255,0.8)]"
-        style={{ scaleX: 0, transformOrigin: "left" }}
-        animate={{ scaleX: typeof window !== 'undefined' ? window.scrollY / (document.body.scrollHeight - window.innerHeight) : 0 }}
+        className="fixed top-0 left-0 right-0 h-[2px] bg-primary z-[60] shadow-[0_0_10px_rgba(0,191,255,0.8)] origin-left"
+        style={{ scaleX }}
       />
       
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-[rgba(10,15,30,0.85)] backdrop-blur-[20px] saturate-180 border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.3)] py-4" : "bg-transparent py-6"}`}>
@@ -111,9 +112,9 @@ export default function Navbar() {
                       initial={{ opacity: 0, scaleY: 0 }} animate={{ opacity: 1, scaleY: 1 }} exit={{ opacity: 0, scaleY: 0 }} style={{ transformOrigin: "top center" }}
                       className="absolute top-[100%] left-1/2 -translate-x-1/2 w-[250px] bg-[rgba(10,15,30,0.98)] backdrop-blur-[30px] border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(0,191,255,0.1)] p-4 flex flex-col space-y-2"
                     >
-                      <Link href="/contact?package=digital-launch-pack" className="flex justify-between items-center text-[13px] font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Digital Launch Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
-                      <Link href="/contact?package=business-pro-pack" className="flex justify-between items-center text-[13px] font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Business Pro Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
-                      <Link href="/contact?package=enterprise-pack" className="flex justify-between items-center text-[13px] font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Enterprise Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
+                      <Link href="/packages/digital-launch-pack" className="flex justify-between items-center text-[13px] font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Digital Launch Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
+                      <Link href="/packages/business-pro-pack" className="flex justify-between items-center text-[13px] font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Business Pro Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
+                      <Link href="/packages/enterprise-pack" className="flex justify-between items-center text-[13px] font-medium text-zinc-300 hover:text-white p-2 hover:bg-[rgba(0,191,255,0.08)] rounded-lg transition-colors group/link">Enterprise Pack <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/link:opacity-100 transition-opacity" /></Link>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -130,7 +131,7 @@ export default function Navbar() {
               
               {session ? (
                 <div className="hidden lg:flex relative group" onMouseEnter={() => handleMouseEnter('user')} onMouseLeave={handleMouseLeave}>
-                  <button className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 hover:bg-white/10 transition-colors">
+                  <button type="button" className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 hover:bg-white/10 transition-colors" aria-label="Account menu">
                     {session.user?.user_metadata?.avatar_url ? (
                       <img src={session.user.user_metadata.avatar_url} alt="Profile" className="w-6 h-6 rounded-full" />
                     ) : (
@@ -179,7 +180,7 @@ export default function Navbar() {
                 </span>
               </Link>
               
-              <button className="lg:hidden text-white relative z-50 p-2" onClick={() => setIsOpen(!isOpen)}>
+              <button type="button" className="lg:hidden text-white relative z-50 p-2 min-h-[44px] min-w-[44px]" onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? "Close menu" : "Open menu"}>
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
             </div>

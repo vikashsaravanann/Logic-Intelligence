@@ -15,7 +15,7 @@
 | Styling | Tailwind CSS v4 |
 | Animation | Framer Motion |
 | Database | Supabase (PostgreSQL + Auth) |
-| Email | Gmail SMTP via Nodemailer |
+| Email | Zoho SMTP via Nodemailer |
 | Email Templates | React Email |
 | Deployment | Vercel |
 | AI Chat | Groq API (Qwen model) |
@@ -55,11 +55,11 @@ Copy `.env.example` to `.env.local` and fill in all values:
 | `NEXT_PUBLIC_SITE_URL` | Production URL (`https://www.logicintelligencetechnologies.in`) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (server-only, never expose to browser) |
 | `SUPABASE_WEBHOOK_SECRET` | Secret for validating Supabase webhook calls |
-| `SMTP_HOST` | Gmail SMTP host (`smtp.gmail.com`) |
-| `SMTP_PORT` | SMTP port (`465` for SSL) |
-| `SMTP_SECURE` | `true` for port 465 |
-| `SMTP_USER` | Gmail address |
-| `SMTP_PASS` | Gmail App Password (not your account password) |
+| `SMTP_HOST` | Zoho SMTP host (`smtp.zoho.in`) |
+| `SMTP_PORT` | SMTP port (`587` for STARTTLS) |
+| `SMTP_SECURE` | `false` for port 587 |
+| `SMTP_USER` | Zoho mailbox address |
+| `SMTP_PASS` | Zoho App Password (not your account password) |
 | `SMTP_FROM` | Sender address (e.g. `support@logicintelligencetechnologies.in`) |
 | `SMTP_REPLY_TO` | Reply-to address |
 | `LEAD_NOTIFICATION_EMAIL` | Internal email to receive new lead notifications |
@@ -121,7 +121,7 @@ See [docs/architecture.md](docs/architecture.md) for the full architecture refer
 
 ## Supabase Setup
 
-See [docs/deployment-supabase.md](docs/deployment-supabase.md) for Supabase setup instructions.
+See [docs/supabase-deployment.md](docs/supabase-deployment.md) for Supabase setup instructions.
 
 Active database tables:
 - `public.contact_leads` — contact form submissions
@@ -133,13 +133,13 @@ Active database tables:
 
 ## Vercel Deployment
 
-See [docs/deployment-vercel.md](docs/deployment-vercel.md) for Vercel deployment instructions.
+See [docs/vercel-deployment.md](docs/vercel-deployment.md) for Vercel deployment instructions.
 
 ---
 
 ## Gmail SMTP Setup
 
-See [docs/gmail-smtp.md](docs/gmail-smtp.md) for Gmail App Password and SMTP configuration.
+See [docs/email-infrastructure.md](docs/email-infrastructure.md) for Zoho SMTP configuration.
 
 ---
 

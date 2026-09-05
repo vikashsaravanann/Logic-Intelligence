@@ -1,8 +1,9 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock, Tag, Share2, Calendar, ArrowRight } from "lucide-react";
+import { ArrowLeft, Clock, Tag, Calendar, ArrowRight } from "lucide-react";
 import { blogPosts, getPostBySlug } from "@/data/blogData";
+import ShareButton from "@/components/ui/share-button";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
@@ -102,9 +103,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <footer className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <span className="text-sm font-medium text-zinc-400">Share this article:</span>
-            <button className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:text-primary transition-colors text-zinc-300">
-              <Share2 className="w-4 h-4" />
-            </button>
+            <ShareButton title={post.title} text={post.excerpt} />
           </div>
         </footer>
 

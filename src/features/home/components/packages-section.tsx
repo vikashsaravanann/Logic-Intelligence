@@ -68,7 +68,7 @@ export default function PackagesSection() {
             Not sure which package fits you? 
             <a 
               href="https://wa.me/919342877474" 
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#25D366] text-white font-bold text-sm hover:bg-white/5 transition-all" 
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#25D366] text-white font-bold text-sm hover:bg-[#128C7E] transition-all" 
               target="_blank" 
               rel="noopener noreferrer"
             >

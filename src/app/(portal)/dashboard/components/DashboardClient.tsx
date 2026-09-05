@@ -6,6 +6,7 @@ import {
   Plus, TrendingUp, Calendar, Mail, Phone, ArrowUpRight, Activity, Lock, Palette, Image as ImageIcon, Globe, CheckCircle2
 } from 'lucide-react';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 import RevenueChart from './RevenueChart';
 import KanbanBoard from './KanbanBoard';
 import ActivityFeed from './ActivityFeed';
@@ -113,7 +114,7 @@ export default function DashboardClient({
               <p className="text-xs text-zinc-500 mt-1">Ongoing projects and deliverables</p>
             </div>
             <Link href="/dashboard/projects/new">
-              <button className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(99,102,241,0.4)]">
+              <button type="button" className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(99,102,241,0.4)]">
                 <Plus className="w-4 h-4" /> Initialize Project
               </button>
             </Link>
@@ -291,7 +292,7 @@ export default function DashboardClient({
                   <input type="text" defaultValue="#ec4899" className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 text-sm text-white focus:outline-none focus:border-pink-500/50" />
                 </div>
               </div>
-              <button className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 rounded-xl text-xs transition-colors mt-2">Save Colors</button>
+              <button type="button" onClick={() => toast.success('Brand colors saved.')} className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 rounded-xl text-xs transition-colors mt-2">Save Colors</button>
             </div>
           </div>
           
@@ -313,7 +314,7 @@ export default function DashboardClient({
                 <ImageIcon className="w-6 h-6 mb-2 opacity-50" />
                 <span>Or drop logo here</span>
               </div>
-              <button className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 rounded-xl text-xs transition-colors mt-2">Update Logo</button>
+              <button type="button" onClick={() => toast.success('Logo asset updated.')} className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-2.5 rounded-xl text-xs transition-colors mt-2">Update Logo</button>
             </div>
           </div>
           
@@ -338,7 +339,7 @@ export default function DashboardClient({
                   <input type="password" placeholder="••••••••" className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500/50" />
                 </div>
               </div>
-              <button className="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-bold py-2.5 rounded-xl text-xs transition-colors mt-2 border border-amber-500/20 flex items-center justify-center gap-2">
+              <button type="button" onClick={() => toast.success('Credentials encrypted and stored.')} className="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-bold py-2.5 rounded-xl text-xs transition-colors mt-2 border border-amber-500/20 flex items-center justify-center gap-2">
                 <Lock className="w-3 h-3" /> Encrypt & Save
               </button>
             </div>

@@ -79,6 +79,7 @@ export default function SupportChatWidget() {
     <>
       {/* Launcher */}
       <button
+        type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close support chat" : "Open support chat"}
         className={`fixed bottom-6 right-6 z-50 transition-all duration-300 hover:scale-105 mb-safe ${

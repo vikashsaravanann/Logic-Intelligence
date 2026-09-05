@@ -10,25 +10,29 @@ export default function ChecklistLeadMagnet() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
 
+  const [error, setError] = useState<string | null>(null);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setIsSubmitting(true);
+    setError(null);
     
     try {
-      // In a real implementation, this sends the email to a marketing CRM (e.g. Mailchimp, Resend)
-      // and emails them the PDF.
       const res = await fetch("/api/checklist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, type: "lead_magnet" }),
       });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.message || "Could not send the checklist. Please try again.");
+      }
       
       setSent(true);
     } catch (err) {
-      console.error(err);
-      // Fallback
-      setSent(true);
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -48,7 +52,7 @@ export default function ChecklistLeadMagnet() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-8">
              Free Resource
           </motion.div>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl lg:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tight leading-tight">
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl lg:text-6xl font-black text-white mb-6 tracking-tight leading-tight">
             The Ultimate 2026 <br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Website Launch Checklist</span>
           </motion.h1>
@@ -104,6 +108,7 @@ export default function ChecklistLeadMagnet() {
                 >
                   {isSubmitting ? 'Sending...' : <>Get the Free Checklist <ArrowRight className="w-5 h-5" /></>}
                 </button>
+                {error && <p className="text-center text-sm text-red-400">{error}</p>}
                 <p className="text-center text-xs text-zinc-500 mt-4">
                   100% free. No spam, ever.
                 </p>
