@@ -34,10 +34,10 @@ function saveChats(chats: any) {
 }
 
 const SUGGESTIONS = [
-  { icon: <Rocket size={24} className="text-[#00bfff]" />, title: 'Digital Launch Pack', subtitle: 'Rs.8,999 - up to 5 pages, mobile-responsive, basic SEO' },
-  { icon: <Briefcase size={24} className="text-[#0055ff]" />, title: 'Business Pro Pack', subtitle: 'Rs.18,999 - booking system, admin panel, payment gateway' },
-  { icon: <Building2 size={24} className="text-[#9b72cb]" />, title: 'Enterprise Pack', subtitle: 'custom from Rs.50,000 - dedicated project manager, unlimited pages' },
-  { icon: <Wrench size={24} className="text-[#00bfff]" />, title: 'Services Inquiry', subtitle: 'Full stack web, mobile apps, CRM, SEO, hosting & maintenance' },
+  { icon: <Rocket size={22} className="text-[#8ab4f8]" />, title: 'Get a project quote', subtitle: 'Transparent pricing for websites, apps & AI systems', prompt: 'I need a quote for a custom business website with booking and payments. What package fits and what is the timeline?' },
+  { icon: <Briefcase size={22} className="text-[#81c995]" />, title: 'Automate my business', subtitle: 'CRM, workflows, and AI assistants for operations', prompt: 'How can Logic Intelligence Technologies automate lead capture, follow-ups, and reporting for a Coimbatore service business?' },
+  { icon: <Building2 size={22} className="text-[#c58af9]" />, title: 'Enterprise AI systems', subtitle: 'RAG, fine-tuned models, and secure deployments', prompt: 'Explain how you build production RAG and LoRA-based AI systems for enterprise clients, including security and hosting.' },
+  { icon: <Handshake size={22} className="text-[#fdd663]" />, title: 'Book a free demo', subtitle: 'See a working demo before you pay anything', prompt: 'I want a free demo of a business website. What do you need from me and how does the free-demo process work?' },
 ];
 
 // Brain-circuit logo matching the company brand mark
@@ -760,14 +760,20 @@ const [input, setInput] = useState('');
         }
       `}} />
 
-      <div className="ambient-glow">
-        <motion.div 
-          animate={{ opacity: [0.02, 0.05, 0.02], scale: [1, 1.05, 1], rotate: [-2, 2, -2] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80vw', height: '80vw', maxWidth: '800px', maxHeight: '800px' }}
-        >
-          <img src="/assets/logo.png" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.15, filter: 'grayscale(100%) brightness(200%)' }} />
-        </motion.div>
+      <div className="ambient-glow" aria-hidden>
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 'min(70vw, 640px)',
+            height: 'min(70vw, 640px)',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(0,191,255,0.06) 0%, rgba(0,85,255,0.03) 40%, transparent 70%)',
+            pointerEvents: 'none',
+          }}
+        />
       </div>
 
       <div className={`sidebar-overlay ${sidebarOpen && isMobile ? 'show' : ''}`} onClick={() => setSidebarOpen(false)} />
@@ -843,48 +849,71 @@ const [input, setInput] = useState('');
         </div>
 
         {(!activeChat || activeChat.messages.length === 0) ? (
-          <div className="welcome-screen welcome-fade" style={{ justifyContent: 'flex-start', paddingTop: '8vh' }}>
-            <div className="welcome-title-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: '760px', width: '100%', marginBottom: '48px' }}>
-              <div className={`gemini-gradient-text ${poppins.className}`} style={{ fontSize: 'clamp(36px, 6vw, 56px)', fontWeight: '600', marginBottom: '8px', letterSpacing: '-1.5px' }}>
-                Hello, {user?.user_metadata?.full_name?.split(' ')[0] || 'there'}
+          <div className="welcome-screen welcome-fade" style={{ justifyContent: 'center', paddingTop: '4vh', paddingBottom: '2vh' }}>
+            <div className="welcome-title-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: '720px', width: '100%', marginBottom: '36px' }}>
+              <div
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 20,
+                  background: 'linear-gradient(135deg, rgba(0,191,255,0.15), rgba(0,85,255,0.25))',
+                  border: '1px solid rgba(0,191,255,0.25)',
+                }}
+              >
+                <BrandLogo size={32} />
               </div>
-              <div className={poppins.className} style={{ color: '#a1a1aa', fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: '500', letterSpacing: '-1px' }}>
-                {chats.some(c => c.messages.length > 0) ? 'Welcome back to the' : 'Welcome to the'} Logic Intelligence Technologies AI Assistant
+              <div className={`gemini-gradient-text ${poppins.className}`} style={{ fontSize: 'clamp(34px, 5.5vw, 52px)', fontWeight: 600, marginBottom: 10, letterSpacing: '-1.5px', lineHeight: 1.15 }}>
+                Hello{user?.user_metadata?.full_name ? `, ${user.user_metadata.full_name.split(' ')[0]}` : ''}
               </div>
-              <div style={{ color: '#71717a', fontSize: '14px', marginTop: '8px' }}>
-                Founded by Vikash Saravanan • Coimbatore, Tamil Nadu, India
+              <div className={poppins.className} style={{ color: '#e3e3e3', fontSize: 'clamp(18px, 3vw, 26px)', fontWeight: 500, letterSpacing: '-0.4px', maxWidth: 560 }}>
+                How can LIT AI help your business today?
               </div>
-              <div style={{ color: '#a1a1aa', fontSize: '16px', marginTop: '24px', lineHeight: '1.6', maxWidth: '600px' }}>
-                I can help you scope custom software projects, generate business automation strategies, fetch pricing details, or answer technical questions about your infrastructure.
-              </div>
+              <p style={{ color: '#9aa0a6', fontSize: 15, marginTop: 14, lineHeight: 1.55, maxWidth: 520 }}>
+                Scope projects, compare packages, plan automations, or draft a free-demo brief — built for founders and operators in Coimbatore and beyond.
+              </p>
             </div>
-            <motion.div 
-              className="suggestion-grid"
-              variants={{
-                hidden: { opacity: 0 },
-                show: { opacity: 1, transition: { staggerChildren: 0.1 } }
-              }}
-              initial="hidden"
-              animate="show"
-            >
+            <div className="suggestion-grid">
               {SUGGESTIONS.map((s, i) => (
-                <motion.div 
-                  key={i} 
-                  className="suggestion-card" 
-                  onClick={() => sendMessage(`${s.title} ${s.subtitle}`)}
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 25 } }
-                  }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                <button
+                  key={i}
+                  type="button"
+                  className="suggestion-card"
+                  onClick={() => sendMessage(s.prompt)}
+                  style={{ textAlign: 'left', cursor: 'pointer', border: '1px solid rgba(255,255,255,0.06)' }}
                 >
                   <span className="suggestion-icon">{s.icon}</span>
                   <div className="s-title">{s.title}</div>
                   <div className="s-subtitle">{s.subtitle}</div>
-                </motion.div>
+                </button>
               ))}
-            </motion.div>
+            </div>
+            <div style={{ marginTop: 28, display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', maxWidth: 640 }}>
+              {['Pricing', 'Free demo', 'RAG systems', 'Next.js apps', 'WhatsApp'].map((chip) => (
+                <button
+                  key={chip}
+                  type="button"
+                  onClick={() => {
+                    setInput((prev) => (prev ? `${prev} ${chip}` : `Tell me about ${chip} at Logic Intelligence Technologies`));
+                    textareaRef.current?.focus();
+                  }}
+                  style={{
+                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    color: '#c4c7c5',
+                    borderRadius: 999,
+                    padding: '8px 14px',
+                    fontSize: 13,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
           </div>
         ) : (
           <div className="message-stream">
