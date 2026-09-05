@@ -31,7 +31,7 @@ export default function TestimonialsSection() {
                 key={t.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ delay: i * 0.08 }}
                 className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 flex flex-col"
               >
@@ -71,7 +71,7 @@ export default function TestimonialsSection() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             className="max-w-3xl mx-auto"
           >
             <div className="rounded-3xl border border-dashed border-white/15 bg-white/[0.02] p-6 md:p-10 md:p-8 md:p-14 text-center">

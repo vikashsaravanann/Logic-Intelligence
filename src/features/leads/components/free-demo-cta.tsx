@@ -12,7 +12,7 @@ export default function FreeDemoCTA() {
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.2 }}
           className="p-6 md:p-10 md:p-16 rounded-3xl border border-primary/20 bg-primary/5 relative overflow-hidden"
         >
           <div className="absolute -top-6 md:p-10 -right-10 w-40 h-40 bg-primary/20 blur-3xl rounded-full" />

@@ -97,9 +97,8 @@ const ThinkingStatus = ({ activeMessage }: { activeMessage?: string }) => {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <motion.div 
-        animate={{ rotate: 360 }} 
-        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }} 
+      <div
+        className="lit-spin"
         style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid rgba(0, 191, 255, 0.2)', borderTopColor: '#00bfff' }} 
       />
       <div style={{ position: 'relative', height: '20px', display: 'flex', alignItems: 'center', minWidth: '160px' }}>
@@ -698,6 +697,9 @@ const [input, setInput] = useState('');
         }
         .action-btn:hover { background-color: rgba(255,255,255,0.05); color: #E8E9EA; border-color: #00bfff; }
 
+        @keyframes lit-spin { to { transform: rotate(360deg); } }
+        .lit-spin { animation: lit-spin 1s linear infinite; will-change: transform; }
+        @media (prefers-reduced-motion: reduce) { .lit-spin { animation: none; } }
         .typing-dots { display: flex; gap: 4px; align-items: center; padding-top: 8px; }
         .typing-dots span {
           width: 6px; height: 6px; border-radius: 50%;
@@ -785,7 +787,7 @@ const [input, setInput] = useState('');
             initial={isMobile ? { x: '-100%' } : { x: 0 }}
             animate={{ x: 0 }}
             exit={isMobile ? { x: '-100%' } : { x: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={{ duration: 0.22, ease: [0.25, 0.1, 0.25, 1] }}
             className={`sidebar ${sidebarOpen ? 'open' : ''}`}
           >
             <div className="sidebar-brand" style={{ padding: '24px 24px 16px 24px' }}>
@@ -923,7 +925,7 @@ const [input, setInput] = useState('');
                 key={idx} 
                 initial={{ opacity: 0, y: 12, scale: 0.98 }} 
                 animate={{ opacity: 1, y: 0, scale: 1 }} 
-                transition={{ type: "spring", stiffness: 350, damping: 28 }}
+                transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
                 className={`chat-bubble message-row ${msg.role === 'user' ? 'user' : ''}`}
               >
                 <div className={`avatar ${msg.role === 'assistant' ? 'avatar-assistant' : 'avatar-user'}`}>

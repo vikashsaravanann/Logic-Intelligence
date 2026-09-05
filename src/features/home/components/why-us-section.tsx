@@ -45,7 +45,7 @@ export default function WhyUsSection() {
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             className="space-y-8"
           >
             <div>
@@ -66,7 +66,7 @@ export default function WhyUsSection() {
                   key={i}
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, amount: 0.2 }}
                   transition={{ delay: i * 0.1 }}
                   className="flex items-start gap-4 p-4 rounded-2xl bg-black/40 border border-white/5 hover:border-primary/30 transition-colors"
                 >
@@ -83,9 +83,9 @@ export default function WhyUsSection() {
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
             className="relative h-[500px] w-full lg:h-[600px] rounded-2xl border border-primary/20 bg-black/40 overflow-hidden backdrop-blur-sm"
           >
             <div className="absolute inset-0 flex items-center justify-center flex-col">

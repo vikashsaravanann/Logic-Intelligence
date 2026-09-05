@@ -23,7 +23,7 @@ export default function AboutSection() {
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             className="space-y-8"
           >
             <div>
@@ -61,9 +61,9 @@ export default function AboutSection() {
 
           {/* Visual Side */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
             className="relative h-[600px] w-full rounded-3xl overflow-hidden bg-black border border-white/10"
           >
             {/* Abstract Tech Graphic */}

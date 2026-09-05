@@ -62,7 +62,7 @@ export default function ServicesSection() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             className="flex items-center justify-center gap-2 mb-6"
           >
             <span className="h-px w-8 bg-white/20" />
@@ -72,7 +72,7 @@ export default function ServicesSection() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ delay: 0.1 }}
             className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight mb-6"
           >
@@ -82,7 +82,7 @@ export default function ServicesSection() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ delay: 0.2 }}
             className="text-zinc-400 max-w-2xl mx-auto text-lg leading-relaxed"
           >
@@ -96,8 +96,8 @@ export default function ServicesSection() {
               key={service.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.35, delay: index * 0.1  }}
               className={`group relative bg-[#12172B]/80 backdrop-blur-xl border border-white/5 rounded-[2rem] p-8 md:p-6 md:p-10 transition-all duration-500 overflow-hidden flex flex-col h-full hover:-translate-y-2 ${service.borderHover} ${service.shadowHover}`}
             >
               {/* Unique gradient hover effect */}

@@ -1,7 +1,8 @@
 "use client";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Code2, Globe2, Sparkles, Phone, ChevronDown, CheckCircle2, Send } from "lucide-react";
 import { COMPANY } from "@/config/company";
+import { tweenSoft } from "@/components/motion/primitives";
 
 const InstagramIcon = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
@@ -16,9 +17,10 @@ const FacebookIcon = ({ className }: { className?: string }) => (
 );
 
 export default function HeroSection() {
-  const { scrollY } = useScroll();
-  const textY = useTransform(scrollY, [0, 500], [0, -50]);
-  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const reduceMotion = useReducedMotion();
+  const enter = reduceMotion
+    ? { initial: false as const, animate: undefined }
+    : { initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 } };
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0F1E] pt-32 md:pt-48 pb-12">
@@ -40,9 +42,8 @@ export default function HeroSection() {
         <motion.div className="max-w-4xl flex flex-col items-center mt-8">
           
           <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            {...enter}
+            transition={{ ...tweenSoft, delay: 0 }}
             className="flex flex-col items-center gap-4 mb-8"
           >
             <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-primary/30 shadow-[0_0_30px_rgba(0,191,255,0.3)] bg-black animate-neon-pulse">
@@ -59,9 +60,8 @@ export default function HeroSection() {
           </motion.div>
           
           <motion.h1 
-            initial={{ opacity: 0, y: 30 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+            {...enter}
+            transition={{ ...tweenSoft, delay: 0.05 }}
             className="text-3xl md:text-4xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6"
           >
             {COMPANY.tagline.split(" ").slice(0, 3).join(" ")} <br className="hidden sm:block"/>
@@ -69,18 +69,16 @@ export default function HeroSection() {
           </motion.h1>
 
           <motion.h2
-            initial={{ opacity: 0, y: 30 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            {...enter}
+            transition={{ ...tweenSoft, delay: 0.1 }}
             className="text-xl md:text-3xl font-bold text-white mb-6"
           >
             Web &amp; AI development for Coimbatore businesses.
           </motion.h2>
 
           <motion.p 
-            initial={{ opacity: 0, y: 30 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            {...enter}
+            transition={{ ...tweenSoft, delay: 0.14 }}
             className="text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed mb-10"
           >
             Founded by an AI &amp; Data Science specialist, we build custom websites, e-commerce
@@ -88,9 +86,8 @@ export default function HeroSection() {
           </motion.p>
 
           <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            {...enter}
+            transition={{ ...tweenSoft, delay: 0.18 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto relative z-30 mb-16"
           >
             <a href="#services" className="bg-white text-black px-8 py-3.5 rounded-xl text-sm font-bold w-full sm:w-auto text-center flex items-center justify-center gap-2 group hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.2)]">
@@ -109,9 +106,8 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8, delay: 0.45, ease: "easeOut" }}
+            {...enter}
+            transition={{ ...tweenSoft, delay: 0.2 }}
             className="flex items-center justify-center gap-6 mb-16"
           >
             <a href={COMPANY.linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-zinc-400 hover:text-[#0a66c2] hover:scale-110 transition-all">
@@ -130,9 +126,8 @@ export default function HeroSection() {
 
           {/* About Us At A Glance Widgets */}
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+            {...enter}
+            transition={{ ...tweenSoft, delay: 0.24 }}
             className="w-full glass-card rounded-3xl p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-white/10"
           >
             {/* Widget 1 */}
@@ -182,21 +177,11 @@ export default function HeroSection() {
 
         </motion.div>
         
-        {/* Scroll Indicator */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-zinc-500"
-        >
+        {/* Scroll Indicator — static (no infinite motion loop) */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-zinc-500">
           <span className="text-[9px] font-bold tracking-widest uppercase text-zinc-400">Scroll</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ChevronDown className="w-4 h-4 text-zinc-500" />
-          </motion.div>
-        </motion.div>
+          <ChevronDown className="w-4 h-4 text-zinc-500" />
+        </div>
 
       </div>
     </section>

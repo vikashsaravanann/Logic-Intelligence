@@ -57,7 +57,7 @@ export default function InstagramFeedSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.2 }}
           className="text-center mb-14"
         >
           <div className="inline-flex items-center justify-center p-3 rounded-full bg-gradient-to-tr from-pink-500 to-purple-500 mb-5 shadow-[0_0_20px_rgba(236,72,153,0.3)]">
@@ -83,9 +83,9 @@ export default function InstagramFeedSection() {
               href={post.href}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: i * 0.12 }}
               className="group relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-black shadow-[0_4px_24px_rgba(0,0,0,0.3)] hover:border-pink-500/30 transition-all duration-300"
             >
@@ -131,7 +131,7 @@ export default function InstagramFeedSection() {
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ delay: 0.3 }}
           className="text-center mt-10"
         >

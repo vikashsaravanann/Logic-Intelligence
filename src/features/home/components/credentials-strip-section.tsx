@@ -21,7 +21,7 @@ export default function CredentialsStripSection() {
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: i * 0.1 }}
               className="flex flex-col items-center gap-3 p-4 rounded-xl bg-black/20 border border-white/5 backdrop-blur-sm hover:border-primary/30 transition-all group"
             >
