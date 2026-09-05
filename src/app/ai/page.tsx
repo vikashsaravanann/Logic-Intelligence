@@ -397,12 +397,12 @@ export default function GeminiAiChatPage() {
         
         .message-row { display: flex; gap: 16px; margin-bottom: 32px; width: 100%; }
         .message-row.user { flex-direction: row-reverse; }
-        .message-row.user .avatar { display: none; }
         .message-row.user .message-content { display: flex; justify-content: flex-end; width: 100%; }
         .message-row.user .message-text { 
            background: #282A2C; 
            padding: 12px 20px; 
            border-radius: 24px; 
+           border-top-right-radius: 4px;
            max-width: 80%;
            display: inline-block;
            font-size: 15.5px;
@@ -512,22 +512,30 @@ export default function GeminiAiChatPage() {
 
       {/* Main area */}
       <div className="main-area" style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', bottom: '24px', left: '24px', fontSize: 'clamp(16px, 2vw, 22px)', fontWeight: '600', letterSpacing: '0.5px', color: '#E3E3E3', zIndex: 10, pointerEvents: 'none' }}>
-          Logic AI
-        </div>
-        <div className="top-bar" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px 24px', position: 'relative' }}>
-          <button className="hamburger" onClick={() => setSidebarOpen((s) => !s)} style={{ position: 'absolute', left: '24px' }}>☰</button>
-          
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }} />
-            <span style={{ fontWeight: '500', fontSize: '18px', color: '#E3E3E3' }}>
-              {COMPANY.displayName}
-            </span>
+        <div className="top-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', position: 'relative' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <button className="hamburger" onClick={() => setSidebarOpen((s) => !s)}>☰</button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <span style={{ fontWeight: '700', fontSize: '16px', color: '#E3E3E3', letterSpacing: '1px', textTransform: 'uppercase', lineHeight: '1.2' }}>
+                  LOGIC INTELLIGENCE
+                </span>
+                <span style={{ fontWeight: '500', fontSize: '10px', color: '#8E918F', letterSpacing: '3px', textTransform: 'uppercase', lineHeight: '1' }}>
+                  TECHNOLOGIES
+                </span>
+              </div>
+            </div>
           </div>
-
-          <a href="/" style={{ position: 'absolute', right: '24px' }} className="px-5 py-2 rounded-full text-[12px] font-medium text-black bg-[#E3E3E3] hover:bg-white transition-all whitespace-nowrap text-decoration-none">
-            Exit
-          </a>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            {user?.user_metadata?.avatar_url && (
+              <img src={user.user_metadata.avatar_url} alt="Profile" style={{ width: '36px', height: '36px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.1)' }} title={user?.user_metadata?.full_name || 'User'} />
+            )}
+            <a href="/" className="px-5 py-2 rounded-full text-[12px] font-medium text-black bg-[#E3E3E3] hover:bg-white transition-all whitespace-nowrap text-decoration-none">
+              Exit
+            </a>
+          </div>
         </div>
 
         {showWelcome ? (
@@ -543,7 +551,7 @@ export default function GeminiAiChatPage() {
                 Founded by Vikash Saravanan • Coimbatore, Tamil Nadu, India
               </div>
             </div>
-            <div className="suggestion-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
+            <div className="suggestion-grid">
               {SUGGESTIONS.map((s, i) => (
                 <div key={i} className="suggestion-card" onClick={() => sendMessage(`${s.title} ${s.subtitle}`)}>
                   <span className="suggestion-icon">{s.icon}</span>
