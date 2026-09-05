@@ -4,14 +4,41 @@ import { packagesData } from "@/data/packagesData";
 import { servicesData } from "@/data/servicesData";
 import { portfolioProjects } from "@/data/portfolioData";
 
-const GROQ_API_KEY = process.env.GROK_API_KEY || process.env.XAI_API_KEY || process.env.GROQ_API_KEY;
-const GROQ_API_URL = process.env.GROQ_API_URL || process.env.XAI_API_URL || "https://api.groq.com/openai/v1/chat/completions";
+const DEFAULT_GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const DEFAULT_MODEL = "openai/gpt-oss-120b";
 
-let GROQ_MODEL = process.env.GROQ_MODEL || process.env.GROK_MODEL || "openai/gpt-oss-120b";
-if (GROQ_API_URL.includes("x.ai")) {
-    GROQ_MODEL = "grok-beta";
-} else if (GROQ_API_URL.includes("openrouter.ai")) {
-    GROQ_MODEL = "qwen/qwen-2.5-72b-instruct";
+function getAiConfig() {
+  const apiKey =
+    process.env.GROK_API_KEY || process.env.XAI_API_KEY || process.env.GROQ_API_KEY;
+  const apiUrl =
+    process.env.GROQ_API_URL || process.env.XAI_API_URL || DEFAULT_GROQ_URL;
+  let model = process.env.GROQ_MODEL || process.env.GROK_MODEL || DEFAULT_MODEL;
+  if (apiUrl.includes("x.ai")) {
+    model = "grok-beta";
+  } else if (apiUrl.includes("openrouter.ai")) {
+    model = "qwen/qwen-2.5-72b-instruct";
+  }
+  return { apiKey, apiUrl, model };
+}
+
+function getLocalFallbackReply(userText: string): string {
+  const lower = (userText || "").toLowerCase();
+  if (lower.includes("price") || lower.includes("cost") || lower.includes("package") || lower.includes("plan") || lower.includes("pricing") || lower.includes("quote") || lower.includes("launch pack") || lower.includes("pro pack") || lower.includes("enterprise")) {
+    return `Here are our popular packages at ${COMPANY.displayName}:\n\n- **Digital Launch Pack (Rs.8,999)**: up to 5 pages, mobile-responsive, basic SEO, contact form, Google Maps, WhatsApp button, 1-month support\n- **Business Pro Pack (Rs.18,999)**: booking system, admin panel, blog, payment gateway, advanced animations, 3-month support\n- **Enterprise Pack (custom from Rs.50,000)**: dedicated project manager, unlimited pages/revisions, 6-month support\n\nFor a custom quote, reach us on WhatsApp at **${COMPANY.phone}** or email **${COMPANY.email}**.`;
+  }
+  if (lower.includes("service") || lower.includes("offer") || lower.includes("build") || lower.includes("develop")) {
+    return `At ${COMPANY.displayName}, we build modern web apps, custom software/CRM/ERP, e-commerce, mobile apps, and AI integrations.\n\nTell me what you want to build and I’ll suggest the right package. You can also reach our team on WhatsApp at **${COMPANY.phone}**.`;
+  }
+  if (lower.includes("contact") || lower.includes("phone") || lower.includes("email") || lower.includes("whatsapp") || lower.includes("location") || lower.includes("office")) {
+    return `You can reach ${COMPANY.displayName} anytime:\n\n- **WhatsApp / Phone**: ${COMPANY.phone}\n- **Email**: ${COMPANY.email}\n- **Website**: ${COMPANY.websiteUrl}\n\nWe reply within 24 hours.`;
+  }
+  if (lower.includes("founder") || lower.includes("owner") || lower.includes("ceo") || lower.includes("started") || lower.includes("vikash")) {
+    return `Our founder is **Vikash Saravanan** — ${COMPANY.founder.title} at ${COMPANY.displayName}, based in Coimbatore, Tamil Nadu, India.\n\nReach us on WhatsApp at **${COMPANY.phone}** or email **${COMPANY.email}**.`;
+  }
+  if (!userText || !userText.trim()) {
+    return `Hello! I’m the ${COMPANY.displayName} AI assistant. Ask me about pricing, services, or your project idea.`;
+  }
+  return `Thanks for asking about "${userText.slice(0, 120)}".\n\nI’m the ${COMPANY.displayName} AI assistant — I can help scope your project, explain pricing, or answer technical questions.\n\n- **Packages**: Launch Rs.8,999 / Pro Rs.18,999 / Enterprise from Rs.50,000\n- **Contact**: WhatsApp ${COMPANY.phone}, Email ${COMPANY.email}\n\nTell me a bit more about what you want to build and I’ll guide you.`;
 }
 
 function buildSystemPrompt(): string {
@@ -136,14 +163,18 @@ GUIDELINES:
 }
 
 export async function POST(request: Request) {
+  let userText = "";
   try {
-    const { text, file } = await request.json();
+    const { text, file, max_tokens } = await request.json();
+    userText = typeof text === "string" ? text : "";
+    const { apiKey, apiUrl, model } = getAiConfig();
 
     let injectedContext = "";
     if (file && file.type === 'application/pdf') {
       try {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
-        const pdfParse = require('pdf-parse');
+        const pdfModule = require('pdf-parse');
+        const pdfParse = pdfModule?.default || pdfModule;
         const base64Data = (file.data as string).replace(/^data:application\/pdf;base64,/, '');
         const buffer = Buffer.from(base64Data, 'base64');
         const parsed = await pdfParse(buffer);
@@ -173,29 +204,34 @@ ${rag_context}`;
       {"role": "user", "content": text}
     ];
 
-    const response = await fetch(GROQ_API_URL, {
+    // No AI key configured — always answer with local knowledge instead of failing.
+    if (!apiKey) {
+      const fallback = getLocalFallbackReply(text);
+      return NextResponse.json({ success: true, generated_text: fallback, reply: fallback });
+    }
+
+    const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${GROQ_API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: GROQ_MODEL,
+        model,
         messages: messages,
         temperature: 0.3,
         top_p: 0.9,
-        do_sample: true,
-        pad_token_id: 100266,
+        max_tokens: typeof max_tokens === "number" ? max_tokens : 800,
       }),
       signal: AbortSignal.timeout(30000),
     });
 
     if (!response.ok) {
       const errText = await response.text();
-      return NextResponse.json(
-        { error: "AI model error", details: errText },
-        { status: response.status }
-      );
+      console.error("AI model error:", response.status, errText);
+      // Fall back to local knowledge so the page always answers.
+      const fallback = getLocalFallbackReply(text);
+      return NextResponse.json({ success: true, generated_text: fallback, reply: fallback });
     }
 
     const data = await response.json();
@@ -205,6 +241,8 @@ ${rag_context}`;
       return NextResponse.json({
         success: true,
         tool_calls: assistantMessage.tool_calls,
+        generated_text: "",
+        reply: "",
       });
     }
 
@@ -215,24 +253,25 @@ ${rag_context}`;
       return NextResponse.json({
         success: true,
         generated_text: cleaned,
+        reply: cleaned,
       });
     }
 
+    const fallback = getLocalFallbackReply(text);
     return NextResponse.json({
       success: true,
-      generated_text: "I'm unable to generate a response at this time. Please try again.",
+      generated_text: fallback,
+      reply: fallback,
     });
   } catch (error: any) {
     console.error('Error connecting to AI:', error);
-    return NextResponse.json(
-      { error: 'Failed to communicate with AI backend', details: error.message },
-      { status: 500 }
-    );
+    const fallback = getLocalFallbackReply(userText);
+    return NextResponse.json({ success: true, generated_text: fallback, reply: fallback });
   }
 }
 
 function cleanedContent(rawText: string): string {
-  return rawText.replace('<\\/think>', '').split('</think>')[0].trim();
+  return (rawText || "").replace(/<think>[\s\S]*?<\/think>/gi, "").replace(/<\/?think>/gi, "").trim();
 }
 
 export const dynamic = "force-dynamic";

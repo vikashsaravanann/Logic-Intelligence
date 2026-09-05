@@ -422,49 +422,44 @@ const [input, setInput] = useState('');
 
     try {
       abortControllerRef.current = new AbortController();
+      // Optimistic empty assistant bubble
+      setChats((prev) => prev.map(c => c.id === chatId ? { ...c, messages: [...c.messages, { role: 'assistant', text: '' }] } : c));
+
       const res = await fetch('/api/ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: payloadText, max_tokens: 400, file: selectedFile ? { name: selectedFile.name, type: selectedFile.type, data: selectedFile.data } : undefined }),
+        body: JSON.stringify({ text: payloadText, max_tokens: 800, file: selectedFile ? { name: selectedFile.name, type: selectedFile.type, data: selectedFile.data } : undefined }),
         signal: abortControllerRef.current.signal,
       });
-      
-      const reader = res.body?.getReader();
-      const decoder = new TextDecoder("utf-8");
+
       let fullText = "";
-
-      setChats((prev) => prev.map(c => c.id === chatId ? { ...c, messages: [...c.messages, { role: 'assistant', text: '' }] } : c));
-
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split('\n');
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              const dataStr = line.replace('data: ', '').trim();
-              if (dataStr === '[DONE]') break;
-              try {
-                const data = JSON.parse(dataStr);
-                if (data.token) {
-                  fullText += data.token;
-                  setChats((prev) =>
-                    prev.map((c) => {
-                      if (c.id !== chatId) return c;
-                      const msgs = [...c.messages];
-                      msgs[msgs.length - 1].text = fullText;
-                      return { ...c, messages: msgs };
-                    })
-                  );
-                }
-              } catch (e) {
-                // ignore JSON parse errors for incomplete chunks
-              }
-            }
-          }
+      try {
+        const data = await res.json();
+        fullText = data?.generated_text || data?.reply || "";
+        if (Array.isArray(data?.tool_calls) && data.tool_calls.length > 0) {
+          fullText = fullText || "Working on that — one moment.";
         }
+        if (!res.ok || (!fullText && !data?.success)) {
+          throw new Error(data?.error || `AI request failed (${res.status})`);
+        }
+      } catch (jsonErr: any) {
+        if (jsonErr?.name === 'AbortError') throw jsonErr;
+        // If body wasn't JSON (e.g. gateway error page), surface retry UI
+        if (!fullText) throw jsonErr;
       }
+
+      if (!fullText.trim()) {
+        throw new Error("Empty AI response");
+      }
+
+      setChats((prev) =>
+        prev.map((c) => {
+          if (c.id !== chatId) return c;
+          const msgs = [...c.messages];
+          msgs[msgs.length - 1] = { role: 'assistant', text: fullText };
+          return { ...c, messages: msgs };
+        })
+      );
       if (user) {
         await supabase.from('ai_messages').insert({ chat_id: chatId, role: 'assistant', content: fullText });
         await supabase.from('ai_chats').update({ updated_at: new Date().toISOString() }).eq('id', chatId);
