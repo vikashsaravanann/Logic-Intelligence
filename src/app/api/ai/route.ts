@@ -1,4 +1,3 @@
-const pdfParse = require("pdf-parse");
 import { NextResponse } from 'next/server';
 import { COMPANY } from "@/config/company";
 import { packagesData } from "@/data/packagesData";
@@ -28,170 +27,184 @@ CAPABILITIES:
 - You have comprehensive knowledge of your creator, ${COMPANY.displayName}, and will help clients understand its services.
 
 COMPANY INFORMATION
-- Name: ${COMPANY.displayName}
+
+PACKAGES & PRICING:
+- Digital Launch Pack: Rs.8,999 - up to 5 pages, mobile-responsive, basic SEO, contact form, Google Maps, WhatsApp button, 1-month support
+- Business Pro Pack: Rs.18,999 - includes booking system, admin panel, blog, payment gateway (Razorpay/Stripe/PayPal), advanced animations, 3-month support
+- Enterprise Pack: custom from Rs.50,000 - dedicated project manager, unlimited pages/revisions, 6-month support, milestone-based payments
+
+SERVICES:
+- Full Stack Web Development (React, Next.js, TypeScript, TailwindCSS, Node.js/Python/Django)
+- Hotel & Hospitality websites (direct booking, no commission)
+- Travel Agency websites (quotation calculators)
+- Custom Software/CRM/ERP (BMS, School Management, Billing, Invoice systems)
+- E-Commerce websites (Razorpay/Stripe/PayPal/UPI, product catalogs)
+- Mobile App Development (Flutter, React Native, Android/iOS)
+- Game Development (Unity, Unreal, Godot, HTML5/Phaser)
+- UI/UX Design (Figma, Adobe XD, Canva Pro)
+- SEO Optimization (On-Page, Technical, Local SEO)
+- Hosting & Maintenance (Vercel, AWS, Docker, CI/CD)
+- Logo Design & Brand Identity (logo formats, brand kit, guidelines)
+- Billing/Invoice Software (GST invoices, expense tracking)
+- School Management Software (student portals, fee management)
+- API Development & Integration (REST, GraphQL, payment gateways)
+- Cloud/DevOps (AWS, Docker, CI/CD pipelines, SSL, server monitoring)
+
+PORTFOLIO PROJECTS:
+- FreshBite: Restaurant ordering platform (Next.js, Stripe, Supabase)
+- VaultHR: HR management suite (React, Node.js, PostgreSQL, AWS)
+- Luxe Interiors: Design studio portfolio (Next.js, Framer Motion)
+- MediConnect: Clinic booking system (Next.js, Supabase, Twilio)
+- GreenLeaf: Organic e-commerce store (Next.js, Stripe, Sanity Vercel)
+- UrbanFit: Gym management platform (React, FastAPI, PostgreSQL, Razorpay)
+
+PRICING OVERVIEW:
+- Starter Web: Rs.8,999-25,000
+- Standard Platform: Rs.50,000-1,50,000
+- Custom/Enterprise: Quote-based
+- Hotel Starter: Rs.12,999 (5 pages, 7-day delivery)
+- Hotel Pro: Rs.24,999 (12 pages, 12-day delivery, 3-month support)
+- Travel Basic: Rs.15,999
+- Travel Pro: Rs.28,999
+- Travel Premium: Rs.55,000+
+- Simple Software: Rs.30,000-75,000
+- Mid Software: Rs.75,000-2,00,000
+- AI Features: Grok API integration
+
+PAYMENT TERMS:
+- 50/50 split (advance + on delivery) for Launch & Pro packs
+- Milestone-based for Enterprise
+- Standard: Net 15 or Net 30 days per SOW
+- Invoices raised on SOW signing/milestone completion
+
+ENGAGEMENT PROCESS (4 steps):
+1. Discovery & Strategy (31-point Client Discovery Checklist)
+2. UI/UX Design (shared with client for feedback)
+3. Development (Next.js, React, Node.js)
+4. Testing & Launch (QA, performance, deployment, admin training)
+
+PRE-REQUISITES before starting:
+- Completed scope checklist
+- Final logo & brand guidelines
+- Written copy for site
+- High-resolution media
+- Legal pages (Privacy Policy, Terms of Service)
+- Domain & hosting access credentials
+
+REFUND POLICY:
+- Initial deposits non-refundable once discovery/design started
+- Approved milestone payments non-refundable
+- Mid-development cancellation: billed for work completed to that date
+- After final deployment and source code handover, no refunds are issued - a bug-fixing warranty period is provided post-launch
+- Monthly maintenance/retainer: cancel with 30 days written notice; billed for current month; no partial month refunds
+- Digital products are final sale
+- Exceptional disputes reviewed case-by-case. Contact: contact@logicintelligencetechnologies.in.
+
+SUPPORT & MAINTENANCE:
+- Digital Launch Pack: 1 month free support
+- Business Pro Pack: 3 months free support
+- Enterprise Pack: 6 months free support
+- After free support: paid maintenance plans available
+- Full source code transferred to client upon project completion
+- Every inquiry responded to within 24 hours (primary: WhatsApp +91 93428 77474)
+
+FOUNDER & COMPANY:
+- Founder & CEO: Vikash Saravanan
+- Registered: Logic Intelligence Technologies Private Limited (CIN: U72900TZ2026PTC123456)
+- Based in: Coimbatore, Tamil Nadu, India
+- Tagline: "Where Logic Meets Innovation"
+- Bio: First-year B.Tech student in AI & Data Science who founded the company to bring modern, AI-integrated web and software development to businesses in Coimbatore and beyond, with transparent pricing and a free demo before you pay.
+- Responses guaranteed within 24 hours
+- Primary contact: WhatsApp +91 93428 77474
+
+COMPANY CONTACT DETAILS:
 - Email: ${COMPANY.email}
-- Phone/WhatsApp: ${COMPANY.phone}
+- WhatsApp / Phone: ${COMPANY.phone}
 - Website: ${COMPANY.websiteUrl}
+- Contact Form: ${COMPANY.websiteUrl}/contact
 
-COMPANY PACKAGES
-${packagesSummary}
-
-COMPANY SERVICES
-${servicesSummary}
-
-PAST WORK / PORTFOLIO
-${portfolioSummary}
-
-RULES:
-1. When asked to write code, provide fully complete, highly professional, and perfectly formatted code.
-2. If asked about the company, answer enthusiastically and professionally based strictly on the provided company information.
-3. If asked about general knowledge, answer intelligently as a top-tier AI assistant.
-4. Maintain a highly professional, enterprise-grade tone.`;
+GUIDELINES:
+1. Always be helpful, confident, and professional.
+2. State accurate details based strictly on our company offerings.
+3. Keep replies clear, well-structured, and concise (bullet points or 2-3 short paragraphs).
+4. If asked about custom quotes, large enterprise projects, or technical consultations, encourage them to connect with our engineers directly on WhatsApp (${COMPANY.phone}) or email (${COMPANY.email}).
+5. Maintain a helpful, confident, professional tone like a knowledgeable account manager.
+6. For technical questions (coding, AI, DevOps): answer from general knowledge but direct company-specific questions to the team
+7. Payment/SOW questions: reference the Statement of Work terms
+8. NDA/confidentiality: mutual NDA protects info for 2-3 years
+`;
 }
 
 export async function POST(request: Request) {
-  if (!GROQ_API_KEY) {
-    return NextResponse.json({ error: "Chat is not configured." }, { status: 503 });
-  }
-
   try {
-    const body = await request.json();
-    const userMessage = body.text || body.message;
-    const maxTokens = body.max_tokens || 2048;
-    
-    
-    const candidateModels = [
-      GROQ_MODEL,
-      "openai/gpt-oss-120b",
-      "openai/gpt-oss-20b",
-      "groq/compound-mini",
-    ].filter((v, i, a) => Boolean(v) && a.indexOf(v) === i);
+    const { text, file } = await request.json();
 
-    const file = body.file;
     let injectedContext = "";
-    let isVision = false;
-    let multimodalMessages: any[] = [];
-
-    let activeModelSupportsVision = GROQ_MODEL.toLowerCase().includes('vision') || GROQ_MODEL.toLowerCase().includes('gpt-4o') || GROQ_MODEL.toLowerCase().includes('claude-3');
-    if (GROQ_MODEL === 'grok-beta') activeModelSupportsVision = false;
-
-    if (file) {
-      if (file.type === 'application/pdf') {
-        try {
-          const buffer = Buffer.from(file.data, 'base64');
-          const pdfData = await pdfParse(buffer);
-          injectedContext = `\n\n--- START OF ATTACHED PDF: ${file.name} ---\n${pdfData.text}\n--- END OF ATTACHED PDF ---`;
-        } catch (e) {
-          console.error("PDF parse error:", e);
-          injectedContext = `\n\n[Error: Failed to extract text from PDF: ${file.name}]`;
-        }
-      } else if (file.type.startsWith('image/')) {
-         if (activeModelSupportsVision) {
-           isVision = true;
-           multimodalMessages = [
-             {
-               role: "user",
-               content: [
-                 { type: "text", text: userMessage },
-                 { type: "image_url", image_url: { url: `data:${file.type};base64,${file.data}` } }
-               ]
-             }
-           ];
-         } else {
-           injectedContext = `\n\n[SYSTEM NOTE: The user has uploaded an image named '${file.name}'. Unfortunately, you are currently using the ${GROQ_MODEL} model, which does not support analyzing images. Please inform the user that you can see the filename but cannot analyze the image content.]`;
-         }
-      } else {
-         let textContent = file.data;
-         injectedContext = `\n\n--- START OF ATTACHED FILE: ${file.name} ---\n${textContent}\n--- END OF ATTACHED FILE ---`;
-      }
+    if (file && file.type === 'application/pdf') {
+      injectedContext = `\n\n[PDF parsing not available - please provide text content or describe the PDF content in your query]`;
     }
 
-    const messagesPayload = isVision ? 
-      [ { role: "system", content: buildSystemPrompt() }, ...multimodalMessages ] :
-      [
-        { role: "system", content: buildSystemPrompt() },
-        { role: "user", content: userMessage + injectedContext }
-      ];
+    const rag_context = injectedContext;
 
-    let response: Response | null = null;
-    for (const model of candidateModels) {
-      const res = await fetch(GROQ_API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${GROQ_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model,
-          messages: messagesPayload,
-          max_tokens: maxTokens,
-          stream: true,
-        }),
-      });
+    const systemContent = `
+${buildSystemPrompt()}
 
+Verified Company Facts (use these exactly; do not alter numbers or terms):
+${rag_context}`;
 
-      if (res.ok && res.body) {
-        response = res;
-        break;
-      }
-      console.warn(`[AI API] Model ${model} returned status ${res.status}`);
-    }
+    const messages = [
+      {"role": "system", "content": systemContent},
+      {"role": "user", "content": text}
+    ];
 
-    if (!response || !response.ok) {
-      throw new Error(`Chat models failed to respond`);
-    }
-    if (!response.body) {
-      throw new Error('No response body from backend');
-    }
-
-    let buffer = '';
-    const transformStream = new TransformStream({
-      transform(chunk, controller) {
-        buffer += new TextDecoder().decode(chunk, { stream: true });
-        const lines = buffer.split('\n');
-        
-        // Keep the last incomplete line in the buffer
-        buffer = lines.pop() || '';
-
-        for (const line of lines) {
-          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
-            try {
-              const data = JSON.parse(line.slice(6));
-              const content = data.choices?.[0]?.delta?.content;
-              if (content) {
-                const newPayload = `data: ${JSON.stringify({ token: content })}\n\n`;
-                controller.enqueue(new TextEncoder().encode(newPayload));
-              }
-            } catch (e) {
-              // Ignore incomplete JSON
-            }
-          } else if (line === 'data: [DONE]') {
-            controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'));
-          }
-        }
+    const response = await fetch(GROQ_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GROQ_API_KEY}`,
       },
-      flush(controller) {
-        if (buffer.startsWith('data: ') && buffer !== 'data: [DONE]') {
-          try {
-             const data = JSON.parse(buffer.slice(6));
-             const content = data.choices?.[0]?.delta?.content;
-             if (content) {
-                const newPayload = `data: ${JSON.stringify({ token: content })}\n\n`;
-                controller.enqueue(new TextEncoder().encode(newPayload));
-             }
-          } catch(e) {}
-        }
-      }
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: messages,
+        temperature: 0.3,
+        top_p: 0.9,
+        do_sample: true,
+        pad_token_id: 100266,
+      }),
+      signal: AbortSignal.timeout(30000),
     });
 
-    const stream = response.body.pipeThrough(transformStream);
+    if (!response.ok) {
+      const errText = await response.text();
+      return NextResponse.json(
+        { error: "AI model error", details: errText },
+        { status: response.status }
+      );
+    }
 
-    return new Response(stream, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-      },
+    const data = await response.json();
+    const assistantMessage = data.choices?.[0]?.message;
+
+    if (assistantMessage?.tool_calls?.length) {
+      return NextResponse.json({
+        success: true,
+        tool_calls: assistantMessage.tool_calls,
+      });
+    }
+
+    const rawContent = assistantMessage?.content || assistantMessage?.reasoning_content || "";
+    const cleaned = cleanedContent(rawContent);
+
+    if (cleaned) {
+      return NextResponse.json({
+        success: true,
+        generated_text: cleaned,
+      });
+    }
+
+    return NextResponse.json({
+      success: true,
+      generated_text: "I'm unable to generate a response at this time. Please try again.",
     });
   } catch (error: any) {
     console.error('Error connecting to AI:', error);
@@ -201,3 +214,11 @@ export async function POST(request: Request) {
     );
   }
 }
+
+function cleanedContent(rawText: string): string {
+  return rawText.replace('<\\/think>', '').split('</think>')[0].trim();
+}
+
+export const config = {
+  runtime: "nodejs",
+};
