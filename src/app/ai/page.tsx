@@ -71,6 +71,52 @@ function BrandLogo({ size = 28 }: { size?: number | string }) {
   );
 }
 
+
+const ThinkingStatus = ({ activeMessage }: { activeMessage?: string }) => {
+  const [tick, setTick] = useState(0);
+  
+  useEffect(() => {
+    const interval = setInterval(() => setTick(t => t + 1), 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const text = activeMessage || "";
+  let phase = 0;
+  if (text.includes('```')) {
+    phase = 3;
+  } else if (text.length > 50) {
+    phase = 2;
+  } else {
+    phase = tick % 2;
+  }
+
+  const phases = ["Thinking...", "Planning the response...", "Formulating answer...", "Writing code..."];
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <motion.div 
+        animate={{ rotate: 360 }} 
+        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }} 
+        style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid rgba(0, 191, 255, 0.2)', borderTopColor: '#00bfff' }} 
+      />
+      <div style={{ position: 'relative', height: '20px', display: 'flex', alignItems: 'center', minWidth: '160px' }}>
+        <AnimatePresence mode="popLayout">
+          <motion.span
+            key={phase}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.25 }}
+            style={{ fontSize: '13px', color: '#00bfff', fontWeight: '500', position: 'absolute', left: 0, whiteSpace: 'nowrap' }}
+          >
+            {phases[phase]}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};
+
 export default function GeminiAiChatPage() {
   const [chats, setChats] = useState<any[]>([]);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
@@ -657,11 +703,7 @@ export default function GeminiAiChatPage() {
             className={`sidebar ${sidebarOpen ? 'open' : ''}`}
           >
             <div className="sidebar-brand">
-          <div className="logo-float"><BrandLogo size={32} /></div>
-          <div className="brand-text-wrap">
-            <span className="brand-text-main">LOGIC INTELLIGENCE</span>
-            <span className="brand-text-sub">TECHNOLOGIES</span>
-          </div>
+          <img src="/assets/image.png" alt="Logic Intelligence Technologies" style={{ height: '24px', width: 'auto', objectFit: 'contain' }} />
         </div>
 
         <button className="new-chat-btn" onClick={createNewChat}>
@@ -692,16 +734,8 @@ export default function GeminiAiChatPage() {
         <div className="top-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <button className="hamburger" onClick={() => setSidebarOpen((s) => !s)}>☰</button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }} />
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <span style={{ fontWeight: '700', fontSize: '16px', color: '#E3E3E3', letterSpacing: '1px', textTransform: 'uppercase', lineHeight: '1.2' }}>
-                  LOGIC INTELLIGENCE
-                </span>
-                <span style={{ fontWeight: '500', fontSize: '10px', color: '#8E918F', letterSpacing: '3px', textTransform: 'uppercase', lineHeight: '1' }}>
-                  TECHNOLOGIES
-                </span>
-              </div>
+            <div className="top-bar-title" style={{ display: isMobile ? 'flex' : 'none', alignItems: 'center' }}>
+              <img src="/assets/image.png" alt="Logic Intelligence Technologies" style={{ height: '20px', width: 'auto', objectFit: 'contain' }} />
             </div>
           </div>
           
@@ -723,7 +757,13 @@ export default function GeminiAiChatPage() {
             )}
             {user ? (
               <a href="/dashboard">
-                <img src={user.user_metadata?.avatar_url || ''} alt="Profile" style={{ width: '36px', height: '36px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.1)', cursor: 'pointer' }} title="Go to Dashboard" />
+                {(user.user_metadata?.avatar_url || user.user_metadata?.picture) ? (
+                  <img src={user.user_metadata.avatar_url || user.user_metadata.picture} alt="Profile" style={{ width: '36px', height: '36px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.1)', cursor: 'pointer' }} title="Go to Dashboard" />
+                ) : (
+                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.1)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#282A2C', color: '#E3E3E3', fontWeight: 'bold' }}>
+                    {user.user_metadata?.full_name?.charAt(0)?.toUpperCase() || 'U'}
+                  </div>
+                )}
               </a>
             ) : null}
             <a href="/" className="px-5 py-2 rounded-full text-[12px] font-medium text-black bg-[#E3E3E3] hover:bg-white transition-all whitespace-nowrap text-decoration-none">
@@ -787,10 +827,10 @@ export default function GeminiAiChatPage() {
                 <div className={`avatar ${msg.role === 'assistant' ? 'avatar-assistant' : 'avatar-user'}`}>
                   {msg.role === 'assistant' ? (
                     <img src={COMPANY.logoIconPath} alt="AI" />
-                  ) : user?.user_metadata?.avatar_url ? (
-                    <img src={user.user_metadata.avatar_url} alt="User" />
+                  ) : user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
+                    <img src={user.user_metadata.avatar_url || user.user_metadata.picture} alt="User" />
                   ) : (
-                    'U'
+                    user?.user_metadata?.full_name?.charAt(0)?.toUpperCase() || 'U'
                   )}
                 </div>
                 <div className="message-content">
@@ -888,10 +928,7 @@ export default function GeminiAiChatPage() {
                 <div className="avatar avatar-assistant ai-pulse">
                   <img src={COMPANY.logoIconPath} alt="AI" />
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div className="typing-dots"><span></span><span></span><span></span></div>
-                  <span style={{ fontSize: '13px', color: '#00bfff', fontWeight: '500', animation: 'pulse 2s infinite' }}>LOGIC AI is thinking...</span>
-                </div>
+                <ThinkingStatus activeMessage={activeChat?.messages[activeChat.messages.length - 1]?.text} />
               </div>
             )}
             <div ref={chatEndRef} />
