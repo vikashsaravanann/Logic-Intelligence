@@ -76,6 +76,9 @@ export default function GeminiAiChatPage() {
   const [user, setUser] = useState<any>(null);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [language, setLanguage] = useState('English');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClientComponentClient();
 
   useEffect(() => {
@@ -140,6 +143,16 @@ export default function GeminiAiChatPage() {
       textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 160) + 'px';
     }
   }, [input]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  const handleExportChat = () => {
+    window.print();
+  };
 
   const MarkdownComponents = {
     table: ({ node, ...props }: any) => (
@@ -234,25 +247,34 @@ export default function GeminiAiChatPage() {
 
   const sendMessage = async (textOverride?: string) => {
     const messageText = (textOverride ?? input).trim();
-    if (!messageText || loading) return;
+    if ((!messageText && !selectedFile) || loading) return;
 
     let chatId = activeChatId;
+
+    let payloadText = messageText;
+    if (selectedFile) {
+      payloadText = `[Attached File: ${selectedFile.name}]\n${messageText}`;
+    }
+    if (language !== 'English') {
+      payloadText = `${payloadText}\n(Please respond to me in ${language} language)`;
+    }
 
     if (!chatId) {
       const newId = crypto.randomUUID();
       chatId = newId;
       if (user) {
-        await supabase.from('ai_chats').insert({ id: newId, user_id: user.id, title: messageText.slice(0, 40) });
+        await supabase.from('ai_chats').insert({ id: newId, user_id: user.id, title: payloadText.slice(0, 40) });
       }
-      const newChat = { id: newId, title: messageText.slice(0, 40), messages: [], createdAt: Date.now() };
+      const newChat = { id: newId, title: payloadText.slice(0, 40), messages: [], createdAt: Date.now() };
       setChats((prev) => [newChat, ...prev]);
       setActiveChatId(newId);
     }
 
     setInput('');
+    setSelectedFile(null);
     setLoading(true);
     if (user) {
-      await supabase.from('ai_messages').insert({ chat_id: chatId, role: 'user', content: messageText });
+      await supabase.from('ai_messages').insert({ chat_id: chatId, role: 'user', content: payloadText });
     }
 
     setChats((prev) =>
@@ -261,8 +283,8 @@ export default function GeminiAiChatPage() {
         const isFirstMessage = c.messages.length === 0;
         return {
           ...c,
-          title: isFirstMessage ? messageText.slice(0, 40) : c.title,
-          messages: [...c.messages, { role: 'user', text: messageText }],
+          title: isFirstMessage ? payloadText.slice(0, 40) : c.title,
+          messages: [...c.messages, { role: 'user', text: payloadText }],
         };
       })
     );
@@ -271,7 +293,7 @@ export default function GeminiAiChatPage() {
       const res = await fetch('/api/ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: messageText, max_tokens: 400 }),
+        body: JSON.stringify({ text: payloadText, max_tokens: 400 }),
       });
       
       const reader = res.body?.getReader();
@@ -610,10 +632,27 @@ export default function GeminiAiChatPage() {
             </div>
           </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            {user?.user_metadata?.avatar_url && (
-              <img src={user.user_metadata.avatar_url} alt="Profile" style={{ width: '36px', height: '36px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.1)' }} title={user?.user_metadata?.full_name || 'User'} />
+          <div className="top-bar-actions" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <select 
+              value={language} 
+              onChange={(e) => setLanguage(e.target.value)}
+              style={{ background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', padding: '6px 12px', fontSize: '13px', outline: 'none' }}
+            >
+              <option value="English">🇬🇧 English</option>
+              <option value="Tamil">🇮🇳 Tamil</option>
+              <option value="Hindi">🇮🇳 Hindi</option>
+              <option value="Spanish">🇪🇸 Spanish</option>
+            </select>
+            {activeChat?.messages.length > 0 && (
+               <button onClick={handleExportChat} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '6px 12px', borderRadius: '6px', fontSize: '13px', cursor: 'pointer' }}>
+                 Export PDF
+               </button>
             )}
+            {user ? (
+              <a href="/dashboard">
+                <img src={user.user_metadata?.avatar_url || ''} alt="Profile" style={{ width: '36px', height: '36px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.1)', cursor: 'pointer' }} title="Go to Dashboard" />
+              </a>
+            ) : null}
             <a href="/" className="px-5 py-2 rounded-full text-[12px] font-medium text-black bg-[#E3E3E3] hover:bg-white transition-all whitespace-nowrap text-decoration-none">
               Exit
             </a>
@@ -692,18 +731,27 @@ export default function GeminiAiChatPage() {
 
         <div className="input-bar-wrap">
           <form onSubmit={handleSubmit} className="input-bar">
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              style={{ display: 'none' }} 
+              onChange={handleFileChange} 
+            />
+            <button type="button" onClick={() => fileInputRef.current?.click()} title="Attach File" style={{ background: 'transparent', border: 'none', color: selectedFile ? '#00bfff' : '#A0A3A6', cursor: 'pointer', padding: '0 8px 6px 0', fontSize: '20px', transition: 'color 0.2s' }}>
+              📎
+            </button>
             <button type="button" onClick={toggleListen} title="Voice Input" style={{ background: 'transparent', border: 'none', color: isListening ? '#f44336' : '#A0A3A6', cursor: 'pointer', padding: '0 8px 6px 0', fontSize: '20px', transition: 'color 0.2s' }}>
               🎤
             </button>
             <textarea
               ref={textareaRef}
               rows={1}
-              placeholder="Ask about pricing, services, or technical development..."
+              placeholder={selectedFile ? `Attached: ${selectedFile.name}` : "Ask about pricing, services, or technical development..."}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
             />
-            <button type="submit" className="send-btn" disabled={loading || !input.trim()}>↑</button>
+            <button type="submit" className="send-btn" disabled={loading || (!input.trim() && !selectedFile)}>↑</button>
           </form>
           <div className="disclaimer">Logic Intelligence AI may display inaccurate info. Verify important details.</div>
         </div>
