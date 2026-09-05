@@ -98,11 +98,8 @@ export default function SupportChatWidget() {
                 className="w-full h-full object-contain scale-110"
               />
             </div>
-            <div className="flex flex-col text-left justify-center pr-1 select-none">
-              <span className="text-xs font-bold text-white tracking-wide leading-tight group-hover:text-primary transition-colors whitespace-nowrap">
-                Logic Intelligence
-              </span>
-              <span className="text-[10px] text-zinc-400 font-semibold flex items-center gap-1.5 leading-tight mt-0.5 uppercase tracking-wider">
+            <div className="flex items-center justify-center pr-1 select-none">
+              <span className="text-[10px] text-zinc-400 font-semibold flex items-center gap-1.5 uppercase tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                 AI Chatbot
               </span>

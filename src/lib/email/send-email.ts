@@ -15,6 +15,7 @@ interface SendEmailOptions {
   react: React.ReactElement;
   replyTo?: string;
   from?: keyof typeof COMPANY.emails | string;
+  attachments?: any[];
 }
 
 /**
@@ -51,6 +52,7 @@ export async function sendEmail({
       html,
       text,
       replyTo,
+      attachments,
     });
 
     return { success: true, message: `Email sent: ${result.messageId}` };

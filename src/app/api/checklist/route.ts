@@ -3,9 +3,12 @@ import { supabaseAdmin } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email/send-email";
 import ChecklistSubmissionEmail from "@/emails/checklist-submission-email";
 import LeadConfirmationEmail from "@/emails/lead-confirmation-email";
+import ChecklistDownloadEmail from "@/emails/checklist-download-email";
 import { env } from "@/config/env";
 import { z } from "zod";
 import * as React from "react";
+import path from "path";
+import fs from "fs";
 
 
 const schema = z.object({
@@ -53,13 +56,27 @@ export async function POST(req: Request) {
     // 2. Send confirmation email to user (if they provided email)
     if (email) {
       try {
+        let attachments: any[] = [];
+        if (isLeadMagnet) {
+           const pdfPath = path.join(process.cwd(), 'public', 'checklist.pdf');
+           if (fs.existsSync(pdfPath)) {
+               attachments.push({
+                   filename: 'Website-Launch-Checklist.pdf',
+                   path: pdfPath
+               });
+           }
+        }
+
         await sendEmail({
           to: email,
           subject: isLeadMagnet ? "Your Website Launch Checklist" : "We received your request! (Logic Intelligence Technologies)",
-          react: React.createElement(LeadConfirmationEmail, {
-            fullName: "there",
-            service: isLeadMagnet ? "Website Launch Checklist" : "Client Discovery Form",
-          }),
+          react: isLeadMagnet 
+            ? React.createElement(ChecklistDownloadEmail, { fullName: "there" })
+            : React.createElement(LeadConfirmationEmail, {
+                fullName: "there",
+                service: "Client Discovery Form",
+              }),
+          attachments: attachments.length > 0 ? attachments : undefined
         });
       } catch (emailErr) {
         console.error("[Email Error] Checklist user confirmation failed:", emailErr);
