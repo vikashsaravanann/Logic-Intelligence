@@ -53,6 +53,8 @@ function buildSystemPrompt(leadContext?: string): string {
     .map((p) => `- ${p.title} (${p.category}): ${p.description}`)
     .join("\n");
 
+  const founderInfo = `Founder: ${COMPANY.founder.name} (${COMPANY.founder.title}) - ${COMPANY.founder.bio}`;
+
   let prompt = `You are the friendly, professional AI support assistant for ${COMPANY.displayName} (${COMPANY.tagline}), a premier web & software development studio based in ${COMPANY.address}.
 
 Your job: answer visitor questions about our services, packages, pricing, technology stack, and past work accurately, warmly, and concisely.
@@ -62,6 +64,9 @@ COMPANY CONTACT DETAILS
 - WhatsApp / Phone: ${COMPANY.phone}
 - Website: ${COMPANY.websiteUrl}
 - Contact Form: ${COMPANY.websiteUrl}/contact
+
+FOUNDER INFORMATION
+${founderInfo}
 
 PACKAGES & PRICING
 ${packagesSummary}
@@ -152,6 +157,15 @@ function cleanModelResponse(rawText: string): string {
 
 function generateLocalFallbackReply(userText: string): string {
   const lower = userText.toLowerCase();
+
+  if (lower.includes("founder") || lower.includes("started") || lower.includes("owner") || lower.includes("created") || lower.includes("ceo") || lower.includes("director")) {
+    return `Our founder is ${COMPANY.founder.name}, who is the ${COMPANY.founder.title}.
+
+${COMPANY.founder.bio}
+
+You can reach our team directly on WhatsApp at **${COMPANY.phone}` +
+      ` or email at **${COMPANY.email}**.`;
+  }
 
   if (lower.includes("price") || lower.includes("cost") || lower.includes("package") || lower.includes("plan") || lower.includes("pricing") || lower.includes("quote")) {
     return `Here are our popular development packages at ${COMPANY.displayName}:\n\n` +
