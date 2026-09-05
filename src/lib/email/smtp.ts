@@ -32,7 +32,7 @@ function getSmtpConfig(sender: SenderKey): SmtpConfig {
   
   // Predict user and from based on COMPANY.emails if not explicitly set
   const user = process.env[`SMTP_${prefix}_USER`] || process.env.SMTP_USER || COMPANY.emails[sender];
-  const from = process.env[`SMTP_${prefix}_FROM`] || process.env.SMTP_FROM || COMPANY.emails[sender];
+  const from = process.env[`SMTP_${prefix}_FROM`] || process.env.SMTP_FROM || `"${COMPANY.displayName}" <${COMPANY.emails[sender]}>`;
   
   // Password MUST be set in environment variables
   const pass = process.env[`SMTP_${prefix}_PASS`] || process.env.SMTP_PASS;
@@ -68,7 +68,10 @@ export function getSmtpTransporter(sender: SenderKey = "noReply"): nodemailer.Tr
 
 export function getSmtpFromAddress(sender: SenderKey = "noReply"): string {
   const prefix = senderEnvMap[sender];
-  return process.env[`SMTP_${prefix}_FROM`] || COMPANY.emails[sender];
+  const envFrom = process.env[`SMTP_${prefix}_FROM`] || process.env.SMTP_FROM;
+  if (envFrom) return envFrom;
+  
+  return `"${COMPANY.displayName}" <${COMPANY.emails[sender]}>`;
 }
 
 export function isSmtpConfigured(sender: SenderKey = "noReply"): boolean {
