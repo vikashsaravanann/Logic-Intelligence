@@ -7,7 +7,7 @@ import { portfolioProjects } from "@/data/portfolioData";
 const GROQ_API_KEY = process.env.GROK_API_KEY || process.env.XAI_API_KEY || process.env.GROQ_API_KEY;
 const GROQ_API_URL = process.env.GROQ_API_URL || process.env.XAI_API_URL || "https://api.groq.com/openai/v1/chat/completions";
 
-let GROQ_MODEL = "llama-3.3-70b-versatile";
+let GROQ_MODEL = process.env.GROQ_MODEL || process.env.GROK_MODEL || "openai/gpt-oss-120b";
 if (GROQ_API_URL.includes("x.ai")) {
     GROQ_MODEL = "grok-beta";
 } else if (GROQ_API_URL.includes("openrouter.ai")) {
@@ -58,25 +58,41 @@ export async function POST(request: Request) {
     const userMessage = body.text || body.message;
     const maxTokens = body.max_tokens || 2048;
     
-    const response = await fetch(GROQ_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${GROQ_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: [
-          { role: "system", content: buildSystemPrompt() },
-          { role: "user", content: userMessage }
-        ],
-        max_tokens: maxTokens,
-        stream: true,
-      }),
-    });
+    const candidateModels = [
+      GROQ_MODEL,
+      "openai/gpt-oss-120b",
+      "openai/gpt-oss-20b",
+      "groq/compound-mini",
+    ].filter((v, i, a) => Boolean(v) && a.indexOf(v) === i);
 
-    if (!response.ok) {
-      throw new Error(`Backend responded with status: ${response.status}`);
+    let response: Response | null = null;
+    for (const model of candidateModels) {
+      const res = await fetch(GROQ_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${GROQ_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: "system", content: buildSystemPrompt() },
+            { role: "user", content: userMessage }
+          ],
+          max_tokens: maxTokens,
+          stream: true,
+        }),
+      });
+
+      if (res.ok && res.body) {
+        response = res;
+        break;
+      }
+      console.warn(`[AI API] Model ${model} returned status ${res.status}`);
+    }
+
+    if (!response || !response.ok) {
+      throw new Error(`Chat models failed to respond`);
     }
     if (!response.body) {
       throw new Error('No response body from backend');

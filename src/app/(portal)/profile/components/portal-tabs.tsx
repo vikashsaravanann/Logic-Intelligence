@@ -63,7 +63,7 @@ export function PortalTabs({ portalData, profileDetails }: PortalTabsProps) {
       {/* Horizontal Navigation */}
       <div className="w-full">
         <div className="bg-[rgba(10,15,30,0.6)] border border-white/[0.08] rounded-2xl p-2 backdrop-blur-2xl shadow-xl">
-          <nav className="flex flex-row gap-2 overflow-x-auto justify-start sm:justify-center custom-scrollbar pb-2 sm:pb-0">
+          <nav className="flex flex-wrap gap-2 justify-center">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -78,7 +78,7 @@ export function PortalTabs({ portalData, profileDetails }: PortalTabsProps) {
                   }`}
                 >
                   <Icon className="w-4 h-4 shrink-0" />
-                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className="inline">{tab.label}</span>
                 </button>
               );
             })}

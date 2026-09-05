@@ -11,27 +11,36 @@ import { z } from "zod";
 const GROQ_API_KEY = process.env.GROK_API_KEY || process.env.XAI_API_KEY || process.env.GROQ_API_KEY;
 const GROQ_API_URL = process.env.GROQ_API_URL || process.env.XAI_API_URL || "https://api.groq.com/openai/v1/chat/completions";
 
-let GROQ_MODEL = "llama-3.3-70b-versatile"; // Default Groq model
-if (GROQ_API_URL.includes("x.ai")) {
-    GROQ_MODEL = "grok-beta";
-} else if (GROQ_API_URL.includes("openrouter.ai")) {
-    GROQ_MODEL = "qwen/qwen-2.5-72b-instruct";
+function getCandidateModels(): string[] {
+  const envModel = process.env.GROQ_MODEL || process.env.GROK_MODEL;
+  if (GROQ_API_URL.includes("x.ai")) {
+    return [envModel, "grok-beta"].filter(Boolean) as string[];
+  }
+  if (GROQ_API_URL.includes("openrouter.ai")) {
+    return [envModel, "qwen/qwen-2.5-72b-instruct"].filter(Boolean) as string[];
+  }
+  return [
+    envModel,
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "groq/compound-mini",
+  ].filter(Boolean) as string[];
 }
 
 // --- Request validation -----------------------------------------------------
 
 const messageSchema = z.object({
   role: z.enum(["user", "assistant"]),
-  content: z.string().min(1).max(4000),
+  content: z.string().min(1).max(10000),
 });
 
 const requestSchema = z.object({
-  messages: z.array(messageSchema).min(1).max(30),
+  messages: z.array(messageSchema).min(1).max(50),
 });
 
 // --- Static knowledge injected into the system prompt -----------------------
 
-function buildSystemPrompt(): string {
+function buildSystemPrompt(leadContext?: string): string {
   const packagesSummary = packagesData
     .map((p) => `- ${p.title} (${p.price}): ${p.subtitle}. Best for: ${p.bestFor}`)
     .join("\n");
@@ -44,30 +53,36 @@ function buildSystemPrompt(): string {
     .map((p) => `- ${p.title} (${p.category}): ${p.description}`)
     .join("\n");
 
-  return `You are the support assistant for ${COMPANY.displayName} (${COMPANY.tagline}), a web/software development studio based in ${COMPANY.address}.
+  let prompt = `You are the friendly, professional AI support assistant for ${COMPANY.displayName} (${COMPANY.tagline}), a premier web & software development studio based in ${COMPANY.address}.
 
-Your job: answer visitor questions about services, packages, pricing, and past work accurately and briefly. Be warm but concise — this is a chat widget, not an essay.
+Your job: answer visitor questions about our services, packages, pricing, technology stack, and past work accurately, warmly, and concisely.
 
-COMPANY CONTACT
+COMPANY CONTACT DETAILS
 - Email: ${COMPANY.email}
-- Phone/WhatsApp: ${COMPANY.phone}
+- WhatsApp / Phone: ${COMPANY.phone}
 - Website: ${COMPANY.websiteUrl}
+- Contact Form: ${COMPANY.websiteUrl}/contact
 
-PACKAGES
+PACKAGES & PRICING
 ${packagesSummary}
 
-SERVICES
+SERVICES & CAPABILITIES
 ${servicesSummary}
 
-PAST WORK / PORTFOLIO
+FEATURED PORTFOLIO & WORK
 ${portfolioSummary}
 
-RULES
-1. Only state facts that appear above or that you retrieve via the lookup_lead_status tool. Never invent pricing, timelines, or features not listed.
-2. If a visitor asks about the status of a form/lead/demo request they already submitted, ask for the email they used, then call lookup_lead_status with exactly that email. Only report back what that tool returns for that email — never guess.
-3. If you don't know something (custom quotes, availability, technical specifics not listed), say so plainly and suggest they contact the team directly via WhatsApp (${COMPANY.phone}) or ${COMPANY.email}, or fill out the contact form at ${COMPANY.websiteUrl}/contact.
-4. Never ask for or reveal any data belonging to an email other than the one the current visitor provided.
-5. Keep replies short — a few sentences or a short list. No long paragraphs.`;
+GUIDELINES:
+1. Always be helpful, confident, and professional.
+2. State accurate details based strictly on our company offerings.
+3. Keep replies clear, well-structured, and concise (bullet points or 2-3 short paragraphs).
+4. If asked about custom quotes, large enterprise projects, or technical consultations, encourage them to connect with our engineers directly on WhatsApp (${COMPANY.phone}) or email (${COMPANY.email}).`;
+
+  if (leadContext) {
+    prompt += `\n\nLEAD SUBMISSION LOOKUP RESULT:\n${leadContext}\n(Use this verified submission data to answer the visitor's status question directly and warmly.)`;
+  }
+
+  return prompt;
 }
 
 // --- Tool definition (Grok / OpenAI-compatible function calling) -----------
@@ -94,40 +109,84 @@ const tools = [
 ];
 
 async function lookupLeadStatus(email: string) {
-  const normalizedEmail = email.trim().toLowerCase();
+  try {
+    const normalizedEmail = email.trim().toLowerCase();
 
-  const [contact, demo, checklist] = await Promise.all([
-    supabaseAdmin.from("contact_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
-    supabaseAdmin.from("demo_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
-    supabaseAdmin.from("checklist_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
-  ]);
+    const [contact, demo, checklist] = await Promise.all([
+      supabaseAdmin.from("contact_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
+      supabaseAdmin.from("demo_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
+      supabaseAdmin.from("checklist_leads").select("created_at").ilike("email", normalizedEmail).order("created_at", { ascending: false }).limit(1),
+    ]);
 
-  const findings: Record<string, string | null> = {
-    contact_form_submission: contact.data?.[0]?.created_at ?? null,
-    free_demo_request: demo.data?.[0]?.created_at ?? null,
-    checklist_submission: checklist.data?.[0]?.created_at ?? null,
-  };
+    const findings: Record<string, string | null> = {
+      contact_form_submission: contact.data?.[0]?.created_at ?? null,
+      free_demo_request: demo.data?.[0]?.created_at ?? null,
+      checklist_submission: checklist.data?.[0]?.created_at ?? null,
+    };
 
-  const hasAny = Object.values(findings).some(Boolean);
+    const hasAny = Object.values(findings).some(Boolean);
 
-  return {
-    found: hasAny,
-    submissions: findings,
-    note: hasAny
-      ? "These are submission timestamps only. For status updates on the actual project/quote, direct the visitor to contact the team."
-      : "No submissions found for this email in any of our forms.",
-  };
+    return {
+      found: hasAny,
+      submissions: findings,
+      note: hasAny
+        ? "These are submission timestamps only. For status updates on the actual project/quote, direct the visitor to contact the team."
+        : "No submissions found for this email in any of our forms.",
+    };
+  } catch (err) {
+    console.error("[lookupLeadStatus Error]", err);
+    return {
+      found: false,
+      submissions: {},
+      note: "Unable to query lead submissions at this time.",
+    };
+  }
+}
+
+// Clean model output of reasoning or thinking tokens
+function cleanModelResponse(rawText: string): string {
+  return rawText.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+}
+
+// --- Local Fallback Generator ----------------------------------------------
+
+function generateLocalFallbackReply(userText: string): string {
+  const lower = userText.toLowerCase();
+
+  if (lower.includes("price") || lower.includes("cost") || lower.includes("package") || lower.includes("plan") || lower.includes("pricing") || lower.includes("quote")) {
+    return `Here are our popular development packages at ${COMPANY.displayName}:\n\n` +
+      packagesData.map((p) => `• **${p.title}** (${p.price}): ${p.subtitle}`).join("\n") +
+      `\n\nNeed custom requirements or enterprise features? Reach us directly on WhatsApp at **${COMPANY.phone}** or via **${COMPANY.email}**!`;
+  }
+
+  if (lower.includes("service") || lower.includes("offer") || lower.includes("do you") || lower.includes("build") || lower.includes("stack") || lower.includes("tech")) {
+    return `At ${COMPANY.displayName}, we deliver modern, high-performance digital products:\n\n` +
+      servicesData.slice(0, 4).map((s: any) => `• **${s.title}**: ${s.subtitle}`).join("\n") +
+      `\n\nHave an idea or upcoming project? Chat directly with our engineering team on WhatsApp at **${COMPANY.phone}**.`;
+  }
+
+  if (lower.includes("portfolio") || lower.includes("project") || lower.includes("work") || lower.includes("client")) {
+    return `Here is a preview of our recent work at ${COMPANY.displayName}:\n\n` +
+      portfolioProjects.slice(0, 3).map((p) => `• **${p.title}** (${p.category}): ${p.description}`).join("\n") +
+      `\n\nVisit our portfolio section or contact us to see live case studies!`;
+  }
+
+  if (lower.includes("contact") || lower.includes("call") || lower.includes("reach") || lower.includes("email") || lower.includes("phone") || lower.includes("whatsapp") || lower.includes("office") || lower.includes("location")) {
+    return `You can reach ${COMPANY.displayName} anytime:\n\n` +
+      `• **WhatsApp / Phone**: ${COMPANY.phone}\n` +
+      `• **Email**: ${COMPANY.email}\n` +
+      `• **Office**: ${COMPANY.address}\n` +
+      `• **Contact Form**: ${COMPANY.websiteUrl}/contact\n\n` +
+      `Our team will be delighted to assist you!`;
+  }
+
+  return `Hello! I'm the ${COMPANY.displayName} AI Assistant. We design and build modern web applications, custom software, and AI solutions.\n\nHow can I help you today? You can ask about our service packages, pricing, past projects, or reach our team directly on WhatsApp at ${COMPANY.phone}.`;
 }
 
 // --- Route -------------------------------------------------------------
 
 export async function POST(req: Request) {
-  if (!GROQ_API_KEY) {
-    return NextResponse.json(
-      { success: false, message: "Chat is not configured." },
-      { status: 503 }
-    );
-  }
+  let userQuery = "";
 
   try {
     const body = await req.json();
@@ -140,98 +199,148 @@ export async function POST(req: Request) {
       );
     }
 
-    const conversation = [
-      { role: "system", content: buildSystemPrompt() },
-      ...parsed.data.messages,
-    ];
+    const messages = parsed.data.messages;
+    const lastUserMessage = [...messages].reverse().find((m) => m.role === "user")?.content || "";
+    userQuery = lastUserMessage;
 
-    // First call — Groq may respond directly, or request a tool call
-    let response = await fetch(GROQ_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${GROQ_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: conversation,
-        tools,
-        tool_choice: "auto",
-        temperature: 0.4,
-      }),
-    });
-
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error("[Grok API Error]", response.status, errText);
-      return NextResponse.json(
-        { success: false, message: "Chat provider error" },
-        { status: 502 }
-      );
+    // Check if user provided an email to inquire about a submission
+    let leadContext = "";
+    const emailMatch = lastUserMessage.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+    if (emailMatch && /status|submit|form|lead|check|demo|quote|request/i.test(lastUserMessage)) {
+      const lookupResult = await lookupLeadStatus(emailMatch[0]);
+      leadContext = JSON.stringify(lookupResult, null, 2);
     }
 
-    let data = await response.json();
-    let assistantMessage = data.choices?.[0]?.message;
+    const conversation = [
+      { role: "system", content: buildSystemPrompt(leadContext) },
+      ...messages,
+    ];
 
-    // If Grok requested the lookup tool, run it and send the result back
-    if (assistantMessage?.tool_calls?.length) {
-      const toolCall = assistantMessage.tool_calls[0];
-
-      let toolResult;
-      try {
-        const args = JSON.parse(toolCall.function.arguments || "{}");
-        toolResult = await lookupLeadStatus(String(args.email || ""));
-      } catch (err) {
-        console.error("[Lead lookup failed]", err);
-        toolResult = { found: false, error: "Lookup failed" };
-      }
-
-      const followUpConversation = [
-        ...conversation,
-        assistantMessage,
-        {
-          role: "tool",
-          tool_call_id: toolCall.id,
-          name: toolCall.function.name,
-          content: JSON.stringify(toolResult),
-        },
-      ];
-
-      response = await fetch(GROQ_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${GROQ_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: GROQ_MODEL,
-          messages: followUpConversation,
-          temperature: 0.4,
-        }),
+    if (!GROQ_API_KEY) {
+      return NextResponse.json({
+        success: true,
+        reply: generateLocalFallbackReply(userQuery),
       });
+    }
 
-      if (!response.ok) {
-        const errText = await response.text();
-        console.error("[Grok API Error - followup]", response.status, errText);
-        return NextResponse.json(
-          { success: false, message: "Chat provider error" },
-          { status: 502 }
-        );
+    const candidateModels = getCandidateModels();
+    let finalReply = "";
+
+    // Try models in order of priority
+    for (const model of candidateModels) {
+      try {
+        let response = await fetch(GROQ_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${GROQ_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages: conversation,
+            tools,
+            tool_choice: "auto",
+            temperature: 0.4,
+          }),
+          signal: AbortSignal.timeout(8000),
+        });
+
+        // If tools are unsupported (HTTP 400), retry without tools
+        if (response.status === 400) {
+          const errText = await response.text();
+          if (/tool|function/i.test(errText)) {
+            response = await fetch(GROQ_API_URL, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${GROQ_API_KEY}`,
+              },
+              body: JSON.stringify({
+                model,
+                messages: conversation,
+                temperature: 0.4,
+              }),
+              signal: AbortSignal.timeout(8000),
+            });
+          }
+        }
+
+        if (!response.ok) {
+          console.warn(`[Chat API] Model ${model} returned status ${response.status}`);
+          continue;
+        }
+
+        let data = await response.json();
+        let assistantMessage = data.choices?.[0]?.message;
+
+        // If model requested a tool call
+        if (assistantMessage?.tool_calls?.length) {
+          const toolCall = assistantMessage.tool_calls[0];
+          let toolResult;
+          try {
+            const args = JSON.parse(toolCall.function.arguments || "{}");
+            toolResult = await lookupLeadStatus(String(args.email || ""));
+          } catch (err) {
+            console.error("[Lead lookup failed]", err);
+            toolResult = { found: false, error: "Lookup failed" };
+          }
+
+          const followUpConversation = [
+            ...conversation,
+            assistantMessage,
+            {
+              role: "tool",
+              tool_call_id: toolCall.id,
+              name: toolCall.function.name,
+              content: JSON.stringify(toolResult),
+            },
+          ];
+
+          const followupResponse = await fetch(GROQ_API_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${GROQ_API_KEY}`,
+            },
+            body: JSON.stringify({
+              model,
+              messages: followUpConversation,
+              temperature: 0.4,
+            }),
+            signal: AbortSignal.timeout(8000),
+          });
+
+          if (followupResponse.ok) {
+            data = await followupResponse.json();
+            assistantMessage = data.choices?.[0]?.message;
+          }
+        }
+
+        const rawContent = assistantMessage?.content || assistantMessage?.reasoning_content || "";
+        const cleaned = cleanModelResponse(rawContent);
+
+        if (cleaned) {
+          finalReply = cleaned;
+          break;
+        }
+      } catch (modelError) {
+        console.warn(`[Chat API] Error querying model ${model}:`, modelError);
       }
+    }
 
-      data = await response.json();
-      assistantMessage = data.choices?.[0]?.message;
+    if (!finalReply) {
+      finalReply = generateLocalFallbackReply(userQuery);
     }
 
     return NextResponse.json({
       success: true,
-      reply: assistantMessage?.content || "Sorry, I couldn't generate a response. Please try again.",
+      reply: finalReply,
     });
   } catch (error) {
     console.error("[Chat Route Error]", error);
-    return NextResponse.json(
-      { success: false, message: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: true,
+      reply: generateLocalFallbackReply(userQuery),
+    });
   }
 }
