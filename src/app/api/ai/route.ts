@@ -1,3 +1,4 @@
+const pdfParse = require("pdf-parse");
 import { NextResponse } from 'next/server';
 import { COMPANY } from "@/config/company";
 import { packagesData } from "@/data/packagesData";
@@ -58,12 +59,59 @@ export async function POST(request: Request) {
     const userMessage = body.text || body.message;
     const maxTokens = body.max_tokens || 2048;
     
+    
     const candidateModels = [
       GROQ_MODEL,
       "openai/gpt-oss-120b",
       "openai/gpt-oss-20b",
       "groq/compound-mini",
     ].filter((v, i, a) => Boolean(v) && a.indexOf(v) === i);
+
+    const file = body.file;
+    let injectedContext = "";
+    let isVision = false;
+    let multimodalMessages: any[] = [];
+
+    let activeModelSupportsVision = GROQ_MODEL.toLowerCase().includes('vision') || GROQ_MODEL.toLowerCase().includes('gpt-4o') || GROQ_MODEL.toLowerCase().includes('claude-3');
+    if (GROQ_MODEL === 'grok-beta') activeModelSupportsVision = false;
+
+    if (file) {
+      if (file.type === 'application/pdf') {
+        try {
+          const buffer = Buffer.from(file.data, 'base64');
+          const pdfData = await pdfParse(buffer);
+          injectedContext = `\n\n--- START OF ATTACHED PDF: ${file.name} ---\n${pdfData.text}\n--- END OF ATTACHED PDF ---`;
+        } catch (e) {
+          console.error("PDF parse error:", e);
+          injectedContext = `\n\n[Error: Failed to extract text from PDF: ${file.name}]`;
+        }
+      } else if (file.type.startsWith('image/')) {
+         if (activeModelSupportsVision) {
+           isVision = true;
+           multimodalMessages = [
+             {
+               role: "user",
+               content: [
+                 { type: "text", text: userMessage },
+                 { type: "image_url", image_url: { url: `data:${file.type};base64,${file.data}` } }
+               ]
+             }
+           ];
+         } else {
+           injectedContext = `\n\n[SYSTEM NOTE: The user has uploaded an image named '${file.name}'. Unfortunately, you are currently using the ${GROQ_MODEL} model, which does not support analyzing images. Please inform the user that you can see the filename but cannot analyze the image content.]`;
+         }
+      } else {
+         let textContent = file.data;
+         injectedContext = `\n\n--- START OF ATTACHED FILE: ${file.name} ---\n${textContent}\n--- END OF ATTACHED FILE ---`;
+      }
+    }
+
+    const messagesPayload = isVision ? 
+      [ { role: "system", content: buildSystemPrompt() }, ...multimodalMessages ] :
+      [
+        { role: "system", content: buildSystemPrompt() },
+        { role: "user", content: userMessage + injectedContext }
+      ];
 
     let response: Response | null = null;
     for (const model of candidateModels) {
@@ -75,14 +123,12 @@ export async function POST(request: Request) {
         },
         body: JSON.stringify({
           model,
-          messages: [
-            { role: "system", content: buildSystemPrompt() },
-            { role: "user", content: userMessage }
-          ],
+          messages: messagesPayload,
           max_tokens: maxTokens,
           stream: true,
         }),
       });
+
 
       if (res.ok && res.body) {
         response = res;

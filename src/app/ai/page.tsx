@@ -1,3 +1,5 @@
+import { Poppins } from 'next/font/google';
+const poppins = Poppins({ weight: ['400', '500', '600', '700'], subsets: ['latin'], display: 'swap' });
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -124,7 +126,7 @@ export default function GeminiAiChatPage() {
   const [user, setUser] = useState<any>(null);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedFile, setSelectedFile] = useState<{name: string, type: string, data: string, raw: File} | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClientComponentClient();
 
@@ -199,11 +201,60 @@ export default function GeminiAiChatPage() {
     }
   }, [input]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
+      const file = e.target.files[0];
+      
+      // 8MB limit
+      if (file.size > 8 * 1024 * 1024) {
+        alert("File size exceeds 8MB limit.");
+        e.target.value = '';
+        return;
+      }
+
+      // Check allowed types
+      const allowedTypes = [
+        'image/png', 'image/jpeg', 'image/webp', 'application/pdf', 
+        'text/plain', 'text/markdown', 'text/javascript', 'text/typescript', 'application/json', 'text/x-python', 'text/csv'
+      ];
+      
+      const isCodeExt = /\.(ts|tsx|js|jsx|py|json|md|csv|txt)$/i.test(file.name);
+      
+      if (!allowedTypes.includes(file.type) && !isCodeExt) {
+        alert("Unsupported file type. Please upload images, PDFs, or text/code files.");
+        e.target.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      
+      const isText = file.type.startsWith('text/') || file.type === 'application/json' || isCodeExt;
+      
+      if (isText) {
+        reader.readAsText(file);
+      } else {
+        reader.readAsDataURL(file); // base64 for images and pdfs
+      }
+
+      reader.onload = () => {
+        let data = reader.result as string;
+        if (!isText && data.includes('base64,')) {
+           data = data.split('base64,')[1];
+        }
+        
+        setSelectedFile({
+          name: file.name,
+          type: file.type || (isCodeExt ? 'text/plain' : 'application/octet-stream'),
+          data: data,
+          raw: file
+        });
+      };
+      
+      e.target.value = ''; // Reset input
     }
   };
+
 
   const handleExportChat = () => {
     window.print();
@@ -335,6 +386,30 @@ export default function GeminiAiChatPage() {
     recognition.start();
   };
 
+  
+  const handleRegenerate = async (messageIdx: number) => {
+    if (!activeChat) return;
+    const msg = activeChat.messages[messageIdx];
+    // Find the last user message before this assistant message
+    let lastUserMsg = "";
+    for (let i = messageIdx - 1; i >= 0; i--) {
+      if (activeChat.messages[i].role === 'user') {
+         lastUserMsg = activeChat.messages[i].content;
+         break;
+      }
+    }
+    if (lastUserMsg) {
+      // We will slice the messages array up to the user message
+      const cutIdx = activeChat.messages.findIndex((m: any) => m.content === lastUserMsg && m.role === 'user');
+      if (cutIdx !== -1) {
+         const newMessages = activeChat.messages.slice(0, cutIdx);
+         const updatedChat = { ...activeChat, messages: newMessages };
+         setChats(chats.map(c => c.id === activeChatId ? updatedChat : c));
+         sendMessage(lastUserMsg); // will re-append the user message and fetch
+      }
+    }
+  };
+
   const sendMessage = async (textOverride?: string) => {
     const messageText = (textOverride ?? input).trim();
     if ((!messageText && !selectedFile) || loading) return;
@@ -382,7 +457,7 @@ export default function GeminiAiChatPage() {
       const res = await fetch('/api/ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: payloadText, max_tokens: 400 }),
+        body: JSON.stringify({ text: payloadText, max_tokens: 400, file: selectedFile ? { name: selectedFile.name, type: selectedFile.type, data: selectedFile.data } : undefined }),
         signal: abortControllerRef.current.signal,
       });
       
@@ -699,8 +774,8 @@ export default function GeminiAiChatPage() {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className={`sidebar ${sidebarOpen ? 'open' : ''}`}
           >
-            <div className="sidebar-brand">
-          <img src="/assets/image.png" alt="Logic Intelligence Technologies" style={{ height: '24px', width: 'auto', objectFit: 'contain' }} />
+            <div className="sidebar-brand" style={{ padding: '24px 24px 16px 24px' }}>
+          <img src="/assets/image.png" alt="Logic Intelligence Technologies" style={{ height: '38px', width: '100%', objectFit: 'contain', objectPosition: 'left center' }} />
         </div>
 
         <button className="new-chat-btn" onClick={createNewChat}>
@@ -732,7 +807,7 @@ export default function GeminiAiChatPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <button className="hamburger" onClick={() => setSidebarOpen((s) => !s)}>☰</button>
             <div className="top-bar-title" style={{ display: isMobile ? 'flex' : 'none', alignItems: 'center' }}>
-              <img src="/assets/image.png" alt="Logic Intelligence Technologies" style={{ height: '20px', width: 'auto', objectFit: 'contain' }} />
+              <img src="/assets/image.png" alt="Logic Intelligence Technologies" style={{ height: '28px', width: 'auto', objectFit: 'contain' }} />
             </div>
           </div>
           
@@ -762,10 +837,10 @@ export default function GeminiAiChatPage() {
         {showWelcome ? (
           <div className="welcome-screen welcome-fade" style={{ justifyContent: 'flex-start', paddingTop: '8vh' }}>
             <div className="welcome-title-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: '760px', width: '100%', marginBottom: '48px' }}>
-              <div className="gemini-gradient-text" style={{ fontSize: 'clamp(36px, 6vw, 56px)', fontWeight: '500', marginBottom: '8px', letterSpacing: '-1px' }}>
+              <div className={`gemini-gradient-text ${poppins.className}`} style={{ fontSize: 'clamp(36px, 6vw, 56px)', fontWeight: '600', marginBottom: '8px', letterSpacing: '-1.5px' }}>
                 Hello, {user?.user_metadata?.full_name?.split(' ')[0] || 'there'}
               </div>
-              <div style={{ color: '#a1a1aa', fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: '500', letterSpacing: '-1px' }}>
+              <div className={poppins.className} style={{ color: '#a1a1aa', fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: '500', letterSpacing: '-1px' }}>
                 {chats.some(c => c.messages.length > 0) ? 'Welcome back to the' : 'Welcome to the'} Logic Intelligence Technologies AI Assistant
               </div>
               <div style={{ color: '#71717a', fontSize: '14px', marginTop: '8px' }}>
@@ -935,6 +1010,15 @@ export default function GeminiAiChatPage() {
             />
             <button type="button" onClick={() => fileInputRef.current?.click()} title="Attach File" style={{ background: 'transparent', border: 'none', color: selectedFile ? '#00bfff' : '#A0A3A6', cursor: 'pointer', padding: '0 8px 6px 0', fontSize: '20px', transition: 'color 0.2s' }}><Paperclip size={18} /></button>
             <button type="button" onClick={toggleListen} title="Voice Input" style={{ background: 'transparent', border: 'none', color: isListening ? '#f44336' : '#A0A3A6', cursor: 'pointer', padding: '0 8px 6px 0', fontSize: '20px', transition: 'color 0.2s' }}><Mic size={18} /></button>
+            {selectedFile && (
+              <div style={{ position: 'absolute', bottom: '100%', left: '0', marginBottom: '8px', background: '#2A2C2E', padding: '6px 12px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#E3E3E3', border: '1px solid #3E4042' }}>
+                <Paperclip size={14} />
+                <span style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{selectedFile.name}</span>
+                <button type="button" onClick={() => setSelectedFile(null)} style={{ background: 'transparent', border: 'none', color: '#A0A3A6', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '2px' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+              </div>
+            )}
             <textarea
               ref={textareaRef}
               rows={1}
@@ -951,6 +1035,9 @@ export default function GeminiAiChatPage() {
               <button type="submit" className="send-btn" disabled={!input.trim() && !selectedFile}>↑</button>
             )}
           </form>
+            <div style={{ textAlign: 'center', fontSize: '11px', color: '#52525B', marginTop: '6px', marginBottom: '8px' }}>
+              Enter to send • Shift+Enter for a new line
+            </div>
           <div className="disclaimer">Logic Intelligence AI may display inaccurate info. Verify important details.</div>
         </div>
       </div>
