@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { COMPANY } from '@/config/company';
-import { Rocket, Briefcase, Building2, Wrench, AlertTriangle, Square, Copy, RefreshCcw, Paperclip, Mic, Table, Code2, Calculator, Handshake, CreditCard, Calendar } from 'lucide-react';
+import { Rocket, Briefcase, Building2, Wrench, AlertTriangle, Square, Copy, RefreshCcw, Paperclip, Mic, Table, Code2, Calculator, Handshake, CreditCard, Calendar, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 
@@ -124,8 +124,7 @@ export default function GeminiAiChatPage() {
   const [user, setUser] = useState<any>(null);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [language, setLanguage] = useState('English');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClientComponentClient();
 
@@ -346,9 +345,7 @@ export default function GeminiAiChatPage() {
     if (selectedFile) {
       payloadText = `[Attached File: ${selectedFile.name}]\n${messageText}`;
     }
-    if (language !== 'English') {
-      payloadText = `${payloadText}\n(Please respond to me in ${language} language)`;
-    }
+    
 
     if (!chatId) {
       const newId = crypto.randomUUID();
@@ -686,7 +683,7 @@ export default function GeminiAiChatPage() {
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
           style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80vw', height: '80vw', maxWidth: '800px', maxHeight: '800px' }}
         >
-          <BrandLogo size={800} />
+          <img src="/assets/logo.png" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.15, filter: 'grayscale(100%) brightness(200%)' }} />
         </motion.div>
       </div>
 
@@ -740,16 +737,7 @@ export default function GeminiAiChatPage() {
           </div>
           
           <div className="top-bar-actions" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <select 
-              value={language} 
-              onChange={(e) => setLanguage(e.target.value)}
-              style={{ background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', padding: '6px 12px', fontSize: '13px', outline: 'none' }}
-            >
-              <option value="English">🇬🇧 English</option>
-              <option value="Tamil">🇮🇳 Tamil</option>
-              <option value="Hindi">🇮🇳 Hindi</option>
-              <option value="Spanish">🇪🇸 Spanish</option>
-            </select>
+            
             {activeChat?.messages.length > 0 && (
                <button onClick={handleExportChat} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '6px 12px', borderRadius: '6px', fontSize: '13px', cursor: 'pointer' }}>
                  Export PDF
@@ -767,22 +755,24 @@ export default function GeminiAiChatPage() {
               </a>
             ) : null}
             <a href="/" className="px-5 py-2 rounded-full text-[12px] font-medium text-black bg-[#E3E3E3] hover:bg-white transition-all whitespace-nowrap text-decoration-none">
-              Exit
-            </a>
+              <ArrowLeft size={14} className="inline-block mr-1" /> Back to Home</a>
           </div>
         </div>
 
         {showWelcome ? (
           <div className="welcome-screen welcome-fade" style={{ justifyContent: 'flex-start', paddingTop: '8vh' }}>
-            <div className="welcome-title-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', maxWidth: '760px', width: '100%', marginBottom: '48px', paddingLeft: '8px' }}>
+            <div className="welcome-title-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: '760px', width: '100%', marginBottom: '48px' }}>
               <div className="gemini-gradient-text" style={{ fontSize: 'clamp(36px, 6vw, 56px)', fontWeight: '500', marginBottom: '8px', letterSpacing: '-1px' }}>
                 Hello, {user?.user_metadata?.full_name?.split(' ')[0] || 'there'}
               </div>
-              <div style={{ color: '#5f6368', fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: '500', letterSpacing: '-1px' }}>
+              <div style={{ color: '#a1a1aa', fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: '500', letterSpacing: '-1px' }}>
                 {chats.some(c => c.messages.length > 0) ? 'Welcome back to the' : 'Welcome to the'} Logic Intelligence Technologies AI Assistant
               </div>
-              <div style={{ color: '#8E918F', fontSize: '14px', marginTop: '8px' }}>
+              <div style={{ color: '#71717a', fontSize: '14px', marginTop: '8px' }}>
                 Founded by Vikash Saravanan • Coimbatore, Tamil Nadu, India
+              </div>
+              <div style={{ color: '#a1a1aa', fontSize: '16px', marginTop: '24px', lineHeight: '1.6', maxWidth: '600px' }}>
+                I can help you scope custom software projects, generate business automation strategies, fetch pricing details, or answer technical questions about your infrastructure.
               </div>
             </div>
             <motion.div 

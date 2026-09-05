@@ -60,7 +60,7 @@ proxy_*
 scripts/
 
 # Large stray media files at root
-*.PNG
+
 *.jpeg
 *.jpg
 !public/**/*.jpg
