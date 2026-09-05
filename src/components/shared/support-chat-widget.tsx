@@ -135,9 +135,6 @@ export default function SupportChatWidget() {
                 <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-semibold flex items-center gap-1.5 text-center">
                   <span>Technologies</span>
                 </p>
-                <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-semibold flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> Online • AI Assistant
-                </p>
               </div>
             </div>
 
