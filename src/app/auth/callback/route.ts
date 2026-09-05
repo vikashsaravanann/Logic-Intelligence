@@ -2,6 +2,7 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { sendLoginNotification } from "@/lib/email/send-login-notification";
+import { ensureWelcomeEmail } from "@/lib/email/send-welcome";
 import { env } from "@/config/env";
 
 export async function GET(request: Request) {
@@ -21,6 +22,24 @@ export async function GET(request: Request) {
       const { data: { session } } = await supabase.auth.exchangeCodeForSession(code);
       
       if (session?.user?.email) {
+        // First login (OAuth or confirmed email) -> ensure Welcome email (idempotent)
+        try {
+          await ensureWelcomeEmail({
+            userId: session.user.id,
+            email: session.user.email,
+            fullName:
+              (session.user.user_metadata?.full_name as string | undefined) ||
+              (session.user.user_metadata?.name as string | undefined) ||
+              null,
+            avatarUrl:
+              (session.user.user_metadata?.avatar_url as string | undefined) ||
+              (session.user.user_metadata?.picture as string | undefined) ||
+              null,
+          });
+        } catch (welcomeErr) {
+          console.error("[Email Error] Welcome email failed:", welcomeErr);
+        }
+
         // Send Login Notification on successful OAuth login
         const emailResult = await sendLoginNotification(session.user.email, request.headers);
         

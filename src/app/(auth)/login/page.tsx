@@ -94,12 +94,19 @@ function AuthContent() {
     setServerSuccess(null);
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: { emailRedirectTo: `${window.location.origin}/auth/callback` }
         });
         if (error) throw error;
+        // Fire-and-forget: send the Welcome email immediately (idempotent).
+        // The DB webhook + auth callback act as backups if this fails.
+        fetch('/api/auth/send-welcome', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: data?.user?.id, email }),
+        }).catch(() => {});
         setServerSuccess("Account created! Please check your email to verify your account.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });

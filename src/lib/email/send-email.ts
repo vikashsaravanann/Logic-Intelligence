@@ -58,8 +58,16 @@ export async function sendEmail({
 
     return { success: true, message: `Email sent: ${result.messageId}` };
   } catch (error) {
+    const err = error as any;
     console.error("Email delivery failed", {
       type: error instanceof Error ? error.name : "UnknownEmailError",
+      message: error instanceof Error ? error.message : String(error),
+      code: err?.code,
+      responseCode: err?.responseCode,
+      command: err?.command,
+      sender: senderKey,
+      to,
+      subject,
     });
 
     return { success: false, message: "Internal failure while sending email" };

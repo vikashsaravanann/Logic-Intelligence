@@ -24,14 +24,19 @@ const senderEnvMap: Record<SenderKey, string> = {
 
 function getSmtpConfig(sender: SenderKey): SmtpConfig {
   const prefix = senderEnvMap[sender];
-  
+
   // Fallbacks for Hostinger default configurations
   const host = process.env[`SMTP_${prefix}_HOST`] || process.env.SMTP_HOST || "smtp.hostinger.com";
   const port = Number(process.env[`SMTP_${prefix}_PORT`] || process.env.SMTP_PORT || 465);
   const secure = (process.env[`SMTP_${prefix}_SECURE`] || process.env.SMTP_SECURE) === "true" || port === 465;
-  
-  // Predict user and from based on COMPANY.emails if not explicitly set
-  const user = process.env[`SMTP_${prefix}_USER`] || process.env.SMTP_USER || COMPANY.emails[sender];
+
+  // IMPORTANT: the SMTP auth user MUST match the mailbox that owns the password.
+  // Fall back to this sender's own company address — never to another sender's
+  // account (e.g. vikash must auth as vikash@..., not as no-reply@...).
+  const user =
+    process.env[`SMTP_${prefix}_USER`] ||
+    COMPANY.emails[sender] ||
+    process.env.SMTP_USER;
   const from = process.env[`SMTP_${prefix}_FROM`] || process.env.SMTP_FROM || `"${COMPANY.displayName}" <${COMPANY.emails[sender]}>`;
   
   // Password MUST be set in environment variables
@@ -60,6 +65,9 @@ export function getSmtpTransporter(sender: SenderKey = "noReply"): nodemailer.Tr
       user: config.user,
       pass: config.pass,
     },
+    connectionTimeout: 15000,
+    greetingTimeout: 15000,
+    socketTimeout: 20000,
   });
 
   transporterCache.set(sender, transporter);

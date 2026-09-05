@@ -10,6 +10,7 @@ import ProposalSentEmail from '@/emails/proposal-sent-email';
 import DemoReadyEmail from '@/emails/demo-ready-email';
 import TestimonialRequestEmail from '@/emails/testimonial-request-email';
 import MaintenanceRenewalEmail from '@/emails/maintenance-renewal-email';
+import WelcomeEmail from '@/emails/welcome-email';
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -37,6 +38,13 @@ export async function POST(req: Request) {
     
     // Choose template based on type
     switch (type) {
+      case 'welcome':
+        fromAddress = 'noReply';
+        subject = `Welcome to Logic Intelligence Technologies!`;
+        reactComponent = React.createElement(WelcomeEmail, {
+          email: fullName || email,
+        });
+        break;
       
       case 'invoice':
         fromAddress = 'admin';

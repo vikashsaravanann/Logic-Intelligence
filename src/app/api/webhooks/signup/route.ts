@@ -1,26 +1,32 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase/admin";
-import { sendEmail } from "@/lib/email/send-email";
-import WelcomeEmail from "@/emails/welcome-email";
+import { ensureWelcomeEmail } from "@/lib/email/send-welcome";
 import crypto from "crypto";
-import * as React from "react";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+function isAuthorized(provided: string | null, expected: string | undefined): boolean {
+  if (!provided || !expected) return false;
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  // timingSafeEqual throws when lengths differ — compare safely instead.
+  if (a.length !== b.length) return false;
+  try {
+    return crypto.timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Missing authorization header" }, { status: 401 });
-    }
-
-    const token = authHeader.split(" ")[1];
+    const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
     const expectedToken = process.env.SUPABASE_WEBHOOK_SECRET;
     if (!expectedToken) return NextResponse.json({ error: "Server misconfiguration" }, { status: 500 });
-
-    const isVerified = crypto.timingSafeEqual(Buffer.from(token), Buffer.from(expectedToken));
-    if (!isVerified) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!isAuthorized(token, expectedToken)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const body = await req.json();
     if (body.type !== "INSERT" || body.table !== "users") {
@@ -32,53 +38,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid payload format" }, { status: 400 });
     }
 
-    const userId = record.id;
-    const userEmail = record.email;
-
-    // 1. Ensure Profile Exists (handle both OAuth and standard signup)
-    let profileData;
-    const { data: existingProfile } = await supabaseAdmin.from("profiles").select("welcome_email_sent").eq("id", userId).single();
-    
-    if (existingProfile) {
-      profileData = existingProfile;
-    } else {
-      const { data: newProfile, error: insertError } = await supabaseAdmin.from("profiles").insert({
-        id: userId,
-        email: userEmail,
-        full_name: record.raw_user_meta_data?.full_name || null,
-        avatar_url: record.raw_user_meta_data?.avatar_url || record.raw_user_meta_data?.picture || null,
-        welcome_email_sent: false
-      }).select("welcome_email_sent").single();
-      
-      if (insertError) {
-        console.error("Webhook Profile Insert Error:", insertError);
-        return NextResponse.json({ error: "DB Error" }, { status: 500 });
-      }
-      profileData = newProfile;
-    }
-
-    // 2. Idempotency Check
-    if (profileData?.welcome_email_sent) {
-      console.log(`Welcome email already sent to ${userEmail}`);
-      return NextResponse.json({ message: "Already sent" });
-    }
-
-    // 3. Send Welcome Email
-    const emailResult = await sendEmail({
-      to: userEmail,
-      from: "noReply",
-      subject: "Welcome to Logic Intelligence Technologies!",
-      react: React.createElement(WelcomeEmail, { email: userEmail }),
+    const result = await ensureWelcomeEmail({
+      userId: record.id,
+      email: record.email,
+      fullName: record.raw_user_meta_data?.full_name || null,
+      avatarUrl: record.raw_user_meta_data?.avatar_url || record.raw_user_meta_data?.picture || null,
     });
 
-    if (!emailResult.success) {
-      console.error("[Email Error] Welcome email failed to send:", emailResult.message);
-      return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+    if (!result.success) {
+      return NextResponse.json({ error: result.message }, { status: 500 });
     }
-
-    // 4. Update Profile
-    await supabaseAdmin.from("profiles").update({ welcome_email_sent: true }).eq("id", userId);
-    return NextResponse.json({ success: true, message: "Welcome email sent successfully" });
+    return NextResponse.json({ success: true, message: result.message });
 
   } catch (error) {
     console.error("Signup Webhook Error:", error);
