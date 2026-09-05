@@ -28,6 +28,7 @@ export async function sendEmail({
   react,
   replyTo,
   from = "noReply",
+  attachments,
 }: SendEmailOptions): Promise<EmailResponse> {
   const senderKey = (typeof from === 'string' && from.includes('@')) 
     ? getSenderKeyFromEmail(from) 
