@@ -276,8 +276,8 @@ export default function GeminiAiChatPage() {
           display: flex;
           height: 100vh;
           width: 100vw;
-          background: #050B14;
-          color: #E8E9EA;
+          background: #131314;
+          color: #E3E3E3;
           font-family: 'Inter', system-ui, -apple-system, sans-serif;
           overflow: hidden;
           position: fixed;
@@ -285,91 +285,46 @@ export default function GeminiAiChatPage() {
           z-index: 99999;
         }
 
-        /* Ambient animated background glow */
-        .ambient-glow {
-          position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;
-        }
-        .ambient-glow::before, .ambient-glow::after {
-          content: ''; position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.12;
-        }
-        .ambient-glow::before {
-          width: 500px; height: 500px; background: #00bfff; top: -150px; left: -100px;
-          animation: drift1 18s ease-in-out infinite;
-        }
-        .ambient-glow::after {
-          width: 450px; height: 450px; background: #0055ff; bottom: -150px; right: -100px;
-          animation: drift2 22s ease-in-out infinite;
-        }
-        @keyframes drift1 {
-          0%, 100% { transform: translate(0,0); }
-          50% { transform: translate(60px, 40px); }
-        }
-        @keyframes drift2 {
-          0%, 100% { transform: translate(0,0); }
-          50% { transform: translate(-50px, -30px); }
-        }
+        /* Ambient animated background glow (subtle for Gemini) */
+        .ambient-glow { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
 
-        @keyframes pulse { 0% { transform: scale(0.92); opacity: 0.75; } 50% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(0.92); opacity: 0.75; } }
-        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes glow { 0% { box-shadow: 0 0 6px rgba(0,191,255,0.25); } 50% { box-shadow: 0 0 24px rgba(0,85,255,0.7); } 100% { box-shadow: 0 0 6px rgba(0,191,255,0.25); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
         @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         @keyframes bounce-dot { 0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
-        .logo-spin { animation: spin-slow 12s linear infinite; }
-        .logo-float { animation: float 4s ease-in-out infinite; }
-        .ai-icon-computing { animation: pulse 1s infinite ease-in-out, glow 2s infinite ease-in-out; }
         .chat-bubble { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .welcome-fade { animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        .gradient-text {
-          background: linear-gradient(135deg, #00bfff, #0055ff, #001144);
+        .gemini-gradient-text {
+          background: linear-gradient(74deg, #4285f4 0%, #9b72cb 46%, #d96570 100%);
           -webkit-background-clip: text; background-clip: text; color: transparent;
-          background-size: 200% auto;
-        }
-        .shimmer-text {
-          background: linear-gradient(90deg, #00bfff 0%, #0055ff 25%, #00bfff 50%, #0055ff 75%, #00bfff 100%);
-          background-size: 200% auto;
-          -webkit-background-clip: text; background-clip: text; color: transparent;
-          animation: shimmer 4s linear infinite;
         }
 
         /* --- Sidebar --- */
         .sidebar {
           width: 288px; min-width: 288px;
-          background-color: rgba(5, 11, 20, 0.95);
-          backdrop-filter: blur(20px);
+          background-color: #1E1F20;
           padding: 18px 12px;
           display: flex; flex-direction: column;
-          border-right: 1px solid rgba(255,255,255,0.05);
           height: 100%;
           transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
           z-index: 100; position: relative;
         }
-        .sidebar-brand {
-          display: flex; align-items: center; gap: 12px;
-          padding: 6px 10px 22px 10px;
-        }
+        .sidebar-brand { display: flex; align-items: center; gap: 12px; padding: 6px 10px 22px 10px; }
         .brand-text-wrap { display: flex; flex-direction: column; line-height: 1.15; }
-        .brand-text-main { font-size: 14.5px; font-weight: 700; letter-spacing: 0.4px; color: #F1F2F3; }
+        .brand-text-main { font-size: 14.5px; font-weight: 700; letter-spacing: 0.4px; color: #E3E3E3; }
         .brand-text-sub { font-size: 9.5px; font-weight: 500; letter-spacing: 1.8px; color: #8E918F; margin-top: 2px; }
 
         .new-chat-btn {
           display: flex; align-items: center; gap: 10px;
-          padding: 11px 16px; border-radius: 22px;
-          border: 1px solid rgba(0,191,255,0.2);
-          background: linear-gradient(135deg, rgba(0,191,255,0.05), rgba(0,85,255,0.1));
-          color: #E8E9EA; cursor: pointer; font-size: 13.5px; font-weight: 500;
+          padding: 11px 16px; border-radius: 22px; border: none;
+          background: #282A2C;
+          color: #E3E3E3; cursor: pointer; font-size: 13.5px; font-weight: 500;
           margin-bottom: 14px; width: 100%;
           transition: all 0.2s ease;
         }
-        .new-chat-btn:hover {
-          background: linear-gradient(135deg, rgba(0,191,255,0.15), rgba(0,85,255,0.2));
-          border-color: #00bfff; transform: translateY(-1px);
-        }
+        .new-chat-btn:hover { background: #333537; }
 
         .history-list { flex: 1; overflow-y: auto; margin-top: 6px; display: flex; flex-direction: column; gap: 2px; }
         .history-list::-webkit-scrollbar { width: 5px; }
@@ -377,109 +332,82 @@ export default function GeminiAiChatPage() {
 
         .history-item {
           display: flex; align-items: center; justify-content: space-between;
-          padding: 10px 12px; border-radius: 16px; cursor: pointer;
+          padding: 10px 12px; border-radius: 22px; cursor: pointer;
           font-size: 13.5px; color: #C4C7C5;
           white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-          transition: background-color 0.15s ease, transform 0.15s ease;
+          transition: background-color 0.15s ease;
         }
-        .history-item:hover { background-color: rgba(255,255,255,0.05); transform: translateX(2px); }
-        .history-item.active {
-          background: linear-gradient(90deg, rgba(0,191,255,0.1), rgba(0,85,255,0.05));
-          color: #F1F2F3; border-left: 2px solid #00bfff;
-        }
+        .history-item:hover { background-color: #282A2C; }
+        .history-item.active { background: #424548; color: #E3E3E3; }
         .history-item-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .delete-btn {
           background: none; border: none; color: #8E918F; cursor: pointer;
           padding: 2px 6px; border-radius: 8px; font-size: 14px; opacity: 0;
-          transition: opacity 0.15s ease, color 0.15s ease;
         }
         .history-item:hover .delete-btn { opacity: 1; }
         .delete-btn:hover { color: #F28B82; }
 
-        .sidebar-footer {
-          font-size: 11px; color: #6E7175; line-height: 1.6;
-          padding: 14px 10px 4px 10px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 8px;
-          display: flex; align-items: center; gap: 8px;
-        }
-        .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #00bfff; flex-shrink: 0; box-shadow: 0 0 6px #00bfff; }
-
         /* --- Main area --- */
-        .main-area { flex: 1; display: flex; flex-direction: column; position: relative; min-width: 0; z-index: 1; }
+        .main-area { flex: 1; display: flex; flex-direction: column; position: relative; min-width: 0; z-index: 1; background: #131314; }
         .top-bar {
-          padding: 16px 26px; display: flex; align-items: center; justify-content: space-between;
-          border-bottom: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(8px);
+          padding: 16px 24px; display: flex; align-items: center; justify-content: center; position: relative;
         }
         .hamburger { display: none; background: none; border: none; color: #E8E9EA; font-size: 20px; cursor: pointer; padding: 4px 8px; }
-        .top-bar-title { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #C4C7C5; font-weight: 500; }
-        .status-pill {
-          font-size: 11px; background: linear-gradient(135deg, rgba(0,191,255,0.1), rgba(0,85,255,0.1));
-          border: 1px solid rgba(0,191,255,0.2);
-          padding: 5px 12px; border-radius: 14px; color: #00bfff; font-weight: 500;
-          display: flex; align-items: center; gap: 6px;
-        }
 
         .message-stream { flex: 1; overflow-y: auto; padding: 26px; max-width: 860px; width: 100%; margin: 0 auto; box-sizing: border-box; }
         .message-stream::-webkit-scrollbar { width: 6px; }
         .message-stream::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
 
         .welcome-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; }
-        .welcome-logo { margin-bottom: 20px; }
-        .welcome-title { font-size: 44px; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.5px; }
-        .welcome-subtitle { font-size: 24px; color: #6E7175; margin-bottom: 12px; font-weight: 400; }
-        .welcome-company { font-size: 13px; color: #8E918F; margin-bottom: 40px; letter-spacing: 2px; font-weight: 600; }
-
-        .suggestion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 640px; width: 100%; }
+        
+        .suggestion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 760px; width: 100%; }
         .suggestion-card {
-          background-color: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+          background-color: #1E1F20; border-radius: 16px;
           padding: 20px; text-align: left; cursor: pointer; font-size: 14px;
-          transition: all 0.3s ease;
+          transition: all 0.2s ease;
           display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
           min-height: 120px;
         }
-        .suggestion-card:hover {
-          background-color: rgba(255,255,255,0.08); transform: translateY(-2px);
-          border-color: rgba(255,255,255,0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+        .suggestion-card:hover { background-color: #282A2C; transform: translateY(-2px); }
         .suggestion-icon { font-size: 24px; padding-bottom: 8px; }
-        .suggestion-card .s-title { color: #fff; font-weight: 700; font-size: 15px; }
+        .suggestion-card .s-title { color: #E3E3E3; font-weight: 500; font-size: 15px; }
         .suggestion-card .s-subtitle { color: #A0A3A6; font-size: 13px; font-weight: 400; line-height: 1.4; }
 
         .avatar {
-          width: 34px; height: 34px; border-radius: 50%;
+          width: 32px; height: 32px; border-radius: 50%;
           display: flex; align-items: center; justify-content: center;
           font-size: 14px; font-weight: bold; flex-shrink: 0;
           overflow: hidden;
         }
-        .avatar img {
-          width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
-        }
-        .avatar-assistant {
-          background: linear-gradient(135deg, #00bfff, #0055ff, #001144);
-          box-shadow: 0 0 12px rgba(0,191,255,0.3);
-        }
-        .avatar-user { background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .avatar-assistant { background: transparent; }
 
         /* Professional Markdown Styling */
-        .markdown-body { font-size: 15px; line-height: 1.7; word-wrap: break-word; }
+        .markdown-body { font-size: 15.5px; line-height: 1.6; word-wrap: break-word; color: #E3E3E3; }
         .markdown-body p { margin-top: 0; margin-bottom: 16px; }
         .markdown-body p:last-child { margin-bottom: 0; }
-        .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 { margin-top: 24px; margin-bottom: 12px; font-weight: 600; color: #fff; line-height: 1.3; }
-        .markdown-body h1 { font-size: 24px; } .markdown-body h2 { font-size: 20px; } .markdown-body h3 { font-size: 18px; }
-        .markdown-body strong { font-weight: 600; color: #fff; }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 { margin-top: 24px; margin-bottom: 12px; font-weight: 600; color: #E3E3E3; }
         .markdown-body ul, .markdown-body ol { margin-top: 0; margin-bottom: 16px; padding-left: 24px; }
         .markdown-body li { margin-bottom: 6px; }
-        .markdown-body li > p { margin-bottom: 6px; }
-        .markdown-body a { color: #00bfff; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
-        .markdown-body a:hover { border-color: #00bfff; }
-        .markdown-body code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13.5px; color: #E8E9EA; }
-        .markdown-body pre { background: #0A0F1A; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; overflow-x: auto; margin: 16px 0; }
-        .markdown-body pre code { background: transparent; padding: 0; border-radius: 0; color: #00bfff; font-size: 13.5px; }
-        .markdown-body blockquote { border-left: 4px solid #0055ff; margin: 0 0 16px 0; padding: 0 16px; color: #A0A3A6; font-style: italic; }
-        .markdown-body table { border-collapse: collapse; width: 100%; margin-bottom: 16px; }
-        .markdown-body th, .markdown-body td { border: 1px solid rgba(255,255,255,0.1); padding: 8px 12px; text-align: left; }
-        .markdown-body th { background: rgba(255,255,255,0.03); font-weight: 600; color: #fff; }
-
-        .message-row { display: flex; gap: 16px; margin-bottom: 26px; }
+        .markdown-body a { color: #4285f4; text-decoration: none; }
+        .markdown-body a:hover { text-decoration: underline; }
+        .markdown-body code { background: #282A2C; padding: 2px 6px; border-radius: 4px; font-family: ui-monospace, monospace; font-size: 13.5px; color: #E3E3E3; }
+        .markdown-body pre { background: #1E1F20; border-radius: 12px; padding: 16px; overflow-x: auto; margin: 16px 0; }
+        .markdown-body pre code { background: transparent; padding: 0; color: #E3E3E3; font-size: 13.5px; }
+        
+        .message-row { display: flex; gap: 16px; margin-bottom: 32px; width: 100%; }
+        .message-row.user { flex-direction: row-reverse; }
+        .message-row.user .avatar { display: none; }
+        .message-row.user .message-content { display: flex; justify-content: flex-end; width: 100%; }
+        .message-row.user .message-text { 
+           background: #282A2C; 
+           padding: 12px 20px; 
+           border-radius: 24px; 
+           max-width: 80%;
+           display: inline-block;
+           font-size: 15.5px;
+           color: #E3E3E3;
+        }
         .message-content { flex: 1; padding-top: 5px; }
         .message-text { line-height: 1.65; font-size: 14.5px; white-space: pre-wrap; }
         .message-actions {
@@ -502,29 +430,28 @@ export default function GeminiAiChatPage() {
         .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
         .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
 
-        .input-bar-wrap { padding: 0 26px 22px; max-width: 860px; width: 100%; margin: 0 auto; box-sizing: border-box; }
+        .input-bar-wrap { padding: 0 26px 22px; max-width: 860px; width: 100%; margin: 0 auto; box-sizing: border-box; position: relative; z-index: 20; }
         .input-bar {
           display: flex; align-items: flex-end; gap: 8px;
-          background-color: rgba(15,20,35,0.75); backdrop-filter: blur(20px); border-radius: 28px;
-          padding: 12px 12px 12px 22px; border: 1px solid rgba(255,255,255,0.15);
+          background-color: #1E1F20; border-radius: 32px;
+          padding: 12px 12px 12px 24px; border: none;
           box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+          transition: background-color 0.2s ease;
         }
-        .input-bar:focus-within { border-color: #00bfff; box-shadow: 0 0 0 3px rgba(0,191,255,0.15), 0 4px 20px rgba(0,0,0,0.4); }
+        .input-bar:focus-within { background-color: #282A2C; }
         .input-bar textarea {
-          flex: 1; background: transparent; border: none; color: #E8E9EA;
-          font-size: 14.5px; outline: none; resize: none; font-family: inherit;
-          max-height: 160px; line-height: 1.5; padding: 6px 0;
+          flex: 1; background: transparent; border: none; color: #E3E3E3;
+          font-size: 16px; outline: none; resize: none; font-family: inherit;
+          max-height: 200px; line-height: 1.5; padding: 6px 0;
         }
-        .input-bar textarea::placeholder { color: #6E7175; }
+        .input-bar textarea::placeholder { color: #A0A3A6; }
         .send-btn {
-          background: linear-gradient(135deg, #00bfff, #0055ff);
-          color: #fff; border: none; border-radius: 50%; width: 38px; height: 38px; cursor: pointer;
+          background: #E3E3E3; color: #131314; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer;
           display: flex; align-items: center; justify-content: center; font-weight: bold;
           flex-shrink: 0; transition: all 0.2s ease;
         }
-        .send-btn:hover:not(:disabled) { transform: scale(1.08); box-shadow: 0 4px 16px rgba(0,191,255,0.4); }
-        .send-btn:disabled { background: rgba(255,255,255,0.05); color: #6E7175; cursor: default; }
+        .send-btn:hover:not(:disabled) { transform: scale(1.05); }
+        .send-btn:disabled { background: #282A2C; color: #5f6368; cursor: default; }
 
         .disclaimer { text-align: center; font-size: 11px; color: #6E7175; padding-top: 12px; }
 
@@ -585,32 +512,32 @@ export default function GeminiAiChatPage() {
 
       {/* Main area */}
       <div className="main-area" style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', bottom: '16px', left: '16px', fontSize: 'clamp(14px, 2vw, 20px)', fontWeight: '900', letterSpacing: '3px', textTransform: 'uppercase', background: 'linear-gradient(135deg, #fff, #00bfff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', zIndex: 10, pointerEvents: 'none' }}>
-          LOGIC AI
+        <div style={{ position: 'absolute', bottom: '24px', left: '24px', fontSize: 'clamp(16px, 2vw, 22px)', fontWeight: '600', letterSpacing: '0.5px', color: '#E3E3E3', zIndex: 10, pointerEvents: 'none' }}>
+          Logic AI
         </div>
-        <div className="top-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <button className="hamburger" onClick={() => setSidebarOpen((s) => !s)}>☰</button>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span style={{ fontWeight: '600', letterSpacing: '2px', fontSize: '12px', textTransform: 'uppercase', color: '#A0A3A6' }}>
-                {COMPANY.tagline}
-              </span>
-            </div>
+        <div className="top-bar" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px 24px', position: 'relative' }}>
+          <button className="hamburger" onClick={() => setSidebarOpen((s) => !s)} style={{ position: 'absolute', left: '24px' }}>☰</button>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }} />
+            <span style={{ fontWeight: '500', fontSize: '18px', color: '#E3E3E3' }}>
+              {COMPANY.displayName}
+            </span>
           </div>
-          <a href="/" className="px-6 py-2 rounded-full text-[11px] font-black text-black uppercase tracking-[0.2em] bg-white hover:bg-gray-200 transition-all shadow-lg hover:shadow-xl whitespace-nowrap text-decoration-none">
-            Back to Website
+
+          <a href="/" style={{ position: 'absolute', right: '24px' }} className="px-5 py-2 rounded-full text-[12px] font-medium text-black bg-[#E3E3E3] hover:bg-white transition-all whitespace-nowrap text-decoration-none">
+            Exit
           </a>
         </div>
 
         {showWelcome ? (
-          <div className="welcome-screen welcome-fade">
-            <div className="welcome-title-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <img src={COMPANY.logoIconPath} alt="Logo" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', marginBottom: '20px', boxShadow: '0 0 40px rgba(0, 191, 255, 0.4)' }} />
-              <div className="welcome-title gradient-text" style={{ fontSize: 'clamp(28px, 5vw, 42px)', fontWeight: 'bold', marginBottom: '8px', textAlign: 'center' }}>
-                How can I help you today?
+          <div className="welcome-screen welcome-fade" style={{ justifyContent: 'flex-start', paddingTop: '8vh' }}>
+            <div className="welcome-title-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', maxWidth: '760px', width: '100%', marginBottom: '48px', paddingLeft: '8px' }}>
+              <div className="gemini-gradient-text" style={{ fontSize: 'clamp(36px, 6vw, 56px)', fontWeight: '500', marginBottom: '8px', letterSpacing: '-1px' }}>
+                Hello, {user?.user_metadata?.full_name?.split(' ')[0] || 'there'}
               </div>
-              <div className="welcome-company" style={{ color: '#8E918F', letterSpacing: '2px', fontSize: '13px', marginBottom: '40px', textTransform: 'uppercase', textAlign: 'center' }}>
-                {COMPANY.displayName} AI Assistant
+              <div style={{ color: '#5f6368', fontSize: 'clamp(36px, 6vw, 56px)', fontWeight: '500', letterSpacing: '-1px' }}>
+                How can I help you today?
               </div>
             </div>
             <div className="suggestion-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
