@@ -56,7 +56,7 @@ function buildSystemPrompt(leadContext?: string): string {
   const founderInfo = `Founder: ${COMPANY.founder.name} (${COMPANY.founder.title}) - ${COMPANY.founder.bio}`;
 
   // ml-from-scratch knowledge base - expanded company facts
-  const mlKnowledge = `ML/Knowledge Base (verified facts from internal training):
+  let systemPrompt = `ML/Knowledge Base (verified facts from internal training):
 
 PACKAGES & PRICING:
 - Digital Launch Pack: Rs.8,999 - up to 5 pages, mobile-responsive, basic SEO, contact form, Google Maps, WhatsApp button, 1-month support
@@ -194,10 +194,10 @@ GUIDELINES:
 `;
 
   if (leadContext) {
-    prompt += `\n\nLEAD SUBMISSION LOOKUP RESULT:\n${leadContext}\n(Use this verified submission data to answer the visitor's status question directly and warmly.)`;
+    systemPrompt += `\n\nLEAD SUBMISSION LOOKUP RESULT:\n${leadContext}\n(Use this verified submission data to answer the visitor's status question directly and warmly.)`;
   }
 
-  return prompt;
+  return systemPrompt;
 }
 
 // --- Tool definition (Grok / OpenAI-compatible function calling) -----------
