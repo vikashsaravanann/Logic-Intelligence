@@ -145,8 +145,8 @@ const [input, setInput] = useState('');
   const abortControllerRef = useRef<AbortController | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [speakingIdx, setSpeakingIdx] = useState<number | null>(null);
   const [isListening, setIsListening] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(true);
 
   const stopGenerating = () => {
     if (abortControllerRef.current) {
@@ -487,13 +487,29 @@ const [input, setInput] = useState('');
     }
   };
 
-  const speakText = (text: string) => {
+  const speakText = (text: string, idx: number) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    // Toggle off if already speaking this message
+    if (speakingIdx === idx) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      setSpeakingIdx(null);
+      return;
+    }
+    // Stop any existing speech
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text.slice(0, 1000));
+    utterance.onstart = () => { setIsSpeaking(true); setSpeakingIdx(idx); };
+    utterance.onend = () => { setIsSpeaking(false); setSpeakingIdx(null); };
+    utterance.onerror = () => { setIsSpeaking(false); setSpeakingIdx(null); };
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const stopSpeaking = () => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text.slice(0, 500));
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    window.speechSynthesis.speak(utterance);
+    setIsSpeaking(false);
+    setSpeakingIdx(null);
   };
 
   const toggleListen = () => {
@@ -830,7 +846,7 @@ const [input, setInput] = useState('');
           </div>
         </div>
 
-        {showWelcome ? (
+        {(!activeChat || activeChat.messages.length === 0) ? (
           <div className="welcome-screen welcome-fade" style={{ justifyContent: 'flex-start', paddingTop: '8vh' }}>
             <div className="welcome-title-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: '760px', width: '100%', marginBottom: '48px' }}>
               <div className={`gemini-gradient-text ${poppins.className}`} style={{ fontSize: 'clamp(36px, 6vw, 56px)', fontWeight: '600', marginBottom: '8px', letterSpacing: '-1.5px' }}>
@@ -976,6 +992,14 @@ const [input, setInput] = useState('');
                     <div className="message-actions">
                       <button className="action-btn" onClick={() => copyMessage(msg.text, idx)}>
                         {copiedIdx === idx ? 'Copied ✓' : 'Copy'}
+                      </button>
+                      <button
+                        className="action-btn"
+                        title={speakingIdx === idx ? 'Stop speaking' : 'Listen to this message'}
+                        onClick={() => speakText(msg.text.replace(/[#*`>_~]/g, ''), idx)}
+                        style={speakingIdx === idx ? { borderColor: '#00bfff', color: '#00bfff' } : {}}
+                      >
+                        {speakingIdx === idx ? '⏹ Stop' : '🔊 Listen'}
                       </button>
                     </div>
                   )}
