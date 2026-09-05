@@ -69,7 +69,7 @@ export async function POST(req: Request) {
 
         const emailResult = await sendEmail({
           to: email,
-          from: "hello",
+          from: "noReply",
           subject: isLeadMagnet ? "Your Website Launch Checklist" : "We received your request! (Logic Intelligence Technologies)",
           react: isLeadMagnet 
             ? React.createElement(ChecklistDownloadEmail, { fullName: "there" })

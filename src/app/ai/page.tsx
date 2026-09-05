@@ -1,6 +1,6 @@
+"use client";
 import { Poppins } from 'next/font/google';
 const poppins = Poppins({ weight: ['400', '500', '600', '700'], subsets: ['latin'], display: 'swap' });
-"use client";
 
 import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';

@@ -14,7 +14,7 @@ interface SendEmailOptions {
   subject: string;
   react: React.ReactElement;
   replyTo?: string;
-  from?: keyof typeof COMPANY.emails | string;
+  from: keyof typeof COMPANY.emails | string;
   attachments?: any[];
 }
 
@@ -27,7 +27,7 @@ export async function sendEmail({
   subject,
   react,
   replyTo,
-  from = "vikash",
+  from,
   attachments,
 }: SendEmailOptions): Promise<EmailResponse> {
   const senderKey = (typeof from === 'string' && from.includes('@')) 
