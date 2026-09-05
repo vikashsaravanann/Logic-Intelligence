@@ -1,8 +1,12 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 import { COMPANY } from "@/config/company";
 import { packagesData } from "@/data/packagesData";
 import { servicesData } from "@/data/servicesData";
 import { portfolioProjects } from "@/data/portfolioData";
+import { logAgentRun } from "@/lib/agent-eval/logger";
+import { estimateCostUsd } from "@/lib/agent-eval/cost";
+import { estimateFaithfulness } from "@/lib/agent-eval/faithfulness";
+import type { FailureClass } from "@/lib/agent-eval/types";
 
 const DEFAULT_GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const DEFAULT_MODEL = "openai/gpt-oss-120b";
@@ -23,28 +27,53 @@ function getAiConfig() {
 
 function getLocalFallbackReply(userText: string): string {
   const lower = (userText || "").toLowerCase();
-  if (lower.includes("price") || lower.includes("cost") || lower.includes("package") || lower.includes("plan") || lower.includes("pricing") || lower.includes("quote") || lower.includes("launch pack") || lower.includes("pro pack") || lower.includes("enterprise")) {
+  if (
+    lower.includes("price") ||
+    lower.includes("cost") ||
+    lower.includes("package") ||
+    lower.includes("plan") ||
+    lower.includes("pricing") ||
+    lower.includes("quote") ||
+    lower.includes("launch pack") ||
+    lower.includes("pro pack") ||
+    lower.includes("enterprise")
+  ) {
     return `Here are our popular packages at ${COMPANY.displayName}:\n\n- **Digital Launch Pack (Rs.8,999)**: up to 5 pages, mobile-responsive, basic SEO, contact form, Google Maps, WhatsApp button, 1-month support\n- **Business Pro Pack (Rs.18,999)**: booking system, admin panel, blog, payment gateway, advanced animations, 3-month support\n- **Enterprise Pack (custom from Rs.50,000)**: dedicated project manager, unlimited pages/revisions, 6-month support\n\nFor a custom quote, reach us on WhatsApp at **${COMPANY.phone}** or email **${COMPANY.email}**.`;
   }
-  if (lower.includes("service") || lower.includes("offer") || lower.includes("build") || lower.includes("develop")) {
+  if (
+    lower.includes("service") ||
+    lower.includes("offer") ||
+    lower.includes("build") ||
+    lower.includes("develop")
+  ) {
     return `At ${COMPANY.displayName}, we build modern web apps, custom software/CRM/ERP, e-commerce, mobile apps, and AI integrations.\n\nTell me what you want to build and I’ll suggest the right package. You can also reach our team on WhatsApp at **${COMPANY.phone}**.`;
   }
-  if (lower.includes("contact") || lower.includes("phone") || lower.includes("email") || lower.includes("whatsapp") || lower.includes("location") || lower.includes("office")) {
-    return `You can reach ${COMPANY.displayName} anytime:\n\n- **WhatsApp / Phone**: ${COMPANY.phone}\n- **Email**: ${COMPANY.email}\n- **Website**: ${COMPANY.websiteUrl}\n\nWe reply within 24 hours.`;
+  if (
+    lower.includes("contact") ||
+    lower.includes("phone") ||
+    lower.includes("email") ||
+    lower.includes("whatsapp") ||
+    lower.includes("location") ||
+    lower.includes("office")
+  ) {
+    return `You can reach ${COMPANY.displayName} at:\n\n- **WhatsApp**: ${COMPANY.phone}\n- **Email**: ${COMPANY.email}\n- **Website**: ${COMPANY.websiteUrl}/contact\n\nWe are based in Coimbatore, Tamil Nadu, India.`;
   }
-  if (lower.includes("founder") || lower.includes("owner") || lower.includes("ceo") || lower.includes("started") || lower.includes("vikash")) {
-    return `Our founder is **Vikash Saravanan** — ${COMPANY.founder.title} at ${COMPANY.displayName}, based in Coimbatore, Tamil Nadu, India.\n\nReach us on WhatsApp at **${COMPANY.phone}** or email **${COMPANY.email}**.`;
+  if (lower.includes("demo") || lower.includes("free")) {
+    return `Yes — we offer a **free demo** before you pay. Start at ${COMPANY.websiteUrl}/free-demo or message us on WhatsApp at ${COMPANY.phone}.`;
   }
-  if (!userText || !userText.trim()) {
-    return `Hello! I’m the ${COMPANY.displayName} AI assistant. Ask me about pricing, services, or your project idea.`;
-  }
-  return `Thanks for asking about "${userText.slice(0, 120)}".\n\nI’m the ${COMPANY.displayName} AI assistant — I can help scope your project, explain pricing, or answer technical questions.\n\n- **Packages**: Launch Rs.8,999 / Pro Rs.18,999 / Enterprise from Rs.50,000\n- **Contact**: WhatsApp ${COMPANY.phone}, Email ${COMPANY.email}\n\nTell me a bit more about what you want to build and I’ll guide you.`;
+  return `I'm LOGIC AI from ${COMPANY.displayName}. I can help with packages, services, technical questions, and project scoping.\n\nAsk about pricing, a free demo, or what we build — or reach the team on WhatsApp at **${COMPANY.phone}**.`;
 }
 
 function buildSystemPrompt(): string {
-  const packagesSummary = packagesData.map((p) => `- ${p.title} (${p.price}): ${p.subtitle}`).join("\n");
-  const servicesSummary = servicesData.map((s: any) => `- ${s.title}: ${s.subtitle}`).join("\n");
-  const portfolioSummary = portfolioProjects.map((p) => `- ${p.title} (${p.category})`).join("\n");
+  const packagesSummary = packagesData
+    .map((p) => `- ${p.title} (${p.price}): ${p.subtitle}`)
+    .join("\n");
+  const servicesSummary = servicesData
+    .map((s: { title: string; subtitle: string }) => `- ${s.title}: ${s.subtitle}`)
+    .join("\n");
+  const portfolioSummary = portfolioProjects
+    .map((p) => `- ${p.title} (${p.category})`)
+    .join("\n");
 
   return `You are LOGIC AI, an incredibly advanced and professional AI assistant created by ${COMPANY.displayName} (${COMPANY.tagline}).
 
@@ -56,99 +85,19 @@ CAPABILITIES:
 COMPANY INFORMATION
 
 PACKAGES & PRICING:
-- Digital Launch Pack: Rs.8,999 - up to 5 pages, mobile-responsive, basic SEO, contact form, Google Maps, WhatsApp button, 1-month support
-- Business Pro Pack: Rs.18,999 - includes booking system, admin panel, blog, payment gateway (Razorpay/Stripe/PayPal), advanced animations, 3-month support
-- Enterprise Pack: custom from Rs.50,000 - dedicated project manager, unlimited pages/revisions, 6-month support, milestone-based payments
+${packagesSummary}
 
 SERVICES:
-- Full Stack Web Development (React, Next.js, TypeScript, TailwindCSS, Node.js/Python/Django)
-- Hotel & Hospitality websites (direct booking, no commission)
-- Travel Agency websites (quotation calculators)
-- Custom Software/CRM/ERP (BMS, School Management, Billing, Invoice systems)
-- E-Commerce websites (Razorpay/Stripe/PayPal/UPI, product catalogs)
-- Mobile App Development (Flutter, React Native, Android/iOS)
-- Game Development (Unity, Unreal, Godot, HTML5/Phaser)
-- UI/UX Design (Figma, Adobe XD, Canva Pro)
-- SEO Optimization (On-Page, Technical, Local SEO)
-- Hosting & Maintenance (Vercel, AWS, Docker, CI/CD)
-- Logo Design & Brand Identity (logo formats, brand kit, guidelines)
-- Billing/Invoice Software (GST invoices, expense tracking)
-- School Management Software (student portals, fee management)
-- API Development & Integration (REST, GraphQL, payment gateways)
-- Cloud/DevOps (AWS, Docker, CI/CD pipelines, SSL, server monitoring)
+${servicesSummary}
 
 PORTFOLIO PROJECTS:
-- FreshBite: Restaurant ordering platform (Next.js, Stripe, Supabase)
-- VaultHR: HR management suite (React, Node.js, PostgreSQL, AWS)
-- Luxe Interiors: Design studio portfolio (Next.js, Framer Motion)
-- MediConnect: Clinic booking system (Next.js, Supabase, Twilio)
-- GreenLeaf: Organic e-commerce store (Next.js, Stripe, Sanity Vercel)
-- UrbanFit: Gym management platform (React, FastAPI, PostgreSQL, Razorpay)
+${portfolioSummary}
 
-PRICING OVERVIEW:
-- Starter Web: Rs.8,999-25,000
-- Standard Platform: Rs.50,000-1,50,000
-- Custom/Enterprise: Quote-based
-- Hotel Starter: Rs.12,999 (5 pages, 7-day delivery)
-- Hotel Pro: Rs.24,999 (12 pages, 12-day delivery, 3-month support)
-- Travel Basic: Rs.15,999
-- Travel Pro: Rs.28,999
-- Travel Premium: Rs.55,000+
-- Simple Software: Rs.30,000-75,000
-- Mid Software: Rs.75,000-2,00,000
-- AI Features: Grok API integration
-
-PAYMENT TERMS:
-- 50/50 split (advance + on delivery) for Launch & Pro packs
-- Milestone-based for Enterprise
-- Standard: Net 15 or Net 30 days per SOW
-- Invoices raised on SOW signing/milestone completion
-
-ENGAGEMENT PROCESS (4 steps):
-1. Discovery & Strategy (31-point Client Discovery Checklist)
-2. UI/UX Design (shared with client for feedback)
-3. Development (Next.js, React, Node.js)
-4. Testing & Launch (QA, performance, deployment, admin training)
-
-PRE-REQUISITES before starting:
-- Completed scope checklist
-- Final logo & brand guidelines
-- Written copy for site
-- High-resolution media
-- Legal pages (Privacy Policy, Terms of Service)
-- Domain & hosting access credentials
-
-REFUND POLICY:
-- Initial deposits non-refundable once discovery/design started
-- Approved milestone payments non-refundable
-- Mid-development cancellation: billed for work completed to that date
-- After final deployment and source code handover, no refunds are issued - a bug-fixing warranty period is provided post-launch
-- Monthly maintenance/retainer: cancel with 30 days written notice; billed for current month; no partial month refunds
-- Digital products are final sale
-- Exceptional disputes reviewed case-by-case. Contact: support@logicintelligencetechnologies.in.
-
-SUPPORT & MAINTENANCE:
-- Digital Launch Pack: 1 month free support
-- Business Pro Pack: 3 months free support
-- Enterprise Pack: 6 months free support
-- After free support: paid maintenance plans available
-- Full source code transferred to client upon project completion
-- Every inquiry responded to within 24 hours (primary: WhatsApp +91 93428 77474)
-
-FOUNDER & COMPANY:
-- Founder & CEO: Vikash Saravanan
-- Registered: Logic Intelligence Technologies Private Limited (CIN: U72900TZ2026PTC123456)
-- Based in: Coimbatore, Tamil Nadu, India
-- Tagline: "Where Logic Meets Innovation"
-- Bio: First-year B.Tech student in AI & Data Science who founded the company to bring modern, AI-integrated web and software development to businesses in Coimbatore and beyond, with transparent pricing and a free demo before you pay.
-- Responses guaranteed within 24 hours
-- Primary contact: WhatsApp +91 93428 77474
-
-COMPANY CONTACT DETAILS:
-- Email: ${COMPANY.email}
-- WhatsApp / Phone: ${COMPANY.phone}
 - Website: ${COMPANY.websiteUrl}
 - Contact Form: ${COMPANY.websiteUrl}/contact
+- Phone / WhatsApp: ${COMPANY.phone}
+- Email: ${COMPANY.email}
+- Location: Coimbatore, Tamil Nadu, India
 
 GUIDELINES:
 1. Always be helpful, confident, and professional.
@@ -159,24 +108,53 @@ GUIDELINES:
 6. For technical questions (coding, AI, DevOps): answer from general knowledge but direct company-specific questions to the team
 7. Payment/SOW questions: reference the Statement of Work terms
 8. NDA/confidentiality: mutual NDA protects info for 2-3 years
+9. Never invent guaranteed rankings, impossible timelines, or prices not listed above.
 `;
 }
 
+function cleanedContent(rawText: string): string {
+  return (rawText || "")
+    .replace(/<think>[\s\S]*?<\/think>/gi, "")
+    .replace(/<\/?think>/gi, "")
+    .trim();
+}
+
+function newRunId(): string {
+  return `run_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
 export async function POST(request: Request) {
+  const started = Date.now();
+  const runId = newRunId();
   let userText = "";
+  let modelName: string | null = null;
+  let failureClass: FailureClass = "none";
+  let usedFallback = false;
+  let success = false;
+  let reply = "";
+  let tokensIn = 0;
+  let tokensOut = 0;
+  let toolCalls = 0;
+  let steps = 1;
+
   try {
-    const { text, file, max_tokens } = await request.json();
+    const body = await request.json();
+    const { text, file, max_tokens } = body;
     userText = typeof text === "string" ? text : "";
     const { apiKey, apiUrl, model } = getAiConfig();
+    modelName = model;
 
     let injectedContext = "";
-    if (file && file.type === 'application/pdf') {
+    if (file && file.type === "application/pdf") {
       try {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
-        const pdfModule = require('pdf-parse');
+        const pdfModule = require("pdf-parse");
         const pdfParse = pdfModule?.default || pdfModule;
-        const base64Data = (file.data as string).replace(/^data:application\/pdf;base64,/, '');
-        const buffer = Buffer.from(base64Data, 'base64');
+        const base64Data = (file.data as string).replace(
+          /^data:application\/pdf;base64,/,
+          ""
+        );
+        const buffer = Buffer.from(base64Data, "base64");
         const parsed = await pdfParse(buffer);
         const extractedText = parsed.text?.trim();
         if (extractedText) {
@@ -188,26 +166,48 @@ export async function POST(request: Request) {
         injectedContext = `\n\n[PDF uploaded but could not be parsed. Please paste the text content directly.]`;
       }
     } else if (file && file.data) {
-      injectedContext = `\n\nUploaded File (${file.name || 'file'}):\n"""\n${(file.data as string).slice(0, 8000)}\n"""`;
+      injectedContext = `\n\nUploaded File (${file.name || "file"}):\n"""\n${(file.data as string).slice(0, 8000)}\n"""`;
     }
-
-    const rag_context = injectedContext;
 
     const systemContent = `
 ${buildSystemPrompt()}
 
 Verified Company Facts (use these exactly; do not alter numbers or terms):
-${rag_context}`;
+${injectedContext}`;
 
     const messages = [
-      {"role": "system", "content": systemContent},
-      {"role": "user", "content": text}
+      { role: "system", content: systemContent },
+      { role: "user", content: text },
     ];
 
-    // No AI key configured — always answer with local knowledge instead of failing.
     if (!apiKey) {
-      const fallback = getLocalFallbackReply(text);
-      return NextResponse.json({ success: true, generated_text: fallback, reply: fallback });
+      usedFallback = true;
+      failureClass = "dependency";
+      reply = getLocalFallbackReply(userText);
+      success = Boolean(reply);
+      const latency_ms = Date.now() - started;
+      await logAgentRun({
+        run_id: runId,
+        agent_role: "logic-ai",
+        success,
+        steps,
+        tool_calls: 0,
+        tokens_in: 0,
+        tokens_out: 0,
+        latency_ms,
+        cost_usd: 0,
+        failure_class: failureClass,
+        faithfulness: estimateFaithfulness(userText, reply),
+        used_fallback: true,
+        model: "local-fallback",
+        meta: { reason: "missing_api_key" },
+      });
+      return NextResponse.json({
+        success: true,
+        generated_text: reply,
+        reply,
+        run_id: runId,
+      });
     }
 
     const response = await fetch(apiUrl, {
@@ -218,7 +218,7 @@ ${rag_context}`;
       },
       body: JSON.stringify({
         model,
-        messages: messages,
+        messages,
         temperature: 0.3,
         top_p: 0.9,
         max_tokens: typeof max_tokens === "number" ? max_tokens : 800,
@@ -229,49 +229,157 @@ ${rag_context}`;
     if (!response.ok) {
       const errText = await response.text();
       console.error("AI model error:", response.status, errText);
-      // Fall back to local knowledge so the page always answers.
-      const fallback = getLocalFallbackReply(text);
-      return NextResponse.json({ success: true, generated_text: fallback, reply: fallback });
+      usedFallback = true;
+      failureClass = response.status >= 500 ? "infra" : "model";
+      reply = getLocalFallbackReply(userText);
+      success = Boolean(reply);
+      await logAgentRun({
+        run_id: runId,
+        agent_role: "logic-ai",
+        success,
+        steps,
+        tool_calls: 0,
+        tokens_in: 0,
+        tokens_out: 0,
+        latency_ms: Date.now() - started,
+        cost_usd: 0,
+        failure_class: failureClass,
+        faithfulness: estimateFaithfulness(userText, reply),
+        used_fallback: true,
+        model: modelName,
+        meta: { http_status: response.status },
+      });
+      return NextResponse.json({
+        success: true,
+        generated_text: reply,
+        reply,
+        run_id: runId,
+      });
     }
 
     const data = await response.json();
+    const usage = data.usage || {};
+    tokensIn = Number(usage.prompt_tokens || usage.input_tokens || 0);
+    tokensOut = Number(usage.completion_tokens || usage.output_tokens || 0);
     const assistantMessage = data.choices?.[0]?.message;
 
     if (assistantMessage?.tool_calls?.length) {
+      toolCalls = assistantMessage.tool_calls.length;
+      steps = 1 + toolCalls;
+      success = true;
+      await logAgentRun({
+        run_id: runId,
+        agent_role: "logic-ai",
+        success: true,
+        steps,
+        tool_calls: toolCalls,
+        tokens_in: tokensIn,
+        tokens_out: tokensOut,
+        latency_ms: Date.now() - started,
+        cost_usd: estimateCostUsd(tokensIn, tokensOut, modelName),
+        failure_class: "none",
+        used_fallback: false,
+        model: modelName,
+        meta: { tool_call_only: true },
+      });
       return NextResponse.json({
         success: true,
         tool_calls: assistantMessage.tool_calls,
         generated_text: "",
         reply: "",
+        run_id: runId,
       });
     }
 
-    const rawContent = assistantMessage?.content || assistantMessage?.reasoning_content || "";
+    const rawContent =
+      assistantMessage?.content || assistantMessage?.reasoning_content || "";
     const cleaned = cleanedContent(rawContent);
 
     if (cleaned) {
-      return NextResponse.json({
-        success: true,
-        generated_text: cleaned,
-        reply: cleaned,
-      });
+      reply = cleaned;
+      success = true;
+    } else {
+      usedFallback = true;
+      failureClass = "model";
+      reply = getLocalFallbackReply(userText);
+      success = Boolean(reply);
     }
 
-    const fallback = getLocalFallbackReply(text);
+    const latency_ms = Date.now() - started;
+    const faithfulness = estimateFaithfulness(userText, reply);
+    const escalated =
+      /whatsapp|contact form|speak (to|with) (a|our) (human|engineer|team)/i.test(
+        reply
+      ) && /quote|enterprise|consult/i.test(userText);
+
+    await logAgentRun({
+      run_id: runId,
+      agent_role: "logic-ai",
+      success,
+      steps,
+      tool_calls: toolCalls,
+      tokens_in: tokensIn,
+      tokens_out: tokensOut,
+      latency_ms,
+      cost_usd: estimateCostUsd(tokensIn, tokensOut, modelName),
+      failure_class: failureClass,
+      faithfulness,
+      escalated,
+      used_fallback: usedFallback,
+      model: modelName,
+      meta: {
+        has_file: Boolean(file),
+      },
+    });
+
     return NextResponse.json({
       success: true,
-      generated_text: fallback,
-      reply: fallback,
+      generated_text: reply,
+      reply,
+      run_id: runId,
+      metrics: {
+        latency_ms,
+        tokens_in: tokensIn,
+        tokens_out: tokensOut,
+        faithfulness,
+        used_fallback: usedFallback,
+      },
     });
-  } catch (error: any) {
-    console.error('Error connecting to AI:', error);
-    const fallback = getLocalFallbackReply(userText);
-    return NextResponse.json({ success: true, generated_text: fallback, reply: fallback });
+  } catch (error: unknown) {
+    console.error("Error connecting to AI:", error);
+    usedFallback = true;
+    const err = error as { name?: string };
+    failureClass =
+      err?.name === "TimeoutError" || err?.name === "AbortError"
+        ? "timeout"
+        : "unknown";
+    reply = getLocalFallbackReply(userText);
+    success = Boolean(reply);
+    await logAgentRun({
+      run_id: runId,
+      agent_role: "logic-ai",
+      success,
+      steps: 1,
+      tool_calls: 0,
+      tokens_in: 0,
+      tokens_out: 0,
+      latency_ms: Date.now() - started,
+      cost_usd: 0,
+      failure_class: failureClass,
+      faithfulness: estimateFaithfulness(userText, reply),
+      used_fallback: true,
+      model: modelName,
+      meta: {
+        error_name: err?.name || "Error",
+      },
+    });
+    return NextResponse.json({
+      success: true,
+      generated_text: reply,
+      reply,
+      run_id: runId,
+    });
   }
-}
-
-function cleanedContent(rawText: string): string {
-  return (rawText || "").replace(/<think>[\s\S]*?<\/think>/gi, "").replace(/<\/?think>/gi, "").trim();
 }
 
 export const dynamic = "force-dynamic";
