@@ -27,7 +27,7 @@ export async function sendEmail({
   subject,
   react,
   replyTo,
-  from = "noReply",
+  from = "vikash",
   attachments,
 }: SendEmailOptions): Promise<EmailResponse> {
   const senderKey = (typeof from === 'string' && from.includes('@')) 
@@ -73,5 +73,5 @@ function getSenderKeyFromEmail(email: string): keyof typeof COMPANY.emails {
       return key as keyof typeof COMPANY.emails;
     }
   }
-  return "noReply";
+  return "vikash";
 }
