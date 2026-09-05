@@ -5,14 +5,26 @@ import { sendEmail } from "@/lib/email/send-email";
 import PaymentReceivedEmail from "@/emails/payment-received-email";
 import * as React from "react";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-08-26.dahlia" as any,
-});
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    throw new Error("STRIPE_SECRET_KEY is not configured");
+  }
+  return new Stripe(key, {
+    apiVersion: "2026-08-26.dahlia" as any,
+  });
+}
 
 export async function POST(req: NextRequest) {
   try {
+    const stripe = getStripe();
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    if (!webhookSecret) {
+      return NextResponse.json({ error: "Webhook secret not configured" }, { status: 500 });
+    }
     const payload = await req.text();
     const signature = req.headers.get("stripe-signature");
 

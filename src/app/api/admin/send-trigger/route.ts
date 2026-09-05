@@ -11,6 +11,8 @@ import DemoReadyEmail from '@/emails/demo-ready-email';
 import TestimonialRequestEmail from '@/emails/testimonial-request-email';
 import MaintenanceRenewalEmail from '@/emails/maintenance-renewal-email';
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 // Quick hardcoded secret or proper auth check for admin API. 
 // Since this is just a tool for the admin, we check an Authorization header or rely on session.

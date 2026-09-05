@@ -235,6 +235,5 @@ function cleanedContent(rawText: string): string {
   return rawText.replace('<\\/think>', '').split('</think>')[0].trim();
 }
 
-export const config = {
-  runtime: "nodejs",
-};
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";

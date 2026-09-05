@@ -5,6 +5,9 @@ import NewLeadNotificationEmail from "@/emails/new-lead-notification-email";
 import LeadConfirmationEmail from "@/emails/lead-confirmation-email";
 import * as React from "react";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();

@@ -6,6 +6,9 @@ import { servicesData } from "@/data/servicesData";
 import { portfolioProjects } from "@/data/portfolioData";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 // --- Config ---------------------------------------------------------------
 
 const GROQ_API_KEY = process.env.GROK_API_KEY || process.env.XAI_API_KEY || process.env.GROQ_API_KEY;

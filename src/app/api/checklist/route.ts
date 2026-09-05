@@ -10,6 +10,8 @@ import * as React from "react";
 import path from "path";
 import fs from "fs";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 const schema = z.object({
   email: z.string().email("Invalid email address").optional(),

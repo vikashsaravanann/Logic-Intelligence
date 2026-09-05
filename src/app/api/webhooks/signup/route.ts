@@ -5,6 +5,9 @@ import WelcomeEmail from "@/emails/welcome-email";
 import crypto from "crypto";
 import * as React from "react";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export async function POST(req: Request) {
   try {
     const authHeader = req.headers.get("Authorization");

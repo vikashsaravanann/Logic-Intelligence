@@ -4,6 +4,9 @@ import { cookies } from 'next/headers';
 import { sendLoginNotification } from "@/lib/email/send-login-notification";
 import { env } from "@/config/env";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export async function POST(request: Request) {
   try {
     const cookieStore = await cookies();

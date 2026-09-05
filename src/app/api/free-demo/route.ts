@@ -7,6 +7,8 @@ import { env } from "@/config/env";
 import { z } from "zod";
 import * as React from "react";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),

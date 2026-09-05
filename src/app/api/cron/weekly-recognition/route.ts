@@ -3,6 +3,9 @@ import { supabaseAdmin } from '@/lib/supabase/admin';
 import { sendEmail } from '@/lib/email/send-email';
 import { WeeklyRecognitionEmail } from '@/emails/weekly-recognition-email';
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization');
   
