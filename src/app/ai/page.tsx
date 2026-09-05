@@ -699,7 +699,7 @@ export default function GeminiAiChatPage() {
                   <div className="message-text" style={{ color: msg.role === 'assistant' ? '#E8E9EA' : '#C4C7C5', width: '100%' }}>
                     {msg.role === 'assistant' ? (
                       <div className="markdown-body">
-                        <ReactMarkdown components={MarkdownComponents}>{msg.text.replace('[QUOTE_BUILDER]', '')}</ReactMarkdown>
+                        <ReactMarkdown components={MarkdownComponents}>{msg.text.replace(/\[QUOTE_BUILDER\]/g, '').replace(/\[HUMAN_HANDOFF\]/g, '').replace(/\[CHECKOUT:.*?\]/g, '').replace(/\[CALENDAR\]/g, '')}</ReactMarkdown>
                         {msg.text.includes('[QUOTE_BUILDER]') && (
                            <div className="artifact-trigger code-artifact" onClick={() => setArtifact({ type: 'table', content: (
                              <div style={{ padding: '20px', background: '#fff', color: '#000', borderRadius: '8px' }}>
@@ -732,6 +732,29 @@ export default function GeminiAiChatPage() {
                              <div>
                                <div className="title">Live Support Handoff</div>
                                <div className="subtitle">Click to escalate to Vikash</div>
+                             </div>
+                           </div>
+                        )}
+                        {msg.text.includes('[CHECKOUT:') && (
+                           <div className="artifact-trigger code-artifact" onClick={() => alert('Redirecting to secure Stripe Checkout...')}>
+                             <span className="icon">💳</span>
+                             <div>
+                               <div className="title">Secure Checkout</div>
+                               <div className="subtitle">Pay Advance via Stripe / Razorpay</div>
+                             </div>
+                           </div>
+                        )}
+                        {msg.text.includes('[CALENDAR]') && (
+                           <div className="artifact-trigger code-artifact" onClick={() => setArtifact({ type: 'table', content: (
+                             <div style={{ padding: '20px', background: '#fff', color: '#000', borderRadius: '8px', height: '100%', minHeight: '500px' }}>
+                               <h3>Schedule a Strategy Call</h3>
+                               <iframe src="https://calendly.com/" width="100%" height="100%" frameBorder="0" style={{ minHeight: '450px' }}></iframe>
+                             </div>
+                           ) })}>
+                             <span className="icon">📅</span>
+                             <div>
+                               <div className="title">Book a Meeting</div>
+                               <div className="subtitle">Schedule a Google Meet with our team</div>
                              </div>
                            </div>
                         )}

@@ -193,6 +193,8 @@ GUIDELINES:
 4. If asked about custom quotes, large enterprise projects, or technical consultations, encourage them to connect with our engineers directly on WhatsApp (${COMPANY.phone}) or email (${COMPANY.email}).
 5. **CRITICAL INSTRUCTION**: If the user explicitly asks for a "quote", "price estimate", or "how much for a custom website", you MUST include the exact string \`[QUOTE_BUILDER]\` anywhere in your response. This will trigger our interactive UI slider for them.
 6. **CRITICAL INSTRUCTION**: If the user explicitly asks to "talk to a human", "talk to vikash", "create a ticket", or is highly frustrated, you MUST include the exact string \`[HUMAN_HANDOFF]\` in your response. This will trigger an automatic support ticket creation.
+7. **CRITICAL INSTRUCTION**: If the user explicitly agrees to buy a package (e.g. "I'm ready to buy the Pro Pack" or "Let's start"), output \`[CHECKOUT:PackageName]\`.
+8. **CRITICAL INSTRUCTION**: If the user asks to schedule a call, meeting, or demo, output \`[CALENDAR]\`.
 `;
 
   if (leadContext) {
