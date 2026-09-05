@@ -1,5 +1,6 @@
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { DollarSign, Briefcase, MessageSquare, Ticket } from "lucide-react";
+import { AdminTriggers } from "./components/AdminTriggers";
 
 export const revalidate = 0; // Opt out of caching for real-time admin data
 
@@ -86,7 +87,9 @@ export default async function AdminDashboardPage() {
           <div className="text-2xl font-bold text-white">{data.ticketsCount}</div>
           <p className="text-xs text-neutral-500 mt-1">Awaiting support response</p>
         </div>
-      </div>
+            </div>
+
+      <AdminTriggers />
     </div>
   );
 }
