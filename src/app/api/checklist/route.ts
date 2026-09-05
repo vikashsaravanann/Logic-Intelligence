@@ -67,7 +67,7 @@ export async function POST(req: Request) {
            }
         }
 
-        await sendEmail({
+        const emailResult = await sendEmail({
           to: email,
           from: "hello",
           subject: isLeadMagnet ? "Your Website Launch Checklist" : "We received your request! (Logic Intelligence Technologies)",
@@ -79,6 +79,9 @@ export async function POST(req: Request) {
               }),
           attachments: attachments.length > 0 ? attachments : undefined
         });
+      if (!emailResult.success) {
+        console.error("[Email Error] Failed to send email:", emailResult.message);
+      }
       } catch (emailErr) {
         console.error("[Email Error] Checklist user confirmation failed:", emailErr);
       }
@@ -86,7 +89,7 @@ export async function POST(req: Request) {
 
     // 3. Send Internal Notification Email
     try {
-      await sendEmail({
+      const emailResult = await sendEmail({
         to: env.LEAD_NOTIFICATION_EMAIL,
         from: "noReply",
         replyTo: email || undefined,
@@ -99,6 +102,9 @@ export async function POST(req: Request) {
             submissionDate: new Date().toISOString()
           }),
       });
+      if (!emailResult.success) {
+        console.error("[Email Error] Failed to send email:", emailResult.message);
+      }
     } catch (emailErr) {
       console.error("[Email Error] Checklist internal notification failed:", emailErr);
     }

@@ -1,4 +1,6 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+const fs = require('fs');
+
+let code = `import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { sendEmail } from "@/lib/email/send-email";
@@ -29,10 +31,10 @@ export async function GET(request: Request) {
           from: "noReply",
           subject: "New login to your Logic Intelligence account",
           react: React.createElement(LoginNotificationEmail, { 
-            email: session.user.email,
-            loginTimestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-            userAgent: request.headers.get("user-agent") || "Unknown Device",
-            deviceSummary: "Unknown Location" // Could use Vercel headers for precise location
+            userEmail: session.user.email,
+            time: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+            device: request.headers.get("user-agent") || "Unknown Device",
+            location: "India" // Could use Vercel headers for precise location
           }),
         });
         
@@ -42,9 +44,12 @@ export async function GET(request: Request) {
       }
     } catch (error: any) {
       console.error('Auth callback error:', error);
-      return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(error.message || 'Authentication failed')}`, request.url));
+      return NextResponse.redirect(new URL(\`/login?error=\${encodeURIComponent(error.message || 'Authentication failed')}\`, request.url));
     }
   }
 
   return NextResponse.redirect(new URL('/dashboard', request.url));
 }
+`;
+fs.writeFileSync('src/app/auth/callback/route.ts', code);
+console.log("Updated Callback");

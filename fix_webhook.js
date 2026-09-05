@@ -1,4 +1,6 @@
-import { NextResponse } from "next/server";
+const fs = require('fs');
+
+let code = `import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email/send-email";
 import WelcomeEmail from "@/emails/welcome-email";
@@ -56,7 +58,7 @@ export async function POST(req: Request) {
 
     // 2. Idempotency Check
     if (profileData?.welcome_email_sent) {
-      console.log(`Welcome email already sent to ${userEmail}`);
+      console.log(\`Welcome email already sent to \${userEmail}\`);
       return NextResponse.json({ message: "Already sent" });
     }
 
@@ -82,3 +84,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+`;
+fs.writeFileSync('src/app/api/webhooks/signup/route.ts', code);
+console.log("Updated Webhook");

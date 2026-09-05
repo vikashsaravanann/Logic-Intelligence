@@ -104,6 +104,8 @@ function AuthContent() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        // Trigger login notification quietly in background
+        fetch('/api/auth/login-notification', { method: 'POST' }).catch(() => {});
         router.push("/dashboard");
       }
     } catch (err: any) {

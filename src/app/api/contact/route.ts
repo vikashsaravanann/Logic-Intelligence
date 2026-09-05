@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
     // 1. Send internal notification (don't let failure block user confirmation)
     try {
-      await sendEmail({
+      const emailResult = await sendEmail({
         to: process.env.LEAD_NOTIFICATION_EMAIL || "contact@logicintelligencetechnologies.in",
         from: "noReply",
         replyTo: email,
@@ -47,18 +47,24 @@ export async function POST(req: Request) {
           submissionDate: new Date().toISOString()
         })
       });
+      if (!emailResult.success) {
+        console.error("[Email Error] Failed to send email:", emailResult.message);
+      }
     } catch (emailErr) {
       console.error("[Email Error] Internal notification failed:", emailErr);
     }
 
     // 2. Send user confirmation
     try {
-      await sendEmail({
+      const emailResult = await sendEmail({
         to: email,
         from: "hello",
         subject: "We received your request! (Logic Intelligence Technologies)",
         react: React.createElement(LeadConfirmationEmail, { fullName, service: projectType })
       });
+      if (!emailResult.success) {
+        console.error("[Email Error] Failed to send email:", emailResult.message);
+      }
     } catch (emailErr) {
       console.error("[Email Error] User confirmation failed:", emailErr);
     }
