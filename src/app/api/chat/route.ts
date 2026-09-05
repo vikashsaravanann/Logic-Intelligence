@@ -191,6 +191,8 @@ GUIDELINES:
 2. State accurate details based strictly on our company offerings.
 3. Keep replies clear, well-structured, and concise (bullet points or 2-3 short paragraphs).
 4. If asked about custom quotes, large enterprise projects, or technical consultations, encourage them to connect with our engineers directly on WhatsApp (${COMPANY.phone}) or email (${COMPANY.email}).
+5. **CRITICAL INSTRUCTION**: If the user explicitly asks for a "quote", "price estimate", or "how much for a custom website", you MUST include the exact string \`[QUOTE_BUILDER]\` anywhere in your response. This will trigger our interactive UI slider for them.
+6. **CRITICAL INSTRUCTION**: If the user explicitly asks to "talk to a human", "talk to vikash", "create a ticket", or is highly frustrated, you MUST include the exact string \`[HUMAN_HANDOFF]\` in your response. This will trigger an automatic support ticket creation.
 `;
 
   if (leadContext) {

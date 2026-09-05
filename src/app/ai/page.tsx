@@ -698,7 +698,44 @@ export default function GeminiAiChatPage() {
                 <div className="message-content">
                   <div className="message-text" style={{ color: msg.role === 'assistant' ? '#E8E9EA' : '#C4C7C5', width: '100%' }}>
                     {msg.role === 'assistant' ? (
-                      <div className="markdown-body"><ReactMarkdown components={MarkdownComponents}>{msg.text}</ReactMarkdown></div>
+                      <div className="markdown-body">
+                        <ReactMarkdown components={MarkdownComponents}>{msg.text.replace('[QUOTE_BUILDER]', '')}</ReactMarkdown>
+                        {msg.text.includes('[QUOTE_BUILDER]') && (
+                           <div className="artifact-trigger code-artifact" onClick={() => setArtifact({ type: 'table', content: (
+                             <div style={{ padding: '20px', background: '#fff', color: '#000', borderRadius: '8px' }}>
+                               <h3>Custom Project Estimator</h3>
+                               <p>Drag the sliders below to estimate your project cost.</p>
+                               <div style={{ margin: '20px 0' }}>
+                                 <label>Number of Pages: <input type="range" min="1" max="50" defaultValue="5" style={{ width: '100%' }} /></label>
+                                 <br/><br/>
+                                 <label><input type="checkbox" /> Add E-Commerce (+₹25,000)</label>
+                                 <br/>
+                                 <label><input type="checkbox" /> Add SEO Optimization (+₹10,000)</label>
+                               </div>
+                               <button style={{ background: '#000', color: '#fff', padding: '10px 20px', borderRadius: '4px' }} onClick={() => alert('Proposal Requested! Our team will contact you.')}>Request Final Proposal</button>
+                             </div>
+                           ) })}>
+                             <span className="icon">💰</span>
+                             <div>
+                               <div className="title">Interactive Quote Builder</div>
+                               <div className="subtitle">Click to calculate pricing</div>
+                             </div>
+                           </div>
+                        )}
+                        {msg.text.includes('[HUMAN_HANDOFF]') && (
+                           <div className="artifact-trigger code-artifact" onClick={async () => {
+                             if (!user) return alert('Please log in to create a support ticket.');
+                             await supabase.from('support_tickets').insert({ user_id: user.id, subject: 'Escalated from AI Chat', message: 'User requested human assistance via AI chat.', status: 'Open' });
+                             alert('Support ticket created successfully! Vikash will review it shortly.');
+                           }}>
+                             <span className="icon">🤝</span>
+                             <div>
+                               <div className="title">Live Support Handoff</div>
+                               <div className="subtitle">Click to escalate to Vikash</div>
+                             </div>
+                           </div>
+                        )}
+                      </div>
                     ) : (
                       msg.text
                     )}
