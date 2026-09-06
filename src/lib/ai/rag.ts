@@ -187,33 +187,83 @@ export function formatRetrievedContext(chunks: KnowledgeChunk[]): string {
 }
 
 /**
- * Optional OpenAI embedding for dense half of hybrid search.
- * Returns null if OPENAI_API_KEY is unset — FTS-only still works.
+ * Dense embedding for hybrid RAG.
+ * Priority: Groq nomic-embed-text-v1_5 (768-d) → xAI embedding models → OpenAI (if 768-d compatible only skipped).
+ * Schema is vector(768). FTS still works when all providers fail.
  */
-export async function embedQuery(text: string): Promise<number[] | null> {
-  const key = process.env.OPENAI_API_KEY;
-  if (!key) return null;
-  try {
-    const res = await fetch("https://api.openai.com/v1/embeddings", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: process.env.OPENAI_EMBEDDING_MODEL || "text-embedding-3-small",
-        input: text.slice(0, 8000),
-      }),
-      signal: AbortSignal.timeout(8000),
+type EmbedProvider = {
+  name: string;
+  url: string;
+  key: string;
+  model: string;
+};
+
+function embedProviders(): EmbedProvider[] {
+  const list: EmbedProvider[] = [];
+  if (process.env.GROQ_API_KEY) {
+    list.push({
+      name: "groq",
+      url: "https://api.groq.com/openai/v1/embeddings",
+      key: process.env.GROQ_API_KEY,
+      model: process.env.GROQ_EMBEDDING_MODEL || "nomic-embed-text-v1_5",
     });
-    if (!res.ok) return null;
-    const json = (await res.json()) as {
-      data?: Array<{ embedding: number[] }>;
-    };
-    return json.data?.[0]?.embedding ?? null;
-  } catch {
-    return null;
   }
+  const xaiKey = process.env.XAI_API_KEY || process.env.GROK_API_KEY;
+  if (xaiKey) {
+    list.push({
+      name: "xai",
+      url: process.env.XAI_EMBEDDING_URL || "https://api.x.ai/v1/embeddings",
+      key: xaiKey,
+      model: process.env.XAI_EMBEDDING_MODEL || "grok-embedding-small",
+    });
+  }
+  // OpenAI text-embedding-3-small is 1536-d — incompatible with vector(768). Skip unless forced.
+  if (process.env.OPENAI_API_KEY && process.env.EMBEDDING_ALLOW_OPENAI_768 === "true") {
+    list.push({
+      name: "openai",
+      url: "https://api.openai.com/v1/embeddings",
+      key: process.env.OPENAI_API_KEY,
+      model: process.env.OPENAI_EMBEDDING_MODEL || "text-embedding-3-small",
+    });
+  }
+  return list;
+}
+
+export async function embedQuery(text: string): Promise<number[] | null> {
+  const input = text.slice(0, 8000);
+  for (const p of embedProviders()) {
+    try {
+      const res = await fetch(p.url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${p.key}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ model: p.model, input }),
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!res.ok) {
+        console.warn(`[embed] ${p.name} HTTP ${res.status}`);
+        continue;
+      }
+      const json = (await res.json()) as {
+        data?: Array<{ embedding: number[] }>;
+      };
+      const emb = json.data?.[0]?.embedding;
+      if (emb?.length) {
+        // Accept 768; if provider returns other dims, skip to next
+        if (emb.length === 768 || process.env.EMBEDDING_FLEX_DIMS === "true") {
+          return emb;
+        }
+        console.warn(
+          `[embed] ${p.name} returned ${emb.length}-d vector; expected 768`
+        );
+      }
+    } catch (err) {
+      console.warn(`[embed] ${p.name} failed`, err);
+    }
+  }
+  return null;
 }
 
 /** Upsert seed chunks (no embeddings). Safe to re-run. */
