@@ -74,17 +74,9 @@ function getSmtpConfig(sender: SenderKey): SmtpConfig {
   return { host, port, secure, user, pass, from };
 }
 
-function buildTransportOptions(
-  config: SmtpConfig
-): SMTPTransport.Options & Record<string, unknown> {
+function buildTransportOptions(config: SmtpConfig): SMTPTransport.Options {
   const rejectUnauthorized =
     process.env.SMTP_TLS_REJECT_UNAUTHORIZED !== "false";
-
-  const tls: SMTPTransport.Options["tls"] = {
-    minVersion: "TLSv1.2",
-    servername: config.host,
-    rejectUnauthorized,
-  };
 
   const options: SMTPTransport.Options = {
     host: config.host,
@@ -97,12 +89,13 @@ function buildTransportOptions(
     connectionTimeout: 15000,
     greetingTimeout: 15000,
     socketTimeout: 25000,
-    tls,
+    requireTLS: !config.secure && config.port === 587,
+    tls: {
+      minVersion: "TLSv1.2",
+      servername: config.host,
+      rejectUnauthorized,
+    },
   };
-
-  if (!config.secure && config.port === 587) {
-    (options as SMTPTransport.Options & { requireTLS?: boolean }).requireTLS = true;
-  }
 
   return options;
 }
@@ -117,7 +110,7 @@ export function getSmtpTransporter(
   const cached = transporterCache.get(cacheKey);
   if (cached) return cached;
 
-  const transporter = nodemailer.createTransport(buildTransportOptions(config) as SMTPTransport.Options);
+  const transporter = nodemailer.createTransport(buildTransportOptions(config));
   transporterCache.set(cacheKey, transporter);
   return transporter;
 }
@@ -157,7 +150,13 @@ export function resolveSender(sender: SenderKey): SenderKey {
 
 export async function verifySmtpConnection(
   sender: SenderKey = "noReply"
-): Promise<{ ok: boolean; host: string; port: number; secure: boolean; error?: string }> {
+): Promise<{
+  ok: boolean;
+  host: string;
+  port: number;
+  secure: boolean;
+  error?: string;
+}> {
   try {
     const resolved = resolveSender(sender);
     const config = getSmtpConfig(resolved);
