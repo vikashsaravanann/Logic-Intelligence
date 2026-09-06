@@ -1,8 +1,7 @@
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { redirect } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import BackToHome from "@/components/ui/back-to-home";
 import { env } from "@/config/env";
 import { getUserPortalData } from "./actions/portal";
 import { PortalTabs } from "./components/portal-tabs";
@@ -48,10 +47,8 @@ export default async function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050B14] text-white font-sans flex flex-col items-center py-12 px-4 relative">
-      <Link href="/" className="absolute top-8 left-8 text-sm font-semibold text-zinc-400 hover:text-white flex items-center gap-2 transition-colors">
-        <ArrowLeft size={16} /> Back to Home
-      </Link>
+    <div className="min-h-screen bg-[#0A0F1E] text-white font-sans flex flex-col items-center py-8 sm:py-12 px-4 relative">
+      <BackToHome />
 
       <div className="w-full mt-12">
         <div className="text-center mb-10">

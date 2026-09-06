@@ -21,10 +21,9 @@ export const WelcomeEmail = ({ email }: WelcomeEmailProps) => {
         </Text>
 
         <Text style={paragraph}>
-          We are absolutely thrilled to have you onboard. As a premium digital
-          engineering and web development studio, our goal is to help you
-          <strong> build, scale, and transform </strong>
-          your digital presence.
+          Thank you for joining Logic Intelligence Technologies. We help businesses
+          design, build, and ship production web products and practical AI systems
+          — with clear scope, transparent pricing, and measurable outcomes.
         </Text>
 
         <Text style={paragraph}>
@@ -62,7 +61,7 @@ export const WelcomeEmail = ({ email }: WelcomeEmailProps) => {
         </Text>
 
         <Text style={closingText}>
-          Welcome to the future of digital engineering!
+          We look forward to building with you.
         </Text>
 
         <Section style={signatureBlock}>

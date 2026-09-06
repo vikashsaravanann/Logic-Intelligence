@@ -82,27 +82,27 @@ export default function SupportChatWidget() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close support chat" : "Open support chat"}
-        className={`fixed bottom-6 right-6 z-50 transition-all duration-300 hover:scale-105 mb-safe ${
+        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 transition-all duration-300 hover:scale-105 mb-safe ${
           open
-            ? "w-14 h-14 rounded-full bg-primary text-black shadow-xl shadow-primary/30 flex items-center justify-center"
-            : "h-14 pl-2 pr-4 rounded-full bg-[#0A0F1E]/95 border border-primary/40 backdrop-blur-xl shadow-[0_10px_35px_rgba(0,191,255,0.25)] hover:border-primary flex items-center gap-3 text-white group"
+            ? "w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-primary text-black shadow-xl shadow-primary/30 flex items-center justify-center"
+            : "h-11 sm:h-14 pl-1.5 pr-2.5 sm:pl-2 sm:pr-4 rounded-full bg-[#0A0F1E]/95 border border-primary/40 backdrop-blur-xl shadow-[0_10px_35px_rgba(0,191,255,0.25)] hover:border-primary flex items-center gap-2 sm:gap-3 text-white group"
         }`}
       >
         {open ? (
           <X className="w-6 h-6" />
         ) : (
           <>
-            <div className="w-11 h-11 rounded-full bg-white p-0 flex items-center justify-center shrink-0 shadow-md overflow-hidden border border-white/20">
+            <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-white p-0 flex items-center justify-center shrink-0 shadow-md overflow-hidden border border-white/20">
               <img
                 src="/assets/logo.jpg"
                 alt="Logic Intelligence Logo"
                 className="w-full h-full object-contain rounded-full"
               />
             </div>
-            <div className="flex items-center justify-center pr-1 select-none">
-              <span className="text-[10px] text-zinc-400 font-semibold flex items-center gap-1.5 uppercase tracking-wider">
+            <div className="hidden xs:flex sm:flex items-center justify-center pr-1 select-none">
+              <span className="text-[9px] sm:text-[10px] text-zinc-400 font-semibold flex items-center gap-1.5 uppercase tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                AI Chatbot
+                AI Chat
               </span>
             </div>
           </>
@@ -117,7 +117,7 @@ export default function SupportChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed bottom-24 right-6 z-50 w-[92vw] max-w-[360px] h-[75vh] max-h-[600px] rounded-2xl border border-white/10 bg-[#060B18]/95 backdrop-blur-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden pb-safe"
+            className="fixed bottom-20 sm:bottom-24 right-4 sm:right-6 z-50 w-[min(92vw,360px)] h-[min(70vh,560px)] sm:h-[75vh] sm:max-h-[600px] rounded-2xl border border-white/10 bg-[#060B18]/95 backdrop-blur-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden pb-safe"
           >
             {/* Header */}
             <div className="relative px-5 py-4 bg-gradient-to-r from-[#0A0F1E] to-[#12172B] border-b border-white/10 flex items-center gap-3">

@@ -9,6 +9,7 @@ import { COMPANY } from '@/config/company';
 import { Rocket, Briefcase, Building2, Wrench, AlertTriangle, Square, Copy, RefreshCcw, Paperclip, Mic, Table, Code2, Calculator, Handshake, CreditCard, Calendar, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
+import BackToHome from '@/components/ui/back-to-home';
 
 
 const STORAGE_KEY = 'lit_ai_chats';
@@ -845,8 +846,7 @@ const [input, setInput] = useState('');
                 )}
               </a>
             ) : null}
-            <a href="/" className="px-5 py-2 rounded-full text-[12px] font-medium text-black bg-[#E3E3E3] hover:bg-white transition-all whitespace-nowrap text-decoration-none">
-              <ArrowLeft size={14} className="inline-block mr-1" /> Back to Home</a>
+            <div className="p-3"><BackToHome className="!px-0 !pt-0" /></div>
           </div>
         </div>
 
