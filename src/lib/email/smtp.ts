@@ -1,5 +1,6 @@
 import "server-only";
 import nodemailer from "nodemailer";
+import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import { COMPANY } from "@/config/company";
 
 type SenderKey = keyof typeof COMPANY.emails;
@@ -22,8 +23,9 @@ const senderEnvMap: Record<SenderKey, string> = {
 };
 
 /**
- * Resolve SMTP for a sender. Falls back to shared SMTP_* / NOREPLY credentials
- * so hello/support still deliver when only one mailbox password is configured.
+ * Zoho Mail (India): smtp.zoho.in
+ * - Port 465 → implicit TLS (secure: true)
+ * - Port 587 → STARTTLS (secure: false, requireTLS: true)
  */
 function getSmtpConfig(sender: SenderKey): SmtpConfig {
   const prefix = senderEnvMap[sender];
@@ -32,11 +34,13 @@ function getSmtpConfig(sender: SenderKey): SmtpConfig {
     process.env[`SMTP_${prefix}_HOST`] ||
     process.env.SMTP_HOST ||
     "smtp.zoho.in";
+
   const port = Number(
-    process.env[`SMTP_${prefix}_PORT`] || process.env.SMTP_PORT || 465
+    process.env[`SMTP_${prefix}_PORT`] || process.env.SMTP_PORT || 587
   );
-  // Zoho: 465 = SSL (secure true); 587 = STARTTLS (secure false)
-  const secureEnv = process.env[`SMTP_${prefix}_SECURE`] ?? process.env.SMTP_SECURE;
+
+  const secureEnv =
+    process.env[`SMTP_${prefix}_SECURE`] ?? process.env.SMTP_SECURE;
   const secure =
     secureEnv === "true"
       ? true
@@ -50,7 +54,6 @@ function getSmtpConfig(sender: SenderKey): SmtpConfig {
     COMPANY.emails[sender] ||
     COMPANY.emails.noReply;
 
-  // Prefer sender-specific password, then shared, then no-reply mailbox password
   const pass =
     process.env[`SMTP_${prefix}_PASS`] ||
     process.env.SMTP_PASS ||
@@ -63,21 +66,27 @@ function getSmtpConfig(sender: SenderKey): SmtpConfig {
     `"${COMPANY.displayName}" <${COMPANY.emails[sender]}>`;
 
   if (!host || !user || !pass) {
-    throw new Error(`SMTP config missing for sender: ${sender} (prefix: ${prefix})`);
+    throw new Error(
+      `SMTP config missing for sender: ${sender} (prefix: ${prefix})`
+    );
   }
 
   return { host, port, secure, user, pass, from };
 }
 
-const transporterCache = new Map<string, nodemailer.Transporter>();
+function buildTransportOptions(
+  config: SmtpConfig
+): SMTPTransport.Options {
+  const rejectUnauthorized =
+    process.env.SMTP_TLS_REJECT_UNAUTHORIZED !== "false";
 
-export function getSmtpTransporter(sender: SenderKey = "noReply"): nodemailer.Transporter {
-  const config = getSmtpConfig(sender);
-  const cacheKey = `${config.host}:${config.port}:${config.user}`;
-  const cached = transporterCache.get(cacheKey);
-  if (cached) return cached;
+  const tls: SMTPTransport.Options["tls"] = {
+    minVersion: "TLSv1.2",
+    servername: config.host,
+    rejectUnauthorized,
+  };
 
-  const transporter = nodemailer.createTransport({
+  const options: SMTPTransport.Options = {
     host: config.host,
     port: config.port,
     secure: config.secure,
@@ -88,12 +97,30 @@ export function getSmtpTransporter(sender: SenderKey = "noReply"): nodemailer.Tr
     connectionTimeout: 15000,
     greetingTimeout: 15000,
     socketTimeout: 25000,
-    tls: {
-      // Hostinger / shared hosting certs
-      rejectUnauthorized: process.env.SMTP_TLS_REJECT_UNAUTHORIZED !== "false",
-    },
-  });
+    tls,
+    pool: true,
+    maxConnections: 3,
+    maxMessages: 50,
+  };
 
+  if (!config.secure && config.port === 587) {
+    options.requireTLS = true;
+  }
+
+  return options;
+}
+
+const transporterCache = new Map<string, nodemailer.Transporter>();
+
+export function getSmtpTransporter(
+  sender: SenderKey = "noReply"
+): nodemailer.Transporter {
+  const config = getSmtpConfig(sender);
+  const cacheKey = `${config.host}:${config.port}:${config.user}:${config.secure}`;
+  const cached = transporterCache.get(cacheKey);
+  if (cached) return cached;
+
+  const transporter = nodemailer.createTransport(buildTransportOptions(config));
   transporterCache.set(cacheKey, transporter);
   return transporter;
 }
@@ -110,7 +137,6 @@ export function isSmtpConfigured(sender: SenderKey = "noReply"): boolean {
     getSmtpConfig(sender);
     return true;
   } catch {
-    // Last resort: any shared password means we can send as noReply
     if (sender !== "noReply") {
       try {
         getSmtpConfig("noReply");
@@ -123,12 +149,47 @@ export function isSmtpConfigured(sender: SenderKey = "noReply"): boolean {
   }
 }
 
-/** Prefer requested sender; if not fully configured, use noReply. */
 export function resolveSender(sender: SenderKey): SenderKey {
   try {
     getSmtpConfig(sender);
     return sender;
   } catch {
     return "noReply";
+  }
+}
+
+export async function verifySmtpConnection(
+  sender: SenderKey = "noReply"
+): Promise<{ ok: boolean; host: string; port: number; secure: boolean; error?: string }> {
+  try {
+    const resolved = resolveSender(sender);
+    const config = getSmtpConfig(resolved);
+    const transporter = getSmtpTransporter(resolved);
+    await transporter.verify();
+    return {
+      ok: true,
+      host: config.host,
+      port: config.port,
+      secure: config.secure,
+    };
+  } catch (e) {
+    let host = "unknown";
+    let port = 0;
+    let secure = false;
+    try {
+      const c = getSmtpConfig(resolveSender(sender));
+      host = c.host;
+      port = c.port;
+      secure = c.secure;
+    } catch {
+      /* ignore */
+    }
+    return {
+      ok: false,
+      host,
+      port,
+      secure,
+      error: e instanceof Error ? e.message : String(e),
+    };
   }
 }
