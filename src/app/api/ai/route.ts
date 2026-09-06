@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 import { COMPANY } from "@/config/company";
 import { packagesData } from "@/data/packagesData";
-import { servicesData } from "@/data/servicesData";
-import { portfolioProjects } from "@/data/portfolioData";
 import { logAgentRun } from "@/lib/agent-eval/logger";
 import { estimateCostUsd } from "@/lib/agent-eval/cost";
 import { estimateFaithfulness } from "@/lib/agent-eval/faithfulness";
 import type { FailureClass } from "@/lib/agent-eval/types";
+import { buildCompanyKnowledgeBlock } from "@/lib/ai/knowledge";
+import {
+  AI_TOOLS,
+  dispatchToolCall,
+  loadUserMemory,
+} from "@/lib/ai/tools";
+import { env } from "@/config/env";
 
 const DEFAULT_GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const DEFAULT_MODEL = "openai/gpt-oss-120b";
@@ -17,98 +24,42 @@ function getAiConfig() {
   const apiUrl =
     process.env.GROQ_API_URL || process.env.XAI_API_URL || DEFAULT_GROQ_URL;
   let model = process.env.GROQ_MODEL || process.env.GROK_MODEL || DEFAULT_MODEL;
-  if (apiUrl.includes("x.ai")) {
-    model = "grok-beta";
-  } else if (apiUrl.includes("openrouter.ai")) {
+  if (apiUrl.includes("x.ai")) model = "grok-beta";
+  else if (apiUrl.includes("openrouter.ai"))
     model = "qwen/qwen-2.5-72b-instruct";
-  }
   return { apiKey, apiUrl, model };
 }
 
 function getLocalFallbackReply(userText: string): string {
   const lower = (userText || "").toLowerCase();
-  if (
-    lower.includes("price") ||
-    lower.includes("cost") ||
-    lower.includes("package") ||
-    lower.includes("plan") ||
-    lower.includes("pricing") ||
-    lower.includes("quote") ||
-    lower.includes("launch pack") ||
-    lower.includes("pro pack") ||
-    lower.includes("enterprise")
-  ) {
-    return `Here are our popular packages at ${COMPANY.displayName}:\n\n- **Digital Launch Pack (Rs.8,999)**: up to 5 pages, mobile-responsive, basic SEO, contact form, Google Maps, WhatsApp button, 1-month support\n- **Business Pro Pack (Rs.18,999)**: booking system, admin panel, blog, payment gateway, advanced animations, 3-month support\n- **Enterprise Pack (custom from Rs.50,000)**: dedicated project manager, unlimited pages/revisions, 6-month support\n\nFor a custom quote, reach us on WhatsApp at **${COMPANY.phone}** or email **${COMPANY.email}**.`;
+  if (/price|cost|package|plan|pricing|quote|launch pack|pro pack|enterprise/i.test(lower)) {
+    return (
+      `Packages at ${COMPANY.displayName}:\n\n` +
+      packagesData.map((p) => `- **${p.title} (${p.price})**: ${p.subtitle}`).join("\n") +
+      `\n\nWhatsApp **${COMPANY.phone}** or **${COMPANY.email}**.`
+    );
   }
-  if (
-    lower.includes("service") ||
-    lower.includes("offer") ||
-    lower.includes("build") ||
-    lower.includes("develop")
-  ) {
-    return `At ${COMPANY.displayName}, we build modern web apps, custom software/CRM/ERP, e-commerce, mobile apps, and AI integrations.\n\nTell me what you want to build and I’ll suggest the right package. You can also reach our team on WhatsApp at **${COMPANY.phone}**.`;
+  if (/demo|free/i.test(lower)) {
+    return `Yes — free demo before you pay when scope fits. Start at ${COMPANY.websiteUrl}/free-demo or WhatsApp ${COMPANY.phone}.`;
   }
-  if (
-    lower.includes("contact") ||
-    lower.includes("phone") ||
-    lower.includes("email") ||
-    lower.includes("whatsapp") ||
-    lower.includes("location") ||
-    lower.includes("office")
-  ) {
-    return `You can reach ${COMPANY.displayName} at:\n\n- **WhatsApp**: ${COMPANY.phone}\n- **Email**: ${COMPANY.email}\n- **Website**: ${COMPANY.websiteUrl}/contact\n\nWe are based in Coimbatore, Tamil Nadu, India.`;
-  }
-  if (lower.includes("demo") || lower.includes("free")) {
-    return `Yes — we offer a **free demo** before you pay. Start at ${COMPANY.websiteUrl}/free-demo or message us on WhatsApp at ${COMPANY.phone}.`;
-  }
-  return `I'm LOGIC AI from ${COMPANY.displayName}. I can help with packages, services, technical questions, and project scoping.\n\nAsk about pricing, a free demo, or what we build — or reach the team on WhatsApp at **${COMPANY.phone}**.`;
+  return `I'm LOGIC AI from ${COMPANY.displayName}. Ask about packages, services, or scoping — or WhatsApp **${COMPANY.phone}**.`;
 }
 
-function buildSystemPrompt(): string {
-  const packagesSummary = packagesData
-    .map((p) => `- ${p.title} (${p.price}): ${p.subtitle}`)
-    .join("\n");
-  const servicesSummary = servicesData
-    .map((s: { title: string; subtitle: string }) => `- ${s.title}: ${s.subtitle}`)
-    .join("\n");
-  const portfolioSummary = portfolioProjects
-    .map((p) => `- ${p.title} (${p.category})`)
-    .join("\n");
+function buildSystemPrompt(memoryContext?: string): string {
+  return `You are LOGIC AI for ${COMPANY.displayName} (${COMPANY.tagline}).
 
-  return `You are LOGIC AI, an incredibly advanced and professional AI assistant created by ${COMPANY.displayName} (${COMPANY.tagline}).
+You can write production code when asked (Next.js, React, Tailwind, Python) using Markdown code blocks.
+You answer company questions strictly from verified facts below.
 
-CAPABILITIES:
-- You are an expert software engineer and can write production-ready code (Next.js, React, Tailwind, Python, etc.) when the user asks for it. Format code beautifully using Markdown blocks.
-- You have vast general knowledge and can answer questions about today's web development news, modern frameworks, and tech trends.
-- You have comprehensive knowledge of your creator, ${COMPANY.displayName}, and will help clients understand its services.
+${buildCompanyKnowledgeBlock()}
 
-COMPANY INFORMATION
-
-PACKAGES & PRICING:
-${packagesSummary}
-
-SERVICES:
-${servicesSummary}
-
-PORTFOLIO PROJECTS:
-${portfolioSummary}
-
-- Website: ${COMPANY.websiteUrl}
-- Contact Form: ${COMPANY.websiteUrl}/contact
-- Phone / WhatsApp: ${COMPANY.phone}
-- Email: ${COMPANY.email}
-- Location: Coimbatore, Tamil Nadu, India
+${memoryContext || ""}
 
 GUIDELINES:
-1. Always be helpful, confident, and professional.
-2. State accurate details based strictly on our company offerings.
-3. Keep replies clear, well-structured, and concise (bullet points or 2-3 short paragraphs).
-4. If asked about custom quotes, large enterprise projects, or technical consultations, encourage them to connect with our engineers directly on WhatsApp (${COMPANY.phone}) or email (${COMPANY.email}).
-5. Maintain a helpful, confident, professional tone like a knowledgeable account manager.
-6. For technical questions (coding, AI, DevOps): answer from general knowledge but direct company-specific questions to the team
-7. Payment/SOW questions: reference the Statement of Work terms
-8. NDA/confidentiality: mutual NDA protects info for 2-3 years
-9. Never invent guaranteed rankings, impossible timelines, or prices not listed above.
+1. Helpful, confident, professional.
+2. Never invent prices, rankings, or impossible timelines.
+3. Use tools: capture_lead (name+email), lookup_lead_status, save_memory (logged-in only).
+4. For custom enterprise work, offer WhatsApp (${COMPANY.phone}) or email (${COMPANY.email}).
 `;
 }
 
@@ -121,6 +72,23 @@ function cleanedContent(rawText: string): string {
 
 function newRunId(): string {
   return `run_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+async function resolveUserId(): Promise<string | null> {
+  try {
+    const cookieStore = await cookies();
+    const supabase = createServerComponentClient(
+      { cookies: () => cookieStore as any },
+      {
+        supabaseUrl: env.NEXT_PUBLIC_SUPABASE_URL,
+        supabaseKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      }
+    );
+    const { data } = await supabase.auth.getUser();
+    return data.user?.id ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export async function POST(request: Request) {
@@ -139,10 +107,18 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { text, file, max_tokens } = body;
+    const { text, file, max_tokens, chat_id } = body;
     userText = typeof text === "string" ? text : "";
     const { apiKey, apiUrl, model } = getAiConfig();
     modelName = model;
+
+    const userId = await resolveUserId();
+    const memoryContext = userId ? await loadUserMemory(userId) : "";
+    const toolCtx = {
+      source: "ai_page" as const,
+      userId,
+      chatId: typeof chat_id === "string" ? chat_id : null,
+    };
 
     let injectedContext = "";
     if (file && file.type === "application/pdf") {
@@ -157,26 +133,21 @@ export async function POST(request: Request) {
         const buffer = Buffer.from(base64Data, "base64");
         const parsed = await pdfParse(buffer);
         const extractedText = parsed.text?.trim();
-        if (extractedText) {
-          injectedContext = `\n\nUploaded PDF Content:\n"""\n${extractedText.slice(0, 8000)}\n"""`;
-        } else {
-          injectedContext = `\n\n[The uploaded PDF appears to be empty or image-only. Please describe what you need help with.]`;
-        }
+        injectedContext = extractedText
+          ? `\n\nUploaded PDF Content:\n"""\n${extractedText.slice(0, 8000)}\n"""`
+          : `\n\n[PDF empty or image-only.]`;
       } catch {
-        injectedContext = `\n\n[PDF uploaded but could not be parsed. Please paste the text content directly.]`;
+        injectedContext = `\n\n[PDF could not be parsed.]`;
       }
     } else if (file && file.data) {
       injectedContext = `\n\nUploaded File (${file.name || "file"}):\n"""\n${(file.data as string).slice(0, 8000)}\n"""`;
     }
 
-    const systemContent = `
-${buildSystemPrompt()}
-
-Verified Company Facts (use these exactly; do not alter numbers or terms):
-${injectedContext}`;
-
-    const messages = [
-      { role: "system", content: systemContent },
+    const conversation: Array<Record<string, unknown>> = [
+      {
+        role: "system",
+        content: `${buildSystemPrompt(memoryContext)}\n${injectedContext}`,
+      },
       { role: "user", content: text },
     ];
 
@@ -185,7 +156,6 @@ ${injectedContext}`;
       failureClass = "dependency";
       reply = getLocalFallbackReply(userText);
       success = Boolean(reply);
-      const latency_ms = Date.now() - started;
       await logAgentRun({
         run_id: runId,
         agent_role: "logic-ai",
@@ -194,7 +164,7 @@ ${injectedContext}`;
         tool_calls: 0,
         tokens_in: 0,
         tokens_out: 0,
-        latency_ms,
+        latency_ms: Date.now() - started,
         cost_usd: 0,
         failure_class: failureClass,
         faithfulness: estimateFaithfulness(userText, reply),
@@ -210,7 +180,7 @@ ${injectedContext}`;
       });
     }
 
-    const response = await fetch(apiUrl, {
+    let response = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -218,7 +188,9 @@ ${injectedContext}`;
       },
       body: JSON.stringify({
         model,
-        messages,
+        messages: conversation,
+        tools: AI_TOOLS,
+        tool_choice: "auto",
         temperature: 0.3,
         top_p: 0.9,
         max_tokens: typeof max_tokens === "number" ? max_tokens : 800,
@@ -226,8 +198,30 @@ ${injectedContext}`;
       signal: AbortSignal.timeout(30000),
     });
 
-    if (!response.ok) {
+    if (response.status === 400) {
       const errText = await response.text();
+      if (/tool|function/i.test(errText)) {
+        response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages: conversation,
+            temperature: 0.3,
+            max_tokens: typeof max_tokens === "number" ? max_tokens : 800,
+          }),
+          signal: AbortSignal.timeout(30000),
+        });
+      } else {
+        console.error("AI model error:", 400, errText);
+      }
+    }
+
+    if (!response.ok) {
+      const errText = await response.text().catch(() => "");
       console.error("AI model error:", response.status, errText);
       usedFallback = true;
       failureClass = response.status >= 500 ? "infra" : "model";
@@ -257,38 +251,58 @@ ${injectedContext}`;
       });
     }
 
-    const data = await response.json();
+    let data = await response.json();
     const usage = data.usage || {};
     tokensIn = Number(usage.prompt_tokens || usage.input_tokens || 0);
     tokensOut = Number(usage.completion_tokens || usage.output_tokens || 0);
-    const assistantMessage = data.choices?.[0]?.message;
+    let assistantMessage = data.choices?.[0]?.message;
 
-    if (assistantMessage?.tool_calls?.length) {
-      toolCalls = assistantMessage.tool_calls.length;
+    for (let i = 0; i < 3 && assistantMessage?.tool_calls?.length; i++) {
+      toolCalls += assistantMessage.tool_calls.length;
       steps = 1 + toolCalls;
-      success = true;
-      await logAgentRun({
-        run_id: runId,
-        agent_role: "logic-ai",
-        success: true,
-        steps,
-        tool_calls: toolCalls,
-        tokens_in: tokensIn,
-        tokens_out: tokensOut,
-        latency_ms: Date.now() - started,
-        cost_usd: estimateCostUsd(tokensIn, tokensOut, modelName),
-        failure_class: "none",
-        used_fallback: false,
-        model: modelName,
-        meta: { tool_call_only: true },
+      const toolMessages: Array<Record<string, unknown>> = [];
+      for (const toolCall of assistantMessage.tool_calls) {
+        let args: Record<string, unknown> = {};
+        try {
+          args = JSON.parse(toolCall.function.arguments || "{}");
+        } catch {
+          args = {};
+        }
+        const toolResult = await dispatchToolCall(
+          toolCall.function.name,
+          args,
+          toolCtx
+        );
+        toolMessages.push({
+          role: "tool",
+          tool_call_id: toolCall.id,
+          name: toolCall.function.name,
+          content: JSON.stringify(toolResult),
+        });
+      }
+
+      const followUp = [...conversation, assistantMessage, ...toolMessages];
+      const followupResponse = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: followUp,
+          tools: AI_TOOLS,
+          tool_choice: "auto",
+          temperature: 0.3,
+          max_tokens: typeof max_tokens === "number" ? max_tokens : 800,
+        }),
+        signal: AbortSignal.timeout(30000),
       });
-      return NextResponse.json({
-        success: true,
-        tool_calls: assistantMessage.tool_calls,
-        generated_text: "",
-        reply: "",
-        run_id: runId,
-      });
+
+      if (!followupResponse.ok) break;
+      data = await followupResponse.json();
+      assistantMessage = data.choices?.[0]?.message;
+      conversation.push(...toolMessages);
     }
 
     const rawContent =
@@ -307,10 +321,6 @@ ${injectedContext}`;
 
     const latency_ms = Date.now() - started;
     const faithfulness = estimateFaithfulness(userText, reply);
-    const escalated =
-      /whatsapp|contact form|speak (to|with) (a|our) (human|engineer|team)/i.test(
-        reply
-      ) && /quote|enterprise|consult/i.test(userText);
 
     await logAgentRun({
       run_id: runId,
@@ -324,12 +334,9 @@ ${injectedContext}`;
       cost_usd: estimateCostUsd(tokensIn, tokensOut, modelName),
       failure_class: failureClass,
       faithfulness,
-      escalated,
       used_fallback: usedFallback,
       model: modelName,
-      meta: {
-        has_file: Boolean(file),
-      },
+      meta: { has_file: Boolean(file), tool_calls: toolCalls },
     });
 
     return NextResponse.json({
@@ -343,6 +350,7 @@ ${injectedContext}`;
         tokens_out: tokensOut,
         faithfulness,
         used_fallback: usedFallback,
+        tool_calls: toolCalls,
       },
     });
   } catch (error: unknown) {
@@ -369,9 +377,7 @@ ${injectedContext}`;
       faithfulness: estimateFaithfulness(userText, reply),
       used_fallback: true,
       model: modelName,
-      meta: {
-        error_name: err?.name || "Error",
-      },
+      meta: { error_name: err?.name || "Error" },
     });
     return NextResponse.json({
       success: true,
