@@ -21,40 +21,56 @@ const senderEnvMap: Record<SenderKey, string> = {
   support: "SUPPORT",
 };
 
+/**
+ * Resolve SMTP for a sender. Falls back to shared SMTP_* / NOREPLY credentials
+ * so hello/support still deliver when only one mailbox password is configured.
+ */
 function getSmtpConfig(sender: SenderKey): SmtpConfig {
   const prefix = senderEnvMap[sender];
 
-  // Fallbacks for Hostinger default configurations
-  const host = process.env[`SMTP_${prefix}_HOST`] || process.env.SMTP_HOST || "smtp.hostinger.com";
-  const port = Number(process.env[`SMTP_${prefix}_PORT`] || process.env.SMTP_PORT || 465);
-  const secure = (process.env[`SMTP_${prefix}_SECURE`] || process.env.SMTP_SECURE) === "true" || port === 465;
+  const host =
+    process.env[`SMTP_${prefix}_HOST`] ||
+    process.env.SMTP_HOST ||
+    "smtp.hostinger.com";
+  const port = Number(
+    process.env[`SMTP_${prefix}_PORT`] || process.env.SMTP_PORT || 465
+  );
+  const secure =
+    (process.env[`SMTP_${prefix}_SECURE`] || process.env.SMTP_SECURE) === "true" ||
+    port === 465;
 
-  // IMPORTANT: the SMTP auth user MUST match the mailbox that owns the password.
-  // Fall back to this sender's own company address — never to another sender's
-  // account (e.g. vikash must auth as vikash@..., not as no-reply@...).
   const user =
     process.env[`SMTP_${prefix}_USER`] ||
+    process.env.SMTP_USER ||
     COMPANY.emails[sender] ||
-    process.env.SMTP_USER;
-  const from = process.env[`SMTP_${prefix}_FROM`] || process.env.SMTP_FROM || `"${COMPANY.displayName}" <${COMPANY.emails[sender]}>`;
-  
-  // Password MUST be set in environment variables
-  const pass = process.env[`SMTP_${prefix}_PASS`] || process.env.SMTP_PASS;
+    COMPANY.emails.noReply;
 
-  if (!host || !user || !pass || !from) {
+  // Prefer sender-specific password, then shared, then no-reply mailbox password
+  const pass =
+    process.env[`SMTP_${prefix}_PASS`] ||
+    process.env.SMTP_PASS ||
+    process.env.SMTP_NOREPLY_PASS ||
+    "";
+
+  const from =
+    process.env[`SMTP_${prefix}_FROM`] ||
+    process.env.SMTP_FROM ||
+    `"${COMPANY.displayName}" <${COMPANY.emails[sender]}>`;
+
+  if (!host || !user || !pass) {
     throw new Error(`SMTP config missing for sender: ${sender} (prefix: ${prefix})`);
   }
 
   return { host, port, secure, user, pass, from };
 }
 
-const transporterCache = new Map<SenderKey, nodemailer.Transporter>();
+const transporterCache = new Map<string, nodemailer.Transporter>();
 
 export function getSmtpTransporter(sender: SenderKey = "noReply"): nodemailer.Transporter {
-  const cached = transporterCache.get(sender);
-  if (cached) return cached;
-
   const config = getSmtpConfig(sender);
+  const cacheKey = `${config.host}:${config.port}:${config.user}`;
+  const cached = transporterCache.get(cacheKey);
+  if (cached) return cached;
 
   const transporter = nodemailer.createTransport({
     host: config.host,
@@ -66,10 +82,14 @@ export function getSmtpTransporter(sender: SenderKey = "noReply"): nodemailer.Tr
     },
     connectionTimeout: 15000,
     greetingTimeout: 15000,
-    socketTimeout: 20000,
+    socketTimeout: 25000,
+    tls: {
+      // Hostinger / shared hosting certs
+      rejectUnauthorized: process.env.SMTP_TLS_REJECT_UNAUTHORIZED !== "false",
+    },
   });
 
-  transporterCache.set(sender, transporter);
+  transporterCache.set(cacheKey, transporter);
   return transporter;
 }
 
@@ -77,7 +97,6 @@ export function getSmtpFromAddress(sender: SenderKey = "noReply"): string {
   const prefix = senderEnvMap[sender];
   const envFrom = process.env[`SMTP_${prefix}_FROM`] || process.env.SMTP_FROM;
   if (envFrom) return envFrom;
-  
   return `"${COMPANY.displayName}" <${COMPANY.emails[sender]}>`;
 }
 
@@ -86,6 +105,25 @@ export function isSmtpConfigured(sender: SenderKey = "noReply"): boolean {
     getSmtpConfig(sender);
     return true;
   } catch {
+    // Last resort: any shared password means we can send as noReply
+    if (sender !== "noReply") {
+      try {
+        getSmtpConfig("noReply");
+        return true;
+      } catch {
+        return false;
+      }
+    }
     return false;
+  }
+}
+
+/** Prefer requested sender; if not fully configured, use noReply. */
+export function resolveSender(sender: SenderKey): SenderKey {
+  try {
+    getSmtpConfig(sender);
+    return sender;
+  } catch {
+    return "noReply";
   }
 }
