@@ -411,3 +411,15 @@ p, h1, h2, h3, h4, h5, h6, li, span, a, td, th {
     height: 3.25rem !important;
   }
 }
+
+
+/* DESKTOP_LAPTOP_NAV_OPT — md+ only; mobile unchanged */
+@media (min-width: 768px) {
+  html { font-size: 16px; }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  /* Laptop: keep nav labels on one line */
+  nav a {
+    white-space: nowrap;
+  }
+}

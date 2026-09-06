@@ -119,9 +119,10 @@ export default function AboutPage() {
           <div className="relative h-[380px] rounded-3xl overflow-hidden border border-white/10">
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 mix-blend-overlay" />
             <img
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
-              alt="Logic Intelligence Technologies team at work"
-              className="w-full h-full object-cover opacity-60"
+              src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=85"
+              alt="Modern software studio workspace — Logic Intelligence Technologies, Coimbatore"
+              className="w-full h-full object-cover opacity-80"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1E] via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6 right-6">
