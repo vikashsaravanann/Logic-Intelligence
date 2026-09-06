@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import {
   LogOut, Home, Users, Briefcase, FileText,
-  Search, Bell, Activity, Globe
+  Search, Bell, Activity, Globe, Share2
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -53,6 +53,7 @@ export default function DashboardLayout({
             { icon: Briefcase, label: 'Active Projects', href: '/dashboard/projects' },
             { icon: FileText, label: 'Finances', href: '/dashboard/finances' },
             { icon: Activity, label: 'Analytics', href: '/dashboard/analytics' },
+            { icon: Share2, label: 'Omni Publisher', href: '/omni' },
           ].map((item, idx) => {
             const isActive = pathname === item.href;
             return (
