@@ -71,5 +71,66 @@
     "query": "Can you build an online store with UPI payments?",
     "must_include_any": ["E-Commerce", "commerce", "Razorpay", "payment"],
     "expected_sources": ["services", "packages"]
+  },
+  {
+    "id": "para-first-website",
+    "query": "This is my first time putting my business online, what do you recommend?",
+    "must_include_any": ["Launch", "8,999", "8999", "demo"],
+    "expected_sources": ["packages", "policy"],
+    "notes": "Support paraphrase — new online presence"
+  },
+  {
+    "id": "para-booking-payments",
+    "query": "We need bookings and online payments on the website",
+    "must_include_any": ["Pro", "18,999", "18999", "payment", "booking"],
+    "expected_sources": ["packages"]
+  },
+  {
+    "id": "para-how-to-start",
+    "query": "How do we start a project with you?",
+    "must_include_any": ["demo", "WhatsApp", "contact", "50%"],
+    "expected_sources": ["policy", "packages"]
+  },
+  {
+    "id": "para-timeline-launch",
+    "query": "How fast can a basic business website go live?",
+    "must_include_any": ["5", "7", "day", "Launch"],
+    "expected_sources": ["packages"]
+  },
+  {
+    "id": "para-cancel-money-back",
+    "query": "If I change my mind after paying advance can I get money back?",
+    "must_include_any": ["non-refundable", "deposit", "discovery", "design"],
+    "expected_sources": ["policy"]
+  },
+  {
+    "id": "para-maintenance-after",
+    "query": "What happens after free support ends?",
+    "must_include_any": ["maintenance", "support", "month"],
+    "expected_sources": ["policy", "packages"]
+  },
+  {
+    "id": "para-coimbatore-hotel",
+    "query": "Hotel in Coimbatore needs a site so guests book direct not OTA",
+    "must_include_any": ["hotel", "hospitality", "booking"],
+    "expected_sources": ["services"]
+  },
+  {
+    "id": "para-custom-software",
+    "query": "We need custom CRM software not just a brochure site",
+    "must_include_any": ["Enterprise", "50,000", "50000", "custom"],
+    "expected_sources": ["packages", "services"]
+  },
+  {
+    "id": "para-ai-chatbot",
+    "query": "Can you add an AI chatbot to our existing site?",
+    "must_include_any": ["AI", "chat", "assistant", "RAG"],
+    "expected_sources": ["services", "packages"]
+  },
+  {
+    "id": "para-team-contact",
+    "query": "I want to talk to a human on the team today",
+    "must_include_any": ["93428", "WhatsApp", "email", "support"],
+    "expected_sources": ["policy"]
   }
 ]

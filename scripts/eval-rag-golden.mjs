@@ -26,14 +26,14 @@ const packages = [
     source: "packages",
     title: "Digital Launch Pack",
     content:
-      "Digital Launch Pack Starting from ₹8,999. up to 5 pages. 1 month free support. Payment 50% advance 50% on delivery.",
+      "Digital Launch Pack Starting from ₹8,999. up to 5 pages. 1 month free support. Payment 50% advance 50% on delivery. Delivery about 5-7 working days. Best first website Launch pack for local shop.",
     is_price_constrained: true,
   },
   {
     source: "packages",
     title: "Business Pro Pack",
     content:
-      "Business Pro Pack Starting from ₹18,999. booking system payment gateway. 3 months support.",
+      "Business Pro Pack Starting from ₹18,999. booking system online payments payment gateway. 3 months support. Bookings and payments.",
     is_price_constrained: true,
   },
   {
@@ -64,7 +64,7 @@ const policies = [
     source: "policy",
     title: "Support windows",
     content:
-      "Digital Launch Pack includes about 1 month free support. Business Pro Pack about 3 months. Enterprise about 6 months.",
+      "Digital Launch Pack includes about 1 month free support. Business Pro Pack about 3 months. Enterprise about 6 months. After free support paid maintenance plans available.",
     is_price_constrained: true,
   },
   {
@@ -78,12 +78,18 @@ const policies = [
     source: "policy",
     title: "Contact",
     content:
-      "WhatsApp/Phone +91 93428 77474. Email support@logicintelligencetechnologies.in.",
+      "WhatsApp/Phone +91 93428 77474. Email support@logicintelligencetechnologies.in. Talk to a human on the team via WhatsApp or support email.",
     is_price_constrained: false,
   },
 ];
 
 const services = [
+  {
+    source: "services",
+    title: "AI chatbot and RAG assistants",
+    content: "AI chatbot RAG assistant integration for existing sites and custom apps.",
+    is_price_constrained: false,
+  },
   {
     source: "services",
     title: "Hotel & Hospitality Website Development",
