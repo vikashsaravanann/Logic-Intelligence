@@ -146,7 +146,8 @@ export default function AboutPage() {
                 <img
                   src={COMPANY.founder.photoPath}
                   alt={`${COMPANY.founder.name} — ${COMPANY.founder.title}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center"
+                  style={{ objectPosition: "center 20%" }}
                 />
               </div>
               <div className="text-center md:text-left">
@@ -206,41 +207,105 @@ export default function AboutPage() {
 
       {/* Story */}
       <section className="py-12 sm:py-16 px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center">
-          <div className="space-y-5">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white">Our story</h2>
-            <p className="text-zinc-300 leading-relaxed">
-              {COMPANY.displayName} started in 2026 in Coimbatore — India&apos;s
-              engineering city — as a focused technology startup. The goal was
-              simple: give local and pan-India businesses access to the same
-              quality of product engineering that large enterprises expect, at a
-              pace and price that startups and SMEs can actually use.
-            </p>
-            <p className="text-zinc-300 leading-relaxed">
-              Too many teams still face expensive agencies, vague proposals, and
-              template sites sold as custom work. We work differently: free demo
-              when the scope fits, fixed-scope packages, and real AI capability
-              when it improves operations — not as a buzzword.
-            </p>
-            <p className="text-zinc-400 leading-relaxed">
-              We are an independent technology startup, not a private limited
-              company. That keeps us lean, accountable, and close to the product —
-              while we deliver with the same professional standards clients expect
-              from any serious engineering partner.
-            </p>
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">Our story</h2>
+          <p className="text-zinc-400 leading-relaxed text-sm sm:text-base">
+            {COMPANY.displayName} began in Coimbatore as a focused technology startup —
+            built to give growing businesses production-grade web and AI products without
+            traditional agency overhead.
+          </p>
+        </div>
+
+        <div className="space-y-14 sm:space-y-20">
+          {/* Block 1 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="space-y-4 order-2 md:order-1">
+              <span className="text-primary text-xs font-bold uppercase tracking-widest">Origin</span>
+              <h3 className="text-xl sm:text-2xl font-bold text-white">Started where engineering lives</h3>
+              <p className="text-zinc-300 leading-relaxed text-sm sm:text-base">
+                In 2026 we set up in Coimbatore — India&apos;s engineering city — to work
+                alongside founders and operators who need software that ships. The brief was
+                never to be the biggest agency; it was to be the most dependable product partner
+                for clear scope, honest timelines, and measurable outcomes.
+              </p>
+              <p className="text-zinc-400 leading-relaxed text-sm sm:text-base">
+                We remain an independent technology startup — lean, accountable, and close to
+                the work — not a private limited corporate shell.
+              </p>
+            </div>
+            <div className="relative h-[260px] sm:h-[320px] rounded-3xl overflow-hidden border border-white/10 order-1 md:order-2 shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
+              <img
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=85"
+                alt="Modern studio workspace in Coimbatore"
+                className="w-full h-full object-cover object-center"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1E]/90 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-5 right-5">
+                <p className="text-white font-bold text-sm">Coimbatore HQ mindset</p>
+                <p className="text-zinc-400 text-xs">Engineering-first product studio</p>
+              </div>
+            </div>
           </div>
-          <div className="relative h-[320px] sm:h-[380px] rounded-3xl overflow-hidden border border-white/10">
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 mix-blend-overlay z-[1]" />
-            <img
-              src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=85"
-              alt="Modern software studio workspace — Logic Intelligence Technologies, Coimbatore"
-              className="w-full h-full object-cover opacity-85"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1E] via-transparent to-transparent z-[2]" />
-            <div className="absolute bottom-6 left-6 right-6 z-[3]">
-              <p className="text-white font-bold text-sm">Coimbatore, Tamil Nadu</p>
-              <p className="text-zinc-400 text-xs">Startup studio · Web &amp; AI products</p>
+
+          {/* Block 2 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="relative h-[260px] sm:h-[320px] rounded-3xl overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
+              <img
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85"
+                alt="Collaborative product team workshop"
+                className="w-full h-full object-cover object-center"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1E]/90 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-5 right-5">
+                <p className="text-white font-bold text-sm">Partnership over proposals</p>
+                <p className="text-zinc-400 text-xs">Discovery → build → launch</p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <span className="text-primary text-xs font-bold uppercase tracking-widest">How we work</span>
+              <h3 className="text-xl sm:text-2xl font-bold text-white">Clarity before code</h3>
+              <p className="text-zinc-300 leading-relaxed text-sm sm:text-base">
+                Clients come to us after confusing quotes and template sites sold as custom work.
+                Our process starts with discovery, a transparent package or SOW, and — when the
+                scope fits — a free demo so you can see direction before you invest.
+              </p>
+              <p className="text-zinc-400 leading-relaxed text-sm sm:text-base">
+                You work directly with the people building the product. That keeps feedback fast
+                and decisions grounded in what will actually ship.
+              </p>
+            </div>
+          </div>
+
+          {/* Block 3 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="space-y-4 order-2 md:order-1">
+              <span className="text-primary text-xs font-bold uppercase tracking-widest">What we ship</span>
+              <h3 className="text-xl sm:text-2xl font-bold text-white">Web products &amp; practical AI</h3>
+              <p className="text-zinc-300 leading-relaxed text-sm sm:text-base">
+                From marketing sites and commerce to internal tools and AI assistants, we focus on
+                systems that stay maintainable after launch — documented handoff, sensible hosting,
+                and AI only when it improves a real workflow.
+              </p>
+              <p className="text-zinc-400 leading-relaxed text-sm sm:text-base">
+                Whether you need a Digital Launch Pack or a custom enterprise build, the standard
+                is the same: professional delivery, honest communication, and software your team
+                can run with confidence.
+              </p>
+            </div>
+            <div className="relative h-[260px] sm:h-[320px] rounded-3xl overflow-hidden border border-white/10 order-1 md:order-2 shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
+              <img
+                src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=85"
+                alt="Technology and AI product development"
+                className="w-full h-full object-cover object-center"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1E]/90 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-5 right-5">
+                <p className="text-white font-bold text-sm">Production-ready systems</p>
+                <p className="text-zinc-400 text-xs">Web · AI · long-term support</p>
+              </div>
             </div>
           </div>
         </div>

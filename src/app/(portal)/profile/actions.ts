@@ -5,6 +5,11 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { env } from "@/config/env";
 import { revalidatePath } from "next/cache";
 
+/**
+ * Persist profile fields that exist on public.profiles:
+ * id, full_name, company_name, phone_number, role, …
+ * (email lives on auth.users — do not write email here)
+ */
 export async function updateProfile(formData: FormData) {
   try {
     const cookieStore = await cookies();
@@ -16,42 +21,52 @@ export async function updateProfile(formData: FormData) {
       }
     );
 
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
     if (!session) {
-      return { success: false, error: "Not authenticated" };
+      return { success: false, error: "Not authenticated. Please sign in again." };
     }
 
-    const fullName = formData.get("fullName") as string;
-    const companyName = formData.get("companyName") as string;
-    const phoneNumber = formData.get("phoneNumber") as string;
+    const fullName = String(formData.get("fullName") || "").trim();
+    const companyName = String(formData.get("companyName") || "").trim();
+    const phoneNumber = String(formData.get("phoneNumber") || "").trim();
+
+    if (!fullName) {
+      return { success: false, error: "Full name is required." };
+    }
 
     const { supabaseAdmin } = await import("@/lib/supabase/admin");
-    const { error } = await supabaseAdmin
-      .from("profiles")
-      .upsert({
+    const { error } = await supabaseAdmin.from("profiles").upsert(
+      {
         id: session.user.id,
-        email: session.user.email,
         full_name: fullName,
-        company_name: companyName,
-        phone_number: phoneNumber,
-      })
-      .eq("id", session.user.id);
+        company_name: companyName || null,
+        phone_number: phoneNumber || null,
+      },
+      { onConflict: "id" }
+    );
 
     if (error) {
       console.error("Failed to update profile:", error);
       return { success: false, error: error.message };
     }
 
-    // Also update user metadata for full_name
-    await supabase.auth.updateUser({
-      data: { full_name: fullName }
-    });
+    try {
+      await supabase.auth.updateUser({
+        data: { full_name: fullName },
+      });
+    } catch (metaErr) {
+      console.warn("Profile DB saved; auth metadata update skipped:", metaErr);
+    }
 
     revalidatePath("/profile");
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error updating profile:", err);
-    return { success: false, error: err.message || "An unexpected error occurred" };
+    const message =
+      err instanceof Error ? err.message : "An unexpected error occurred";
+    return { success: false, error: message };
   }
 }

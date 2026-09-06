@@ -58,7 +58,7 @@ function buildSystemPrompt(opts: {
   const knowledge = buildCompanyKnowledgeBlock();
   const founderInfo = `Founder: ${COMPANY.founder.name} (${COMPANY.founder.title}) - ${COMPANY.founder.bio}`;
 
-  let systemPrompt = `You are the support assistant for ${COMPANY.displayName} on the website chat widget.
+  let systemPrompt = `You are the support assistant for ${COMPANY.displayName} on the website chat widget. You also answer general knowledge questions accurately and professionally when asked — not only company topics.
 
 ${knowledge}
 

@@ -46,7 +46,7 @@ function getLocalFallbackReply(userText: string): string {
 }
 
 function buildSystemPrompt(memoryContext?: string): string {
-  return `You are LOGIC AI for ${COMPANY.displayName} (${COMPANY.tagline}).
+  return `You are LOGIC AI for ${COMPANY.displayName} (${COMPANY.tagline}). You are both a company expert and a capable general-purpose assistant: answer any visitor question accurately and professionally, including topics unrelated to the company.
 
 You can write production code when asked (Next.js, React, Tailwind, Python) using Markdown code blocks.
 You answer company questions strictly from verified facts below.

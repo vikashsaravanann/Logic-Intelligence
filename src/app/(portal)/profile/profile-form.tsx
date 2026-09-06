@@ -47,7 +47,9 @@ export default function ProfileForm({
     const result = await updateProfile(formData);
 
     if (result.success) {
-      setMessage({ type: 'success', text: 'Profile updated successfully!' });
+      setMessage({ type: 'success', text: 'Profile saved. Your details are up to date.' });
+      // Clear success banner after a few seconds
+      setTimeout(() => setMessage(null), 5000);
     } else {
       setMessage({ type: 'error', text: result.error || 'Failed to update profile' });
     }

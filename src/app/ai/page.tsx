@@ -35,10 +35,10 @@ function saveChats(chats: any) {
 }
 
 const SUGGESTIONS = [
-  { icon: <Rocket size={22} className="text-[#8ab4f8]" />, title: 'Get a project quote', subtitle: 'Transparent pricing for websites, apps & AI systems', prompt: 'I need a quote for a custom business website with booking and payments. What package fits and what is the timeline?' },
-  { icon: <Briefcase size={22} className="text-[#81c995]" />, title: 'Automate my business', subtitle: 'CRM, workflows, and AI assistants for operations', prompt: 'How can Logic Intelligence Technologies automate lead capture, follow-ups, and reporting for a Coimbatore service business?' },
-  { icon: <Building2 size={22} className="text-[#c58af9]" />, title: 'Enterprise AI systems', subtitle: 'RAG, fine-tuned models, and secure deployments', prompt: 'Explain how you build production RAG and LoRA-based AI systems for enterprise clients, including security and hosting.' },
-  { icon: <Handshake size={22} className="text-[#fdd663]" />, title: 'Book a free demo', subtitle: 'See a working demo before you pay anything', prompt: 'I want a free demo of a business website. What do you need from me and how does the free-demo process work?' },
+  { icon: <Rocket size={22} className="text-[#00BFFF]" />, title: 'Get a project quote', subtitle: 'Transparent pricing for websites, apps & AI systems', prompt: 'I need a quote for a custom business website with booking and payments. What package fits and what is the timeline?' },
+  { icon: <Briefcase size={22} className="text-[#00FF88]" />, title: 'Automate my business', subtitle: 'CRM, workflows, and AI assistants for operations', prompt: 'How can Logic Intelligence Technologies automate lead capture, follow-ups, and reporting for a Coimbatore service business?' },
+  { icon: <Building2 size={22} className="text-[#a78bfa]" />, title: 'Enterprise AI systems', subtitle: 'RAG, fine-tuned models, and secure deployments', prompt: 'Explain how you build production RAG and LoRA-based AI systems for enterprise clients, including security and hosting.' },
+  { icon: <Handshake size={22} className="text-[#fbbf24]" />, title: 'Book a free demo', subtitle: 'See a working demo before you pay anything', prompt: 'I want a free demo of a business website. What do you need from me and how does the free-demo process work?' },
 ];
 
 // Brain-circuit logo matching the company brand mark
@@ -554,8 +554,10 @@ const [input, setInput] = useState('');
           display: flex;
           height: 100vh;
           width: 100vw;
-          background: #131314;
-          color: #E3E3E3;
+          background: radial-gradient(ellipse at 20% 0%, rgba(0,191,255,0.12), transparent 50%),
+                      radial-gradient(ellipse at 80% 100%, rgba(123,47,190,0.1), transparent 45%),
+                      #0A0F1E;
+          color: #E8EEF7;
           font-family: 'Inter', system-ui, -apple-system, sans-serif;
           overflow: hidden;
           position: fixed;
@@ -574,14 +576,14 @@ const [input, setInput] = useState('');
         .welcome-fade { animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
         .gemini-gradient-text {
-          background: linear-gradient(74deg, #4285f4 0%, #9b72cb 46%, #d96570 100%);
+          background: linear-gradient(90deg, #00BFFF 0%, #7B2FBE 55%, #00FF88 100%);
           -webkit-background-clip: text; background-clip: text; color: transparent;
         }
 
         /* --- Sidebar --- */
         .sidebar {
           width: 288px; min-width: 288px;
-          background-color: #1E1F20;
+          background-color: #0D1424;
           padding: 18px 12px;
           display: flex; flex-direction: column;
           height: 100%;
@@ -590,14 +592,14 @@ const [input, setInput] = useState('');
         }
         .sidebar-brand { display: flex; align-items: center; gap: 12px; padding: 6px 10px 22px 10px; }
         .brand-text-wrap { display: flex; flex-direction: column; line-height: 1.15; }
-        .brand-text-main { font-size: 14.5px; font-weight: 700; letter-spacing: 0.4px; color: #E3E3E3; }
+        .brand-text-main { font-size: 14.5px; font-weight: 700; letter-spacing: 0.4px; color: #E8EEF7; }
         .brand-text-sub { font-size: 9.5px; font-weight: 500; letter-spacing: 1.8px; color: #8E918F; margin-top: 2px; }
 
         .new-chat-btn {
           display: flex; align-items: center; gap: 10px;
           padding: 11px 16px; border-radius: 22px; border: none;
           background: #282A2C;
-          color: #E3E3E3; cursor: pointer; font-size: 13.5px; font-weight: 500;
+          color: #E8EEF7; cursor: pointer; font-size: 13.5px; font-weight: 500;
           margin-bottom: 14px; width: 100%;
           transition: all 0.2s ease;
         }
@@ -615,7 +617,7 @@ const [input, setInput] = useState('');
           transition: background-color 0.15s ease;
         }
         .history-item:hover { background-color: #282A2C; }
-        .history-item.active { background: #424548; color: #E3E3E3; }
+        .history-item.active { background: #424548; color: #E8EEF7; }
         .history-item-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .delete-btn {
           background: none; border: none; color: #8E918F; cursor: pointer;
@@ -625,7 +627,7 @@ const [input, setInput] = useState('');
         .delete-btn:hover { color: #F28B82; }
 
         /* --- Main area --- */
-        .main-area { flex: 1; display: flex; flex-direction: column; position: relative; min-width: 0; z-index: 1; background: #131314; }
+        .main-area { flex: 1; display: flex; flex-direction: column; position: relative; min-width: 0; z-index: 1; background: #0A0F1E; }
         .top-bar {
           padding: 16px 24px; display: flex; align-items: center; justify-content: center; position: relative;
         }
@@ -639,7 +641,7 @@ const [input, setInput] = useState('');
         
         .suggestion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 760px; width: 100%; }
         .suggestion-card {
-          background-color: #1E1F20; border-radius: 16px;
+          background-color: #0D1424; border-radius: 16px;
           padding: 20px; text-align: left; cursor: pointer; font-size: 14px;
           transition: all 0.2s ease;
           display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
@@ -647,7 +649,7 @@ const [input, setInput] = useState('');
         }
         .suggestion-card:hover { background-color: #282A2C; transform: translateY(-2px); }
         .suggestion-icon { font-size: 24px; padding-bottom: 8px; }
-        .suggestion-card .s-title { color: #E3E3E3; font-weight: 500; font-size: 15px; }
+        .suggestion-card .s-title { color: #E8EEF7; font-weight: 500; font-size: 15px; }
         .suggestion-card .s-subtitle { color: #A0A3A6; font-size: 13px; font-weight: 400; line-height: 1.4; }
 
         .avatar {
@@ -660,17 +662,17 @@ const [input, setInput] = useState('');
         .avatar-assistant { background: transparent; }
 
         /* Professional Markdown Styling */
-        .markdown-body { font-size: 15.5px; line-height: 1.6; word-wrap: break-word; color: #E3E3E3; }
+        .markdown-body { font-size: 15.5px; line-height: 1.6; word-wrap: break-word; color: #E8EEF7; }
         .markdown-body p { margin-top: 0; margin-bottom: 16px; }
         .markdown-body p:last-child { margin-bottom: 0; }
-        .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 { margin-top: 24px; margin-bottom: 12px; font-weight: 600; color: #E3E3E3; }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 { margin-top: 24px; margin-bottom: 12px; font-weight: 600; color: #E8EEF7; }
         .markdown-body ul, .markdown-body ol { margin-top: 0; margin-bottom: 16px; padding-left: 24px; }
         .markdown-body li { margin-bottom: 6px; }
         .markdown-body a { color: #4285f4; text-decoration: none; }
         .markdown-body a:hover { text-decoration: underline; }
-        .markdown-body code { background: #282A2C; padding: 2px 6px; border-radius: 4px; font-family: ui-monospace, monospace; font-size: 13.5px; color: #E3E3E3; }
+        .markdown-body code { background: #282A2C; padding: 2px 6px; border-radius: 4px; font-family: ui-monospace, monospace; font-size: 13.5px; color: #E8EEF7; }
         .markdown-body pre { background: #1E1F20; border-radius: 12px; padding: 16px; overflow-x: auto; margin: 16px 0; }
-        .markdown-body pre code { background: transparent; padding: 0; color: #E3E3E3; font-size: 13.5px; }
+        .markdown-body pre code { background: transparent; padding: 0; color: #E8EEF7; font-size: 13.5px; }
         
         .message-row { display: flex; gap: 16px; margin-bottom: 32px; width: 100%; }
         .message-row.user { flex-direction: row-reverse; }
@@ -683,7 +685,7 @@ const [input, setInput] = useState('');
            max-width: 80%;
            display: inline-block;
            font-size: 15.5px;
-           color: #E3E3E3;
+           color: #E8EEF7;
         }
         .message-content { flex: 1; padding-top: 5px; }
         .message-text { line-height: 1.65; font-size: 14.5px; white-space: pre-wrap; }
@@ -714,14 +716,14 @@ const [input, setInput] = useState('');
         .input-bar-wrap { padding: 0 26px 22px; max-width: 860px; width: 100%; margin: 0 auto; box-sizing: border-box; position: relative; z-index: 20; }
         .input-bar {
           display: flex; align-items: flex-end; gap: 8px;
-          background-color: #1E1F20; border-radius: 32px;
+          background-color: #0D1424; border-radius: 32px;
           padding: 12px 12px 12px 24px; border: none;
           box-shadow: 0 4px 20px rgba(0,0,0,0.4);
           transition: background-color 0.2s ease;
         }
         .input-bar:focus-within { background-color: #282A2C; }
         .input-bar textarea {
-          flex: 1; background: transparent; border: none; color: #E3E3E3;
+          flex: 1; background: transparent; border: none; color: #E8EEF7;
           font-size: 16px; outline: none; resize: none; font-family: inherit;
           max-height: 200px; line-height: 1.5; padding: 6px 0;
         }
