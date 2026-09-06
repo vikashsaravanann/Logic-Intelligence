@@ -1,0 +1,75 @@
+[
+  {
+    "id": "pkg-launch-price",
+    "query": "How much is the Digital Launch Pack?",
+    "must_include_any": ["8,999", "8999", "₹8,999"],
+    "expected_sources": ["packages"],
+    "notes": "Exact launch pack price"
+  },
+  {
+    "id": "pkg-pro-price",
+    "query": "What does the Business Pro Pack cost?",
+    "must_include_any": ["18,999", "18999", "₹18,999"],
+    "expected_sources": ["packages"]
+  },
+  {
+    "id": "pkg-enterprise",
+    "query": "Enterprise pack pricing and support",
+    "must_include_any": ["50,000", "50000", "6 month"],
+    "expected_sources": ["packages", "policy"]
+  },
+  {
+    "id": "payment-terms",
+    "query": "What are your payment terms for a website package?",
+    "must_include_any": ["50%", "advance", "delivery", "milestone"],
+    "expected_sources": ["policy", "packages"]
+  },
+  {
+    "id": "free-demo",
+    "query": "Do you offer a free demo before payment?",
+    "must_include_any": ["free demo", "before", "demo"],
+    "expected_sources": ["policy"]
+  },
+  {
+    "id": "refund",
+    "query": "What is your refund policy if I cancel mid project?",
+    "must_include_any": ["non-refundable", "work completed", "deposit"],
+    "expected_sources": ["policy"]
+  },
+  {
+    "id": "support-launch",
+    "query": "How long is free support on the cheapest package?",
+    "must_include_any": ["1 month", "one month"],
+    "expected_sources": ["policy", "packages"]
+  },
+  {
+    "id": "service-hotel",
+    "query": "Do you build hotel websites with booking?",
+    "must_include_any": ["hotel", "hospitality", "booking"],
+    "expected_sources": ["services"]
+  },
+  {
+    "id": "portfolio-freshbite",
+    "query": "Tell me about FreshBite project",
+    "must_include_any": ["FreshBite", "restaurant", "ordering"],
+    "expected_sources": ["portfolio"]
+  },
+  {
+    "id": "contact",
+    "query": "How do I contact Logic Intelligence on WhatsApp?",
+    "must_include_any": ["93428", "WhatsApp", "phone"],
+    "expected_sources": ["policy"]
+  },
+  {
+    "id": "paraphrase-starter-site",
+    "query": "I need a small affordable website for my local shop what package fits",
+    "must_include_any": ["Launch", "8,999", "8999", "5 pages"],
+    "expected_sources": ["packages"]
+  },
+  {
+    "id": "ecommerce",
+    "query": "Can you build an online store with UPI payments?",
+    "must_include_any": ["E-Commerce", "commerce", "Razorpay", "payment"],
+    "expected_sources": ["services", "packages"]
+  }
+]

@@ -5,7 +5,7 @@ import { COMPANY } from "@/config/company";
 import { packagesData } from "@/data/packagesData";
 import { servicesData } from "@/data/servicesData";
 import { portfolioProjects } from "@/data/portfolioData";
-import { buildCompanyKnowledgeBlock } from "@/lib/ai/knowledge";
+import { buildQueryGroundedKnowledge } from "@/lib/ai/knowledge";
 import {
   AI_TOOLS,
   dispatchToolCall,
@@ -52,10 +52,11 @@ const requestSchema = z.object({
 });
 
 function buildSystemPrompt(opts: {
+  knowledge: string;
   leadContext?: string;
   memoryContext?: string;
 }): string {
-  const knowledge = buildCompanyKnowledgeBlock();
+  const knowledge = opts.knowledge;
   const founderInfo = `Founder: ${COMPANY.founder.name} (${COMPANY.founder.title}) - ${COMPANY.founder.bio}`;
 
   let systemPrompt = `You are the support assistant for ${COMPANY.displayName} on the website chat widget. You also answer general knowledge questions accurately and professionally when asked — not only company topics.
@@ -169,10 +170,12 @@ export async function POST(req: Request) {
       leadContext = JSON.stringify(await lookupLeadStatus(emailMatch[0]), null, 2);
     }
 
+    const { block: knowledgeBlock } = await buildQueryGroundedKnowledge(lastUserMessage);
+
     const conversation: Array<Record<string, unknown>> = [
       {
         role: "system",
-        content: buildSystemPrompt({ leadContext, memoryContext }),
+        content: buildSystemPrompt({ knowledge: knowledgeBlock, leadContext, memoryContext }),
       },
       ...messages,
     ];

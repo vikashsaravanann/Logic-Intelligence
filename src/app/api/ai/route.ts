@@ -7,7 +7,7 @@ import { logAgentRun } from "@/lib/agent-eval/logger";
 import { estimateCostUsd } from "@/lib/agent-eval/cost";
 import { estimateFaithfulness } from "@/lib/agent-eval/faithfulness";
 import type { FailureClass } from "@/lib/agent-eval/types";
-import { buildCompanyKnowledgeBlock } from "@/lib/ai/knowledge";
+import { buildQueryGroundedKnowledge } from "@/lib/ai/knowledge";
 import {
   AI_TOOLS,
   dispatchToolCall,
@@ -45,13 +45,13 @@ function getLocalFallbackReply(userText: string): string {
   return `I'm LOGIC AI from ${COMPANY.displayName}. Ask about packages, services, or scoping — or WhatsApp **${COMPANY.phone}**.`;
 }
 
-function buildSystemPrompt(memoryContext?: string): string {
+function buildSystemPrompt(knowledge: string, memoryContext?: string): string {
   return `You are LOGIC AI for ${COMPANY.displayName} (${COMPANY.tagline}). You are both a company expert and a capable general-purpose assistant: answer any visitor question accurately and professionally, including topics unrelated to the company.
 
 You can write production code when asked (Next.js, React, Tailwind, Python) using Markdown code blocks.
-You answer company questions strictly from verified facts below.
+You answer company questions strictly from verified facts below — never contradict PRICE-CONSTRAINED facts.
 
-${buildCompanyKnowledgeBlock()}
+${knowledge}
 
 ${memoryContext || ""}
 
@@ -143,10 +143,12 @@ export async function POST(request: Request) {
       injectedContext = `\n\nUploaded File (${file.name || "file"}):\n"""\n${(file.data as string).slice(0, 8000)}\n"""`;
     }
 
+    const { block: knowledgeBlock } = await buildQueryGroundedKnowledge(userText);
+
     const conversation: Array<Record<string, unknown>> = [
       {
         role: "system",
-        content: `${buildSystemPrompt(memoryContext)}\n${injectedContext}`,
+        content: `${buildSystemPrompt(knowledgeBlock, memoryContext)}\n${injectedContext}`,
       },
       { role: "user", content: text },
     ];
