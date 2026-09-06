@@ -76,7 +76,7 @@ function getSmtpConfig(sender: SenderKey): SmtpConfig {
 
 function buildTransportOptions(
   config: SmtpConfig
-): SMTPTransport.Options {
+): SMTPTransport.Options & Record<string, unknown> {
   const rejectUnauthorized =
     process.env.SMTP_TLS_REJECT_UNAUTHORIZED !== "false";
 
@@ -98,13 +98,10 @@ function buildTransportOptions(
     greetingTimeout: 15000,
     socketTimeout: 25000,
     tls,
-    pool: true,
-    maxConnections: 3,
-    maxMessages: 50,
   };
 
   if (!config.secure && config.port === 587) {
-    options.requireTLS = true;
+    (options as SMTPTransport.Options & { requireTLS?: boolean }).requireTLS = true;
   }
 
   return options;
@@ -120,7 +117,7 @@ export function getSmtpTransporter(
   const cached = transporterCache.get(cacheKey);
   if (cached) return cached;
 
-  const transporter = nodemailer.createTransport(buildTransportOptions(config));
+  const transporter = nodemailer.createTransport(buildTransportOptions(config) as SMTPTransport.Options);
   transporterCache.set(cacheKey, transporter);
   return transporter;
 }
