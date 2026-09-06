@@ -11,7 +11,7 @@ export default function MarketingLayout({
   return (
     <>
       <Navbar />
-      <main>{children}</main>
+      <main className="min-h-screen bg-[#0A0F1E]">{children}</main>
       <Footer />
       <SupportChatWidget />
       <FloatingWhatsApp />

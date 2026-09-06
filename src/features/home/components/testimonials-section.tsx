@@ -29,7 +29,7 @@ export default function TestimonialsSection() {
             {testimonials.map((t, i) => (
               <motion.figure
                 key={t.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 1, y: 0 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ delay: i * 0.08 }}
@@ -69,7 +69,7 @@ export default function TestimonialsSection() {
           </div>
         ) : (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 1, y: 0 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             className="max-w-3xl mx-auto"

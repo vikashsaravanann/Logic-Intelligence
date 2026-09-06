@@ -43,7 +43,7 @@ export default function WhyUsSection() {
         <div className="grid lg:grid-cols-2 gap-8 md:gap-16 items-center">
           
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 1, x: 0 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             className="space-y-8"
@@ -64,7 +64,7 @@ export default function WhyUsSection() {
               {points.map((point, i) => (
                 <motion.div 
                   key={i}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 1, y: 0 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ delay: i * 0.1 }}
@@ -83,7 +83,7 @@ export default function WhyUsSection() {
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 1, y: 0 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             className="relative h-[500px] w-full lg:h-[600px] rounded-2xl border border-primary/20 bg-black/40 overflow-hidden backdrop-blur-sm"
