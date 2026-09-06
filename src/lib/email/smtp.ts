@@ -31,13 +31,18 @@ function getSmtpConfig(sender: SenderKey): SmtpConfig {
   const host =
     process.env[`SMTP_${prefix}_HOST`] ||
     process.env.SMTP_HOST ||
-    "smtp.hostinger.com";
+    "smtp.zoho.in";
   const port = Number(
     process.env[`SMTP_${prefix}_PORT`] || process.env.SMTP_PORT || 465
   );
+  // Zoho: 465 = SSL (secure true); 587 = STARTTLS (secure false)
+  const secureEnv = process.env[`SMTP_${prefix}_SECURE`] ?? process.env.SMTP_SECURE;
   const secure =
-    (process.env[`SMTP_${prefix}_SECURE`] || process.env.SMTP_SECURE) === "true" ||
-    port === 465;
+    secureEnv === "true"
+      ? true
+      : secureEnv === "false"
+        ? false
+        : port === 465;
 
   const user =
     process.env[`SMTP_${prefix}_USER`] ||
