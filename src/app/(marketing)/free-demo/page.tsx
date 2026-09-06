@@ -77,7 +77,7 @@ export default function FreeDemoPage() {
   const sectionNumClass = "w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm shrink-0";
 
   return (
-    <main className="min-h-screen bg-[#0A0D1A] text-white pt-24">
+    <main className="min-h-screen bg-[#0A0F1E] text-white pt-24">
       <BackToHome />
       {/* Hero Section */}
       <section className="relative py-20 px-6 lg:px-8 overflow-hidden border-b border-white/5">
@@ -86,12 +86,12 @@ export default function FreeDemoPage() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-8">
              Zero Risk. Zero Commitment.
           </motion.div>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl lg:text-5xl lg:text-7xl font-black text-white mb-6 tracking-tight leading-tight">
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tight leading-[1.1]">
             See Your Website <br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Before You Pay Anything</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-xl text-zinc-400 max-w-2xl mx-auto font-light mb-10">
-            Tell us about your project in detail below. We'll run it through our 31-Point Scoping Framework and get back to you with a free demo prototype — no payment, no obligation.
+            Share your goals, stack preferences, and timeline. We scope the work, reply with a clear plan, and — when it fits — a free demo prototype. No payment until you approve.
           </motion.p>
 
           <div className="flex flex-wrap justify-center gap-6 text-sm">
