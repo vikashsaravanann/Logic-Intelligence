@@ -34,7 +34,7 @@ export default function AboutSection() {
             </div>
             
             <p className="text-zinc-400 text-lg leading-relaxed">
-              Logic Intelligence Technologies is a registered software studio in Coimbatore. We were founded to give local businesses access to modern web development and true AI integration — without the fluff, template recycling, or opaque pricing common in the industry.
+              Logic Intelligence Technologies is a technology startup based in Coimbatore. We were founded to give local businesses access to modern web development and true AI integration — without the fluff, template recycling, or opaque pricing common in the industry.
             </p>
             <p className="text-zinc-400 text-lg leading-relaxed">
               Our process is straightforward: transparent costs, a clear technical roadmap, and a free demo before you commit. We build everything from e-commerce platforms to custom enterprise tools, entirely in-house. <Link href="/work" className="text-primary hover:underline font-medium">See our recent work here.</Link>
@@ -86,7 +86,7 @@ export default function AboutSection() {
                 </div>
                 <div>
                   <h4 className="text-white font-bold text-lg">Logic Intelligence Technologies</h4>
-                  <p className="text-sm text-zinc-400">AI-Integrated Software Studio · CIN: U72900TZ2026PTC123456</p>
+                  <p className="text-sm text-zinc-400">Technology Startup · Coimbatore, Tamil Nadu</p>
                 </div>
               </div>
             </div>

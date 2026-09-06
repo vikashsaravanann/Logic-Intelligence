@@ -5,7 +5,7 @@ export const servicesData = [
     title: "Full Stack Web Development",
     subtitle: "Front-End + Back-End + Database + Deployment — We Handle the Entire Stack",
     icon: "Code",
-    description: "Full stack development means we build every layer of your web application — from what users see on screen (front-end) to the database and server logic running behind the scenes (back-end).\n\nAt Logic Intelligence Technologies Pvt. Ltd., our full stack developers are skilled in modern frameworks and technologies that power today's most successful web applications.\n\nWe don't just build websites — we build complete web systems that are fast, secure, scalable, and ready to grow with your business.",
+    description: "Full stack development means we build every layer of your web application — from what users see on screen (front-end) to the database and server logic running behind the scenes (back-end).\n\nAt Logic Intelligence Technologies, our full stack developers are skilled in modern frameworks and technologies that power today's most successful web applications.\n\nWe don't just build websites — we build complete web systems that are fast, secure, scalable, and ready to grow with your business.",
     whatWeBuild: [
       "Business Web Applications",
       "Customer Portals & Dashboards",
@@ -57,7 +57,7 @@ export const servicesData = [
     title: "Hotel & Hospitality Website Development",
     subtitle: "Beautiful, Booking-Ready Websites for Hotels, Resorts, and Homestays",
     icon: "Hotel",
-    description: "Your hotel website is your 24/7 front desk. If it looks outdated or doesn't work on mobile, guests book somewhere else.\n\nLogic Intelligence Technologies Pvt. Ltd. builds premium hotel websites that showcase your property beautifully, answer guest questions instantly, and bring you direct booking inquiries — without paying commission to third-party platforms like MakeMyTrip.",
+    description: "Your hotel website is your 24/7 front desk. If it looks outdated or doesn't work on mobile, guests book somewhere else.\n\nLogic Intelligence Technologies builds premium hotel websites that showcase your property beautifully, answer guest questions instantly, and bring you direct booking inquiries — without paying commission to third-party platforms like MakeMyTrip.",
     whatWeBuild: [
       "Stunning Room Gallery",
       "Booking Inquiry Form",
@@ -99,7 +99,7 @@ export const servicesData = [
     title: "Travel Agency Website with Live Quotation System",
     subtitle: "Let Customers Calculate Their Own Trip Cost Instantly — And Inquire on WhatsApp",
     icon: "Plane",
-    description: "Most travel agencies lose customers because they don't respond fast enough to price inquiries. Imagine a website where your customers select their destination, number of people, and days — and instantly see the estimated cost.\n\nThat's exactly what we build. Logic Intelligence Technologies Pvt. Ltd. specializes in travel agency websites with live quotation calculators that convert visitors into leads automatically — even at midnight when your office is closed.",
+    description: "Most travel agencies lose customers because they don't respond fast enough to price inquiries. Imagine a website where your customers select their destination, number of people, and days — and instantly see the estimated cost.\n\nThat's exactly what we build. Logic Intelligence Technologies specializes in travel agency websites with live quotation calculators that convert visitors into leads automatically — even at midnight when your office is closed.",
     whatWeBuild: [
       "Live Quotation Calculator",
       "Destination Package Pages",
@@ -132,7 +132,7 @@ export const servicesData = [
     title: "Custom Software Development",
     subtitle: "We Build Software Exactly the Way Your Business Needs It — Not a Generic Solution",
     icon: "Terminal",
-    description: "Off-the-shelf software never fits perfectly. You pay for features you don't need and miss features you do need.\n\nLogic Intelligence Technologies Pvt. Ltd. builds custom software from scratch — designed around your exact business process, your workflow, and your team.",
+    description: "Off-the-shelf software never fits perfectly. You pay for features you don't need and miss features you do need.\n\nLogic Intelligence Technologies builds custom software from scratch — designed around your exact business process, your workflow, and your team.",
     whatWeBuild: [
       "Business Management Software",
       "CRM — Customer Relationship Management",
@@ -170,7 +170,7 @@ export const servicesData = [
     title: "Game Development",
     subtitle: "We Build Engaging 2D and 3D Games for Mobile, Desktop, and Web",
     icon: "Gamepad",
-    description: "Gaming is one of the fastest growing industries in India and globally. Whether you want a mobile casual game, an educational game for your school, or a branded game experience for your business — Logic Intelligence Technologies Pvt. Ltd. builds it.",
+    description: "Gaming is one of the fastest growing industries in India and globally. Whether you want a mobile casual game, an educational game for your school, or a branded game experience for your business — Logic Intelligence Technologies builds it.",
     whatWeBuild: [
       "2D Mobile Games (Android & iOS)",
       "3D Mobile Games",

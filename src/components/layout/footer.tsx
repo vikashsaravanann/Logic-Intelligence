@@ -236,7 +236,7 @@ export default function Footer() {
           
           <p className="text-[10px] sm:text-xs text-zinc-500 text-center md:text-right uppercase tracking-widest leading-relaxed">
             © {new Date().getFullYear()} {COMPANY.legalName}. ALL RIGHTS RESERVED.<br className="md:hidden" /> 
-            <span className="hidden md:inline"> | </span>CIN: {COMPANY.cin}
+            
           </p>
         </div>
 

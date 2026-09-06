@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function CredentialsStripSection() {
   const credentials = [
-    { icon: Building2, text: "Registered Pvt Ltd Company" },
+    { icon: Building2, text: "Technology Startup · Coimbatore" },
     { icon: Code2, text: "Modern Technology Stack" },
     { icon: Clock, text: "Response within 24 Hours" },
     { icon: PlayCircle, text: "Free Demo Before Payment" },
