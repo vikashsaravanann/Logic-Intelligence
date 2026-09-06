@@ -8,6 +8,7 @@ import { estimateCostUsd } from "@/lib/agent-eval/cost";
 import { estimateFaithfulness } from "@/lib/agent-eval/faithfulness";
 import type { FailureClass } from "@/lib/agent-eval/types";
 import { buildQueryGroundedKnowledge } from "@/lib/ai/knowledge";
+import { completeWithProviders, hasAnyProvider } from "@/lib/ai/providers";
 import {
   AI_TOOLS,
   dispatchToolCall,
@@ -152,6 +153,52 @@ export async function POST(request: Request) {
       },
       { role: "user", content: text },
     ];
+
+    // Parallel Groq + xAI when configured
+    if (hasAnyProvider()) {
+      try {
+        const dual = await completeWithProviders(conversation as any, {
+          tools: AI_TOOLS as any,
+          temperature: 0.3,
+          max_tokens: typeof max_tokens === "number" ? max_tokens : 800,
+        });
+        if (dual.content) {
+          const cleaned = cleanedContent(dual.content);
+          if (cleaned) {
+            reply = cleaned;
+            success = true;
+            modelName = dual.model;
+            const latency_ms = Date.now() - started;
+            await logAgentRun({
+              run_id: runId,
+              agent_role: "logic-ai",
+              success: true,
+              steps: 1,
+              tool_calls: 0,
+              tokens_in: 0,
+              tokens_out: 0,
+              latency_ms,
+              cost_usd: 0,
+              failure_class: "none",
+              faithfulness: estimateFaithfulness(userText, reply),
+              used_fallback: false,
+              model: modelName,
+              meta: { provider: dual.provider },
+            });
+            return NextResponse.json({
+              success: true,
+              generated_text: reply,
+              reply,
+              run_id: runId,
+              provider: dual.provider,
+              model: dual.model,
+            });
+          }
+        }
+      } catch (e) {
+        console.warn("[ai] dual provider race failed", e);
+      }
+    }
 
     if (!apiKey) {
       usedFallback = true;

@@ -6,6 +6,7 @@ import { packagesData } from "@/data/packagesData";
 import { servicesData } from "@/data/servicesData";
 import { portfolioProjects } from "@/data/portfolioData";
 import { buildQueryGroundedKnowledge } from "@/lib/ai/knowledge";
+import { completeWithProviders, hasAnyProvider } from "@/lib/ai/providers";
 import {
   AI_TOOLS,
   dispatchToolCall,
@@ -180,11 +181,38 @@ export async function POST(req: Request) {
       ...messages,
     ];
 
-    if (!GROQ_API_KEY) {
+    if (!hasAnyProvider() && !GROQ_API_KEY) {
       return NextResponse.json({
         success: true,
         reply: generateLocalFallbackReply(userQuery),
       });
+    }
+
+    // Parallel Groq + xAI (Grok): first successful reply wins
+    try {
+      const dual = await completeWithProviders(conversation as any, {
+        tools: AI_TOOLS as any,
+        temperature: 0.4,
+        max_tokens: 900,
+      });
+      if (dual.content) {
+        const cleaned = cleanModelResponse(dual.content);
+        if (cleaned) {
+          return NextResponse.json({
+            success: true,
+            reply: cleaned,
+            provider: dual.provider,
+            model: dual.model,
+          });
+        }
+      }
+      // tool_calls path: fall through to existing sequential handler if raw has tools
+      const toolMsg = (dual.raw as any)?.choices?.[0]?.message;
+      if (toolMsg?.tool_calls?.length && dual.provider !== "none") {
+        // handled below by legacy loop when dual only returned tools — continue
+      }
+    } catch (e) {
+      console.warn("[chat] dual provider race failed", e);
     }
 
     const toolCtx = {
